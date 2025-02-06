@@ -10,6 +10,7 @@
 
 成功配置后，在 `cmd` 中键入 `make --version`，出现版本号则表示配置成功
 
+
 ![image-20250123112938522](images/image-20250123112938522.png)
 
 ## Makefile基础知识
