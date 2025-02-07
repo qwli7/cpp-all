@@ -139,7 +139,9 @@ float balances[100] {}; //同上，全部为 0
 ### 字符串
 字符串是存储在内存的连续字节中的一系列字符；在 `C++` 中可以使用两种，一种来自于 `C` 语言，通常称为 `C-风格字符串`，还有一种是 `string` 类库中的方法；
 
-- C 风格字符串具有特殊的性质，以空字符（`null character`）结尾，空字符被写作 `\0`，其 `ASCII` 码值为 `0`，用来标记字符串结尾；例如
+#### 1.C风格字符串
+
+C 风格字符串具有特殊的性质，以空字符（`null character`）结尾，空字符被写作 `\0`，其 `ASCII` 码值为 `0`，用来标记字符串结尾；例如
 ```cpp
 char dog[8] = {'b', 'e', 'a', 'u', 'x', ' ', 'I', 'I'}; //不是字符串，是一个字符数组
 char cat[8] = {'f', 'a', 't', 'e', 's', 's', 'a', '\0'}; //字符串
@@ -148,4 +150,94 @@ char cat[8] = {'f', 'a', 't', 'e', 's', 's', 'a', '\0'}; //字符串
 ```cpp
 char bird[11] = "Mr. Cheeps"; // \0 会被自动添加到结尾，注意长度需要包含 \0 字符
 char fish[] = "Bubbles"; //编译器会自动推导长度
+```
+
+注意：`sizeof(数组名)` 计算的是整个数组的长度，而 `strlen(数组名)` 计算的是存储在字符串中的长度，且不包含空字符；
+
+[字符串练习](Chapter04/4.2_string.cpp)
+
+`cin` 在确定完成输入的时候，会通过 **空格**、**制表符**、**换行符**来确定字符的结尾位置；这意味着 `cin` 在湖区字符数组输入时，只读取一个单词，获取到该单词后，`cin` 将字符串放到数组中，并在结尾添加空字符；
+例如
+```cpp
+#include <iostream>
+int main() {
+    using namespace std;
+    const int size = 20;
+    char name[size];
+    char name2[size];
+
+    cout << "Enter your name: ";
+    cin >> name;
+    cout << "Enter your another name: ";
+    cin >> name2;
+
+    cout << name1 << "===" << name2 << endl;
+
+    return 0;
+}
+```
+当你输入 `John Mack` 时，最后一行输出语句就会自动执行，不会等到你第二次输入 `name`; 原因就是因为它把 `John` 放入了 `name1`，把 `Mack` 放入了 `name2`;
+
+如果你要读取一行输入，那么就需要使用 `getline()` 或者 `get()`；两者的区别就是 `getline()` 会丢弃换行符，而 `get()` 不会，会将换行符保留在输入队列中;
+
+```cpp
+cin.getline(name,20); //这一行输入的字符不能超过 19 个
+
+```
+![cin_getline()](images/image_cin_getline.png)
+
+#### 2.string类
+`C++98` 中添加了 `string` 类扩展了 `C++` 的类库，使得字符串的使用更加简单；`string` 对象和字符串数组之间的主要区别就是可以将 `string` 对象声明为简单变量，而不是数组；
+
+```cpp
+// 需要引入 string 头文件 
+// #include <string>
+string str1;
+string str2 = "panther";
+
+cin >> str1; //输入到 str1 中时，string 对象会自动调整大小
+```
+
+初始化方式（不管是 `string` 还是 `C-风格字符串`，都可以使用列表初始化的方式去进行初始化）
+```cpp
+char first_date[] = {"Le Chapon Dodu"};
+char second_date[] {"The Elegant Plate"};
+string third_date = {"The Bread Bowl"};
+string fourth_date {"Hank's Fine Eats"};
+```
+
+### string类的操作
+在没有增加 `string` 类之前，对字符串的操作需要使用 `C string` 库来完成操作；例如 `strcpy()` 将字符串赋值到字符数组中、`strcat()` 将字符串附加到字符数组末尾
+```cpp
+strcpy(charr1, charr2); //把 charr2 拷贝到 charr1中
+strcat(charr1, charr2); //把 charr2 追加到 charr1 中
+```
+
+`string` 则可直接使用赋值和 `+` 操作符来处理，简化了不少；
+
+[c风格字符串和string类操作字符串的操作比较](Chapter04/4.9_strtype3.cpp)
+
+在输入上也有些不同
+```cpp
+cin.getline(charr1, 20); //需要指明长度，可能会有越界的风险
+getline(cin, str1); //会自动计算长度
+```
+
+
+### 结构
+和 `C` 语言一样，`C++` 也支持结构
+```cpp
+//定义结构
+struct inflatable {
+    char name[20];
+    float volume;
+    double price;
+};
+
+//使用结构，可以省略 struct 关键字，这点与 C 不同
+inflatable hat;
+inflatable woopie_cushion;
+
+struct inflatable goose; //C 必须要有 struct 关键字
+inflatable vincent; //C++ 中 strcut 不是必须的
 ```
