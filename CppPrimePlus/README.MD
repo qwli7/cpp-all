@@ -614,3 +614,74 @@ switch(integer-exp){
 [从文件中读取数据](Chapter06/6.16_sumafile.cpp)
 
 
+## 07.函数
+要使用函数，必须完成以下工作
+- 提供函数定义
+- 提供函数原型
+- 调用函数
+
+[简单函数定义和调用](Chapter07/7.1_calling.cpp)
+
+
+### 定义函数
+函数分为两类：
+- 没有返回值的函数（`void`函数）
+- 有返回值的函数，必须有返回语句（`return xxx`）
+
+```cpp
+void functionName(parameterlist) {
+    statements(s);
+    return; //void 返回值，可以不需要 return
+}
+
+typeName functionName(parameterList) {
+    statements(s);
+    return value; //value 必须是 typeName 的类型
+}
+```
+
+例如定义一个打印函数
+```cpp
+void cheers(int n) {
+    for(int i = 0; i < n; i++) {
+        std::cout << "Cheers! ";
+    }
+    std::cout << std::endl;
+}
+```
+
+在函数原型中，允许不提供变量名，例如
+```cpp
+//以下两种原型都是可以的，原型中的变量名称相当于占位符，不必与函数定义中的变量名相同
+int add(int a, int b);
+int add(int, int); 
+```
+
+
+### 函数参数和按值传递
+`C++`中通常传递都是按值传递，也就是传递给方法的实际上是参数的拷贝，在函数体内对参数做修改，在函数调用结束后，修改是不生效的；例如
+```cpp
+void swap(int, int); //
+
+int main() {
+    int a = 3; b = 5;
+    cout << "Before: a = " << a << ", b = " << b << endl;
+    swap(a, b);
+    cout << "After: a = " << a << ", b = " << b << endl;
+    return 0;
+}
+
+void swap(int a, int b) {
+    int temp = a;
+    a = b;
+    b = temp;
+}
+```
+调用 `swap` 方法后，`a` 和 `b` 的值并未发生变化，实际上只是把 `a` 和 `b` 的值的拷贝传递给了 `swap(int x, int y)` 中的实参，这种就是明显的按值传递；如果要正确实现两个数的交换，可以考虑用指针或者引用来实现；
+
+
+按值传递的弊端：
+- 如果是较小的类型，多一次数据拷贝，对程序的性能没有影响
+- 如果是较大或者较复杂的结构体对象，那么一次拷贝将带来较大的内存开销
+
+
