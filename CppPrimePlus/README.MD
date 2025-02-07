@@ -434,3 +434,183 @@ inflatable * ps = nwe inflatable;
     - 在函数外面定义它
     - 在声明变量时使用 `static` 关键字 `static double fee = 56.50;`
 - 动态存储，由 `new` 和 `delete` 操作；通常被称为**自由存储空间（`free store`）**或者**堆（`heap`）**
+
+
+## 05.循环和关系表达式
+### for/while/do while 循环
+以上三种循环都用来处理重复的任务，例如将 `hello world` 打印 `10` 次；
+
+```cpp
+for(int i = 0; i < 10; i++) { //for loop
+    cout << "hello world" << endl;
+}
+
+int num = 10;
+while(num > 0) { // while loop
+    cout << "hello world " <<endl;
+    num--;
+}
+
+num = 10; 
+while { // do while loop
+    cout << "hello world" << endl;
+} do(num > 0)
+```
+
+### 基于范围的for循环(C++11)
+`C++11` 新增了一种基于范围的循环，简化了循环任务；对数组（或者容器类，如 `vector`和 `array`）的遍历较为方便
+
+```cpp
+double prices[5] {4.99, 10.99, 6.87, 7.99, 8.49};
+for(double x: prices) {
+    cout << "x=" << x << endl;
+}
+
+
+for(int x: {1,2,3,4,5,6}) {
+    cout << "x= " << x << endl;
+}
+```
+
+
+### 嵌套循环和二维数组
+二维数组定义
+```cpp
+typeName arrName[行数][列数];
+```
+定义一个四行五列的二维数组，并进行遍历
+```cpp
+
+// maxtemps[0] 表示第一行的一维数组
+// maxtemps[1] 表示第二行的一维数组
+// 以此类推
+int maxtemps[4][5] {
+    {1,2,3,4,5},
+    {6,7,8,9,10},
+    {11,12,13,14,15},
+    {16,17,18,19,20}
+};
+
+
+
+//遍历二维数组
+for(int i = 0; i < 4; i++) {
+    for(int j = 0; j < 5; j++) {
+        cout << maxtemps[i][j] << " ";
+    }
+    cout << endl;
+}
+```
+
+### continue 跳过本次循环，继续执行下一轮
+```cpp
+for(int i= 0; i < 100; i ++) {
+    if(i%2==0) {
+        continue; //如果是偶数，则跳过
+    }
+    cout << i << endl; 
+}
+```
+
+### break 跳出循环
+```cpp
+for(int i = 0; i < 10; i++) {
+    if(i == 5) {
+        break;
+    }
+    cout << i << endl; //打印 0 1 2 3 4
+}
+```
+
+### 关系表达式
+关系表达式常用来对两个值进行比较；常用的符号 `<`、`<=`、`==`、`>`、`>=`、或者 `!=`；
+关系表达式的结果为 `bool` 类型，值为 `true` 或者 `false`
+
+
+
+## 06.分支语句和逻辑运算符
+分支语句通常为 `if`, `if else` 还有 `switch`；逻辑运算符通常为 `&&（逻辑与）`, `||（逻辑或）`, `!（逻辑非）`，条件运算符通常是三元表达式`?:`;
+
+### if 和 if else 语句
+```cpp
+if(a > b) {
+    cout << " a > b" << endl;
+} else {
+    cout << "a <= b" << endl;
+}
+```
+
+### 逻辑表达式（与、或、非）
+```cpp
+//逻辑或判断顺序是从左到右，如果第一个判断成立，那么第二个判断将不会被执行；
+5==5 || 5==9  //两个条件有一个成立，则为true
+5>3 || 5> 10; //两个条件有一个成立，则为true
+
+//逻辑与判断顺序是从左到右，如果第一个判断成立，那么第二个判断将不会被执行
+//逻辑与要求两个表达式同时成立，有一个为 false，则为 false
+5>3 && 5 < 9; //成立 true
+
+//逻辑非对表达式取反
+if(!(a > b)) //判断条件实际上是 a<=b
+
+```
+在 `C++` 中也可以使用 `and`, `or`, `not` 来表示
+```cpp
+int a = 10, b = 20, c = 30;
+if (a < b and b < c) //也是有效语法
+{
+    std::cout << "a > b and b < c";
+}
+```
+
+### `?.` 三目运算符
+通常被用来代替 `if else` 的写法
+```cpp
+int a = 10;
+int b = 20;
+int c = 30;
+int temp = a > b ? b : c; //如果 a>b, 则取b的值，反之则取c的值
+```
+
+### `switch` 语句
+通常用来扩展 `if else if else` 的功能
+```cpp
+switch(integer-exp){
+    case label1:
+        statement(s);
+        break;
+    case label2:
+        statement2(s);
+        break;
+    default:
+        break;
+
+}
+```
+还可以使用枚举量来作为 `switch` 的标签
+
+[使用枚举量作为`switch`的标签](Chapter06/6.11_enum_switch.cpp)
+
+
+### 简单文件输入输出
+对于文件输入，`C++`使用了一个类似于 `cout`的东西；我们要使用 `cout` 在控制台输出内容，需要做如下准备
+- 包含头文件`iostream`
+- 头文件中定义了一个用于处理输出的 `ostream` 类
+- 头文件中声明了一个名为 `cout` 的 `ostream` 变量（对象）
+- 必须指明名称空间 `std`, 引用元素使用预编译指令`using`或者前缀`std::`;
+- 结合 `cout` 和 `<<` 来显示各种类型的数据；
+
+文件操作和其极其相似
+- 包含头文件 `fstream`
+- 头文件中定义了一个用于处理处处的 `ofstream` 类
+- 需要声明一个或者多个 `ofstream` 变量
+- 必须指明名称空间 `std`, 引用元素使用预编译指令`using`或者前缀`std::`;
+- 将 `ofstream` 对象和文件关联起来，使用 `open()` 方法
+- 使用完成后，需要调用 `close()` 方法将其关闭
+- 结合 `ofstream` 对象和运算符 `<<` 来输出各种类型的数据
+
+[内容写到文件中](Chapter06/6.15_outfile.cpp)
+
+[从文件中读取数据](Chapter06/6.16_sumafile.cpp)
+
+
