@@ -224,7 +224,7 @@ getline(cin, str1); //会自动计算长度
 ```
 
 
-### 结构
+### 结构（struct）
 和 `C` 语言一样，`C++` 也支持结构
 ```cpp
 //定义结构
@@ -239,5 +239,198 @@ inflatable hat;
 inflatable woopie_cushion;
 
 struct inflatable goose; //C 必须要有 struct 关键字
-inflatable vincent; //C++ 中 strcut 不是必须的
+inflatable vincent; //C++ 中 struct 不是必须的
 ```
+#### 结构体的赋值和访问
+- 赋值通过 `{}` 来进行赋值
+- 访问通过 `.` 操作符来进行访问
+
+结构体的初始化方式和数组一样，也可以采用初始化列表的方式进行初始化
+```cpp
+inflatable guest = {"Hello", 1.88, 29.99};
+inflatable guest2 {"World", 2.77, 30.1}; // = 也可以省略
+inflatable guest3 {}; //没有任何东西，那么结构里面的各个成员都会被设置成0
+
+cout << guest.name << endl; //访问结构体属性
+cout << guest.name[0] << endl; //访问结构体的第一个字符
+cout << guest.price << endl; //访问 price
+```
+
+结构和结构之间的赋值也是允许的，例如 `guest = guest2`;
+
+#### 结构体数组赋值
+```cpp
+inflatable guest[2] = {
+    {"zhangsan", 12.0, 12.34}, //索引为0的赋值
+    {"lisi", 13.5, 22.34} //索引为1的赋值
+}
+
+cout << "索引为0 name 属性的值 " << inflatable[0].name << endl;
+cout << "索引为1 name 属性的值 " << inflatable[1].name << endl;
+```
+
+[结构体赋值和取值操作练习](Chapter04/4.13_arrstruc.cpp)
+
+
+### 共用体（union）
+共用体是一种数据格式，能够存储不同的数据类型，但只能同时存储一种；语法和结构体相似
+
+```cpp
+union one4all {
+    int int_val;
+    long long_val;
+    double double_val;
+};
+```
+在不同的时刻只有一个属性有值；
+
+```cpp
+one4all pail;
+pail.int_val = 15; //int 属性有值
+cout << pail.int_val << endl; 
+
+pail.double_val = 1.38; //double 属性有值，int 值将会被丢失
+cout << pail.double_val << endl;
+```
+
+
+### 枚举（enum）
+提供了一种可以替代 `const` 创建符号常量的方式，但必须按照严格的限制进行；语法和结构类似
+
+```cpp
+enum spectrum {red, orange, yellow, green, blue, violet, indigo, ultraviolet};  //对应的值分别为 0-7
+```
+默认情况下，`red` 的值为 `0`, 以此类推，`ultraviolet` 的值为 `7`。这些常量称为枚举量；可以通过赋值运算符来显示设置枚举量的值
+
+```cpp
+enum bits {one=1, two=2, four=4, eight=8}; //指定的值必须为整数
+enum bigstep {first, second =100, third}; //first 默认为0， third 默认为 second+1= 101
+enum {zero, null = 0, one, num_one = 1}; //可以指定多个值相同的枚举量
+```
+
+
+### 指针
+在之前提到过，计算机在存储数据的时候，必须要跟踪的三种基本属性：
+- 信息存储在哪里？
+- 存储的值是多少？
+- 存储的信息类型是什么类型？
+
+为了满足以上的条件，`C++` 要求我们在定义变量的时候，必须要指明变量的类型以及变量存储的值；
+```cpp
+int a=5; //显示定义变量
+```
+为了给开发人员最大限度的提升灵活性，`C/C++`为我们提供了另一种复合类型-指针；
+
+通俗来讲，指针也是一个变量，只不过是一个存储了变量地址的变量；可以通过 `&` 来获取一个变量的地址，通过 `*` 符号来对指针进行解引用获取变量的值；
+
+```cpp
+int a = 5; //定义一个变量
+int *p = &a; //定义一个指针，存储变量的地址
+```
+
+**注意：`int*` 是一个复合类型，表示的是指向 `int` 的指针**
+
+我们通过 `cout` 输出一个指针时，将会为我们打印出变量的地址
+
+```cpp
+#include <iostream>
+using namespace std;
+
+int main() {
+    int a = 4;
+    int *p = &a;
+    cout << "a = " << a << endl;
+    cout << "p=" << p << endl;  // 输出变量 a 的地址
+    cout << "*p = " << *p << endl; //输出变量 a 的值
+
+    return 0;
+}
+```
+#### 为什么要使用指针
+在运行时期去分配内存，减少内存的占用；
+
+一般情况下，我们在使用显式声明变量的时候，在编译时期就会为变量分配内存；如果程序原本用不到这么多内存，那么就会造成内存浪费；
+
+例如 `int arr[20]` 表示分配了 `20` 个 `int` 类型的变量所占用的内存，该分配操作在编译时期就会分配；如果我们根本用不到 `20` 个 `int` 类型的变量，那么那些没有赋值的元素将一直占用内存，造成内存浪费；而我们使用指针，可以在运行时期去确定我们本次需要多少个 `int` 类型的元素内存，然后再去向操作系统申请内存；
+
+#### 使用 new/delete 关键字
+一般在 `C/C++`中，我们使用 `new` 关键字在运行阶段申请内存大小，且使用指针来跟踪新分配的内存位置；（使用 `new` 分配的内存，返回的是指针类型，由于没有变量名称，所以我们只能通过指针来对变量进行访问）
+
+```cpp
+#include <iostream>
+
+int main() {
+    int *ps = new int; //分配一个 int 类型数据的内存
+    delete ps; //释放 ps 内存
+
+    int *ps = new int[10]; //申请一个包含 10 个元素的数组，返回的是数组元素的首地址（也是第一个元素的地址）
+    delete[] ps; //释放 int 数组
+    return 0;
+}
+```
+
+- 不要用 `delete` 来释放不是 `new` 分配的内存
+- 不要使用 `delete` 释放同一个内存块两次
+- 如果使用 `new typeName[]` 为数组分配内存，则释放应该使用 `delete []` 来进行释放
+- 如果使用 `new []` 为一个实体分配内存，则应该使用 `delete` 来释放
+- 对空指针使用 `delete` 是安全的
+- `delete` 是删除指针指向的内存，但不会删除指针本身，可以将指针再重新指向其他的内存块
+
+#### 使用动态数组
+一般情况下，`C++`将数组名解释成数组元素的第一个元素的地址；所以以下的方式是等价的
+```cpp
+double wages[3] = {10000.0, 20000.0,30000.0};
+double *pw = wages;
+
+//wages = &wages[0] = pw; 输出的都是数组元素的首地址；
+```
+
+因此在很多种情况下，可以用相同的方式使用指针名和数组名。但指针和数组名仍然有一些区别
+- 如果是指针，可以修改指针的值，但数组名是常量，无法修改
+- 对数组名应用 `sizeof` 得到的是数组的长度，而对指针应用 `sizeof` 得到的是指针的长度，即使指针指向的是一个数组；在 `sizeof` 的情况下，`C++` 不会将数组名称解释成地址；
+
+对数组去地址时，数组名也不会被解释成地址；数组名通常被解释成第一个元素的地址，只有当对数组名 `&` 操作时，才会得到数组的地址；虽然他们两个是相同的；
+```cpp
+short tell[10]; 
+cout << tell << endl; //等同于 &tell[0]，首元素的地址
+cout << &tell << endl; //整个数组的地址
+```
+
+如果将 `tell + 1`, 则指针会偏移 `2` 个字节的位置；如果是 `&tell + 1` 那么指针会偏移 `20` 个字节的位置；换句话说，`tell` 表示的是一个 `short` 类型的指针（`* short`），而 `&tell` 是一个包含 `20` 个元素的 `short` 数组（`short(*)[20]`）
+
+可以通过如下的方式来定义它
+```cpp
+short (*pas)[20] = &tell; //一个指向20个short元素的指针，因此 pas 的类型是 short(*)[20], 由于 pas被设置成 &tell，那么（*pas）便等价于 tell， （*pas）[0] 便为 tell 数组种的第一个元素
+short * pas[20]; //这样便会变成一个存放 20个指针的数组
+ ```
+
+[动态数组的使用](Chapter04/4.18_arraynew.cpp)
+
+### 指针和字符串
+一般来说，如果给 `cout` 提供一个指针，它将打印地址；但是如果指针的类型是 `char *`，则 `cout` 将显示指向的字符串；
+如果需要打印地址，那么需要将这种指针强制转换成另一种指针类型，例如 `int *`
+
+```cpp
+char name[20]="hello world";
+cout << name << endl; // hello world
+cout << (int *) name << endl; //0X..... 地址
+```
+
+
+### 使用 new 创建动态结构（struct）
+```cpp
+inflatable * ps = nwe inflatable;
+```
+需要访问结构体里面的变量，有两种方式
+- 如果使用指针，则使用 `->` 操作符来访问
+- 如果对指针解引用，则使用 `.` 操作符来进行访问
+
+[指针对结构体变量赋值取值](Chapter04/4.21_newstruct.cpp)
+
+
+### 自动存储、静态存储和动态存储
+- 在函数内部定义的常规变量使用自动存储空间，函数调用时产生，函数调用结束时消亡，通常存储在栈中；满足后进先出原则（`LIFO`）
+- 静态存储，在整个程序的执行期间都存在；定义方式有两种
+    - 在函数外面定义它
+    - 在声明变量时使用 `static` 关键字 `static double fee = 56.50;`
+- 动态存储，由 `new` 和 `delete` 操作；通常被称为**自由存储空间（`free store`）**或者**堆（`heap`）**
