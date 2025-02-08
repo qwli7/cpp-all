@@ -745,4 +745,18 @@ double trouble = 2.0;
 const double * const p = &trouble; //既不能修改指向，也不能通过p修改 trouble 的值，但可以通过 trouble 变量来修改值
 ```
 
+### 函数和结构
+和使用基本数据类型一样容易；也可以传递结构本身或者地址；例如
+```cpp
+struct rect {
+    int x;
+    int y;
+};
+
+void showRect(rect r); //传递结构本身
+void calcRect(rect* r); //传递结构地址
+void showRectExt(const rect * r); //传递地址，且加上 const 修饰
+
+```
+
 
