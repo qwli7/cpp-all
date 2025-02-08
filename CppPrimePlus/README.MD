@@ -912,3 +912,46 @@ beeps = harpo(2); //等同 harpo(2, 4, 5);
 beeps = harpo(2, 6); //等同 harpo(2, 6, 5);
 beeps = harpo(2, 6, 7); //等同 harpo(2, 6, 7);
 ```
+
+函数重载是 `C++` 在 `C` 的基础上新增的一个新特性；默认参数允许我们使用不同数目的参数调用同一个函数，那么函数重载将允许我们定义相同名称，不同参数的函数；例如：
+```cpp
+void print(const char * str, int width);
+void print(double d, int width);
+void print(long l, int width);
+void print(int i, int witdth);
+void print(const char *str);
+```
+
+`print` 方法就是典型的函数重载，编译器根据我们传入的参数类型不同，调用不同的 `print` 方法；
+
+
+### 函数模板
+函数模板是通用函数的描述；也就是说，可以使用泛型来定义函数，通过将类型作为参数传递给模板，可使编译器生成该类型的函数；例如如下代码，定义一个交换模板；
+```cpp
+//AnyType 也可以使用 T 来替代
+template <typename AnyType> // 建立一个模板，将类型取名为 AnyType, template 和 typename 是必须的
+//template <class T>  也可以使用 class 来代替 typename
+void Swap(AnyType &a, AnyType &b) {
+    AnyType temp;
+    temp = a;
+    a = b;
+    b = temp;
+}
+```
+
+如果我们调用了函数模板的方法，编译器会自动生成调用该函数实际类型的方法，就像是你自己手工定义的方法一样；
+
+[函数模板的使用](Chapter08/8.11_funtemp.cpp)
+
+
+方法可以重载，同样模板也可以进行重载；例如：
+```cpp
+template <typename T>
+void Swap(T& a, T& b); //定义了第一个函数模板
+
+//对Swap 函数模板进行重载
+template <typename T>
+void Swap(T& a, T& b, int n); //对 swap 进行了重载
+```
+
+模板的定义不要具有二义性；如果模板不能完成任务，那么请定义实际的方法来完成任务；不要让编译器不知道该调用那一个方法；
