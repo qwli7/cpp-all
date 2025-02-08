@@ -685,3 +685,64 @@ void swap(int a, int b) {
 - 如果是较大或者较复杂的结构体对象，那么一次拷贝将带来较大的内存开销
 
 
+### 函数和数组
+编写一个函数原型，入参为数组；例如
+```cpp
+int sum_arr(int arr[], int n); //入参为数组
+int sum_arr(int* arr, int n); //入参为 int*
+```
+以上两个声明是等效的，在 `C++` 中，只有在函数原型中，`int *arr` 和 `int arr[]` 的含义才是相同的；他们都表示 `arr` 是一个 `int` 类型的指针；
+
+[验证`int *arr` 和 `int arr[]`在函数原型中是否等效](Chapter07/7.5_arrfun1.cpp)
+
+**注意**
+> 将数组类型和元素数量告诉数组处理函数时，请通过两个不同的参数来传递它们；
+> void fillArray(int arr[], int size); // 好的方式
+> 而不要试图使用 [] 来传递数组长度
+> void fillArray(int arr[size]); //不要使用这种方式
+
+
+当我们在参数中传递数组时，传递的是指针；那么便可以通过数组名（指针）去修改数组里面的值，如果我们不希望原数组可以被修改，可以尝试在方法原型上加上 `const`, 禁止外部修改数组；
+```cpp
+// C++ 会将 const int arr[] 解释成 const int * arr;
+void print_array(const int arr[], int n); //指针 arr 指向的是常量数据，不允许通过 arr 去修改值
+
+arr[0]+= 10; //编译器将会报错
+
+```
+
+### 指针和 const（指针常量和常量指针）
+使用两种不同的方式将 `const` 关键字作用在指针上；
+- 让指针指向一个常量对象，可以防止指针修改指向的值
+- 将指针本身声明成一个常量，可以防止指针改变指向
+
+```cpp
+// p 指向的是一个 const int 类型，不能修改数据
+int age = 39;
+const int * p = &age; //不能用 p 来修改 age 的值，但是可以通过 age 来修改它
+*p+1; // 错误
+age+=1; //正确
+```
+
+尽可能的使用 `const`
+- 可以避免由于无意间修改数据而导致的编程错误；
+- 使用 `const` 使得函数能够处理 `const` 和 非 `const` 实参，否则将只能接受非 `const` 数据。
+
+
+```cpp
+//p 本身就是一个 const，不能修改指向
+int age = 39;
+int year = 2025;
+int * const p = &age; // 常量指针
+
+p = &year; //错误，不允许修改指向
+```
+
+![指向 const 的指针和 const 指针](images/7_const_ptr.png)
+
+```cpp
+double trouble = 2.0;
+const double * const p = &trouble; //既不能修改指向，也不能通过p修改 trouble 的值，但可以通过 trouble 变量来修改值
+```
+
+
