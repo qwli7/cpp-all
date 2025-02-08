@@ -996,3 +996,193 @@ void show_polar(polar dapos);
 
 [多文件和头文件同时编译成一个目标文件](Chapter09/9.3_file1.cpp)
 
+### 变量的作用域
+
+
+
+## 10.对象和类
+定义类，一般来说，类由两部分组成
+- 类声明：以数据成员的方式描述数据部分，以成员函数（方法）的方式描述公有接口
+- 类方法定义：描述如何实现类成员函数
+
+```cpp
+class Person {
+    std::string phone; // 默认 private
+private:
+    char name[30];
+    int age;
+    char sex;
+public:
+    void setAge(int age);
+    void setSex(char sex);
+}
+```
+
+我们使用访问控制符来控制哪些变量是否可以被直接访问；可以对成员属性不必使用 `private` 关键字，因为 `private` 是类对象的默认访问控制符；
+- `private`: 私有（默认访问控制符）
+- `public`: 共有
+- `protected`:  可以被子类继承
+
+### 类对象的创建和使用
+创建类对象和定义普通数据类型一样；
+```cpp
+Person person1; //定义了一个 Person 对象
+Person person2; //定义了一个 Person 对象
+//分别调用两个对象不同的 setAge 方法，相互独立，不互相干扰
+person1.setAge(1);
+person2.setAge(2); 
+```
+
+### 类的构造函数和析构函数
+
+#### 显式构造函数
+因为类存在访问控制符的原因，所以常规的赋值方式将失去作用（列表初始化），例如定义一个 `Stock` 类；
+```cpp
+class Stock {
+private:
+    char company[30];
+    int shares;
+    double share_val;
+    double total_val;
+    void set_tot(){total_val = shares * share_val};
+public:
+    void acquire(const char * co, int n, double pr);
+    void buy(int num, double price);
+    void sell(int num, double price);
+    void update(double price);
+    void show();    
+}
+
+Stock hot = {"Sukie's Autos", 200, 50.25}; //编译报错，在没有提供构造函数的情况下
+```
+
+所以通常我们在创建对象的时候对其进行初始化，而 `C++` 给我们提供了一种特殊的成员函数-构造函数；专门用来构造新对象、将值赋值给它的数据成员；构造函数没有返回值，也没有被声明成 `void` 类型；
+```cpp
+Stock(const string& co, long n = 0, double pr = 0.0); //提供了构造函数
+
+
+Stock::Stock(const string& co, long n, double pr) {
+    company = co;
+    if(n < 0){
+        //输入错误
+        shares = 0;
+    } else {
+        shares = n;
+    }
+    share_val = pr;
+    set_tot();
+}
+
+//以下的定义是错误的；构造函数的参数表示的不是类成员，而是赋给成员变量的值。
+//因此参数名称不能和类成员相同
+//通常我们在成员变量的声明中加上 m_ 前缀或者 _ 后缀
+//Stock::Stock(const string& company, long shares, double share_val) {
+//
+//}
+```
+
+程序在声明对象时，会自动调用构造函数；
+```cpp
+//显式调用构造函数
+Stock food = Stock("hello world", 250, 1.25);
+//隐式调用构造函数
+Stock garment("Funny", 50, 2.5);
+// 通过 new 构造对象
+Stock *p = new Stock("John", 18, 19.0); //这种情况下对象没有名称，只能通过指针来管理对象
+```
+
+构造函数无法通过对象的实例 `.` 的方式来调用构造函数；因为构造函数在构造出对象之前，对象是不存在的；因此构造函数通常被用来构造对象，不能通过对象来调用；
+
+#### 默认构造函数
+如果我们没有提供任何构造函数，`C++` 将自动为我们添加默认的构造函数；默认构造函数没有参数；可能是如下实现
+```cpp
+Stock::Stock() {}
+```
+当且仅当没有定义任何构造函数时，编译器才会提供默认构造函数；一旦我们提供了构造函数，那么默认的构造函数将不会存在；设计类时，通常建议提供对所有类成员做隐式初始化的默认构造函数；
+```cpp
+Stock::Stock() { //默认构造函数
+    company = "no name";
+    shares = 0;
+    share_val = 0.0;
+    total_val = 0.0;
+}
+
+//使用默认构造函数进行初始化
+Stock first; //默认构造函数
+Stock first = Stock(); //默认构造函数
+Stock *p = new Stock; //默认构造函数
+
+```
+
+#### 析构函数
+析构函数用来完成对象的清理工作，如果构造函数使用 `new` 来分配内存，则析构函数将使用 `delete` 来释放这些内存；如果构造函数中没有使用 `new`，析构函数实际上没有什么必要；
+```cpp
+//析构函数原型
+~Stock(); 
+
+Stock::~Stock() {
+
+}
+```
+析构函数的调用时机由编译器自己决定；通常不应该在代码中显式调用析构函数；如果程序员没有提供析构函数的实现，那么编译器将隐式的声明一个默认析构函数；
+
+
+
+### 类成员函数的实现
+类在设计上尽可能将公有接口的定义与实现细节分开；通常我们在 `.h` 头文件中定义，`.cpp` 中实现；成员函数的定义和常规函数的定义非常相似，但成员函数有两个比较特殊的特征
+- 定义成员函数时，使用作用域解析运算符 `::` 来标识函数所属的类；
+- 类方法可以访问类的 `private` 组件
+
+```cpp
+void Person::setAge(int a) { //意味着 setAge 是 Person 类的成员
+    std::cout << "age =" << age << endl; //可以直接访问 Person 类中的私有成员
+}
+```
+
+在类声明中实现的函数都将变成内联函数；例如:
+```cpp
+class Person {
+    std::string phone; // 默认 private
+private:
+    char name[30];
+    int age;
+    char sex;
+    void setName() {....}; //该函数自动为内联函数
+public:
+    void setAge(int age);
+    void setSex(char sex);
+}
+```
+
+也可以在类声明之外定义成员函数，并使其称为内联函数；
+```cpp
+class Person {
+private:
+    void setName();
+    //xx
+}
+
+inline void Person::setName() { //使用 inline 默认让 setName() 称为内联函数
+    //xxx
+}
+
+```
+
+### 列表初始化和 const 成员函数
+当类提供了构造函数后，将可以使用列表初始化的方式来进行初始化；编译器会自动匹配合适的构造函数；
+```cpp
+Stock hot_tip = {"hello", 100, 45.0};
+Stock jock {"world"};
+Stock temp {};
+```
+
+只要类方法不修改调用的对象，应该尽量将其声明为 `const`;
+```cpp
+void show() const; //调用 show 方法时，禁止改变调用对象里面的成员
+```
+
+### 类 class 和结构 struct 的区别
+类本质上和结构并没有太大的区别，他们唯一的区别就是结构对字段的默认访问类型是 `public`, 而类在结构的基础上做了扩展；
+
+
+### this 指针
