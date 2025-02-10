@@ -1186,3 +1186,36 @@ void show() const; //调用 show 方法时，禁止改变调用对象里面的�
 
 
 ### this 指针
+假设要对两个对象进行比较，将比较结果进行返回；我们不难定义出如下的方法声明
+```cpp
+const Stock& topVal(const Stock & s) const;
+
+const Stokc& topVal(const Stock & s) const{
+    if(s.total_val > total_val) {
+        return s;  //返回参数对象
+    } 
+    return ???;//返回调用对象，但调用对象如何表示呢？
+}
+
+```
+如果返回的是 `s`，可以直接写 `return s`；但如果我们要返回调用者本身呢，该如何返回？这个时候，`this` 指针就派上了用场；
+
+`this` 指针指向用来调用成员函数的对象；每个成员函数（包括构造函数和析构函数）都存在一个 `this` 指针，用来指向当前的对象；
+
+`this` 指针通常被用来设置为调用对象的地址，因此 `*this` 是该对象的别名（引用）;
+
+
+### 对象和数组
+我们通常要创建同一个类的多个对象，可以利用数组来创建，就和创建普通数组一样；
+```cpp
+Stock stocks[10]; //创建10个Stock对象，分别调用 Stock 的默认构造函数
+```
+也可以使用初始化列表来创建对象
+```cpp
+//初始化列表中的 = 可以省略
+Stock stock2[2] = {
+    Stock("hello", 2),  //调用有参构造函数
+    Stock(), //调用默认构造函数
+    Stock("world", 1) 
+};
+```
