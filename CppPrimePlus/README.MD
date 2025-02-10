@@ -1264,4 +1264,37 @@ operatorop(argment-list)
 - 友元类
 - 友元成员函数
 
-通过让函数称为类的友元，可以赋予该函数域类的成员函数相同的访问权限；
+通过让函数称为类的友元，可以赋予该函数与类的成员函数相同的访问权限；
+
+#### 为什么要使用友元？
+假设我们重载了 `*` 操作符，用来处理一个数字和对象相乘（表示对象的几倍）。例如
+```cpp
+void operator*(double n);
+
+Iime::operator * (double n) {
+    hours *= n;
+    minutes *= n;
+}
+```
+在多数情况下，我们可以使用 `time * 2.5` 来进行计算；但如果我们写成了 `2.5 * time`，那么整个计算逻辑便会出错（从概念上来说，这两者所表述的意思是一致的）；编译器会提示我们它无法正确处理这种情况；当然我们也可以强迫用户必须得写成 `对象*数字` 的这种形式，但这种强迫性编程显然不够友好；
+
+如果非要解决这种问题，我们可以将它声明成非成员函数（也就是说不需要通过对象的实例来调用）**记住：非成员函数不需要通过对象来调用**；修改下上面的原型
+
+```cpp
+friend Time operator*(double m, const Time & t);
+```
+- `operator *()` 函数虽然在类中声明了，但是他不是成员函数，他不能使用成员运算符来调用；
+- `operator *()` 函数不是成员函数，但它与成员函数的访问权限相同；
+
+函数定义如下
+```cpp
+Time operator*(double m, const Time& t) { //友元函数不需要加上 Time:: 限定符，因为他不是成员函数
+    Time result;
+    long totalMinutes = t.hours * m * 60 + t.minutes * m;
+    result.hours = totalMinutes/60;
+    result.minutes = totalMinutes % 60;
+    return result;
+}
+
+//那么 2.55*Time 的调用便可以转换成 operator*(2.55, Time)
+```
