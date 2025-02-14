@@ -1,2 +1,4 @@
 *.out
 .vscode/
+*.exe
+STD_LIB/main.cpp
