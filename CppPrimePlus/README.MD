@@ -438,6 +438,10 @@ inflatable * ps = nwe inflatable;
 
 ## 05.循环和关系表达式
 ### for/while/do while 循环
+`while` 先判断条件，如果条件为 `false`，则不执行循环体；`do while` 先执行一次循环体，然后再判断条件；`for` 循环是最常用的循环，可以指定循环的次数，也可以指定循环的初始值和结束值；
+-`do while` 至少会执行一次循环
+-`while` 循环可能一次都不会被执行
+
 以上三种循环都用来处理重复的任务，例如将 `hello world` 打印 `10` 次；
 
 ```cpp
