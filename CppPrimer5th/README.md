@@ -160,3 +160,14 @@ int main()
 处理输入的两个数大小不一致的情况
 [ex1.11.cpp](ch01/ex1.11.cpp)
 
+### ex1.20
+利用 Sales_item.h 头文件，读取一组书籍销售记录，打印到标准输出中
+(ch01/ex1.20.cpp)[ch01/ex1.20.cpp]
+
+## ex1.21
+编写程序，读取两个 ISBN 的 Sales_item 对象，输出他们的和
+(ch01/ex1.21.cpp)[ch01/ex1.21.cpp]
+
+## ex1.22
+编写程序，读取多个具有相同 ISBN 的销售记录，输出所有记录的和
+(ch01/ex1.22.cpp)[ch01/ex1.22.cpp]
