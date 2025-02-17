@@ -158,31 +158,31 @@ int main()
 
 ### ex1.19
 处理输入的两个数大小不一致的情况
-[ex1.11.cpp](ch01/ex1.11.cpp)
+[ex1.11.cpp](ch01/ex_1.11.cpp)
 
 ### ex1.20
 利用 Sales_item.h 头文件，读取一组书籍销售记录，打印到标准输出中
-[ch01/ex1.20.cpp](ch01/ex1.20.cpp)
+[ch01/ex1.20.cpp](ch01/ex_1.20.cpp)
 
 ### ex1.21
 编写程序，读取两个 ISBN 的 Sales_item 对象，输出他们的和
-[ch01/ex1.21.cpp](ch01/ex1.21.cpp)
+[ch01/ex1.21.cpp](ch01/ex_1.21.cpp)
 
 ### ex1.22
 编写程序，读取多个具有相同 ISBN 的销售记录，输出所有记录的和
-[ch01/ex1.22.cpp](ch01/ex1.22.cpp)
+[ch01/ex1.22.cpp](ch01/ex_1.22.cpp)
 
 ### ex1.23
 读取多条销售记录，并统计每个 ISBN 对应的有几条销售记录
-[ch01/ex1.23.cpp](ch01/ex1.23.cpp)
+[ch01/ex1.23.cpp](ch01/ex_1.23.cpp)
 
 ### ex1.24
 输入表示多个ISBN 的多条销售记录来测试上一个程序， 每个 ISBN 的记录应该聚合在一起输出
-[ch01/ex1.24.cpp](ch01/ex1.24.cpp)
+[ch01/ex1.24.cpp](ch01/ex_1.24.cpp)
 
 ### ex1.25
 借助 Sales_item.h 头文件，编写并运行本书给出的书店程序
-[ch01/ex1.25.cpp](ch01/ex1.25.cpp)
+[ch01/ex1.25.cpp](ch01/ex_1.25.cpp)
 
 ## ch02
 ### ex2.1
