@@ -68,4 +68,54 @@ int main()
 }
 
 ```
+### ex1.11
+提示用户输入两个整数，打印出这两个整数所指定范围内的所有整数；
+[ex1.11.cpp](ch01/ex1.11.cpp)
 
+### ex1.12
+下面的 for 循环完成了什么功能？sum 的终值是多少？
+```cpp
+int sum = 0;
+for(int i = -100; i <= 100; i++) {
+  sum += i;
+}
+```
+ 完成了 -100 到 100 之间的所有整数，进行累加，sum 最终的值为 0
+
+### ex1.13
+使用 for 循环重做 1.9 1.10 1.11
+```cpp
+// 1.9
+int sum = 0;
+for(int i = 50; i <=100; i++ ){
+  sum += i;
+}
+```
+
+```cpp
+//1.10
+for(int i = 10; i >=0; i--) {
+  std::cout << i << " ";
+}
+```
+
+见[ch01/ex1.11.cpp](ch01/ex1.11.cpp)
+
+### ex1.16
+编写程序，从 cin 中读取一组数，输出其和;
+```cpp
+#include <iostream>
+
+int main()
+{
+    int sum;
+    int val;
+    while (std::cin >> val)
+    {
+        sum += val;
+    }
+    std::cout << sum << std::endl;
+    return 0;
+}
+```
+输入数字，用空格分隔，如果要结束输入，可以按住 `Ctrl + Z` 然后再按回车（Windows），或者输入非数字+回车，也可结束
