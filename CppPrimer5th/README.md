@@ -119,3 +119,44 @@ int main()
 }
 ```
 输入数字，用空格分隔，如果要结束输入，可以按住 `Ctrl + Z` 然后再按回车（Windows），或者输入非数字+回车，也可结束
+
+### ex1.17
+```cpp
+#include <iostream>
+
+int main()
+{
+    int currVal = 0, val = 0;
+    if (std::cin >> currVal)
+    {
+        int cnt = 1;
+        while (std::cin >> val)
+        {
+            if (val == currVal)
+            {
+                ++cnt;
+            }
+            else
+            {
+                std::cout << currVal << " occurs "
+                          << cnt << " times" << std::endl;
+                currVal = val;
+                cnt = 1;
+            }
+        }
+        std::cout << currVal << " occurs "
+                  << cnt << " times " << std::endl;
+    }
+    return 0;
+}
+
+```
+如果输入的数都是相等的，那么只会输出一条语句，打印输入数的次数；如果没有重复的值，那么会输出所有数值只出现了一次；
+
+### ex1.18
+同 ex1.17
+
+### ex1.19
+处理输入的两个数大小不一致的情况
+[ex1.11.cpp](ch01/ex1.11.cpp)
+
