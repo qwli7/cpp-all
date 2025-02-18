@@ -580,3 +580,31 @@ struct Sales_data {
 编写一段程序读取两个字符串，比较其是否相等并输出结果。如果不相等，输出较大的那个字符串。改写上述程序，比较输入的两个字符串是否等长，如果不等长，输出长度较大的那个字符串；
 - [ch03/ex3.4_1.cpp](ch03/ex3.4.1.cpp)
 - [ch03/ex3.4.2.cpp](ch03/ex3.4.2.cpp)
+
+### ex3.5
+编写一段程序，从标准输入中读入多个字符串，并把他们他们连接在一起；输出连接成的大字符串。然后修改上述程序，用空格把输入的多个字符串分隔开来
+```cpp
+#include <iostream>
+#include <string>
+
+// 使用 using 来声明，避免每次都需要写域作用符 std::cout std::cin std::endl
+
+using std::cin;
+using std::cout;
+using std::endl;
+using std::string;
+int main()
+{
+    string str;
+    string str2;
+    while (cin >> str)
+    {
+        // str2 += str;
+        str2 += str;
+        str2 += " ";
+    }
+    cout << str2 << endl;
+
+    return 0;
+}
+```
