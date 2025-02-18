@@ -689,3 +689,77 @@ const string s = "Keep out!";
 for(auto &c: s){/**/}
 ```
 > 如果 for 没有修改原本的 s 对象的内容，则合法；反之，则不合法，s 被定义成常量，不允许被修改
+
+### ex3.12
+下列 vector 对象的定义有不正确的吗？如果有，请指出来。对于正确的，描述其执行结果；对于不正确的，说明其错误的原因；
+```cpp
+vector<vector<int>> ivec; //正确定义了一个 vector 容器，里面每个元素是一个 vector<int> 类型
+vector<string> svec = ivec; //两个模板的类型不一致，不能做拷贝初始化，错误
+vector<string> svec(10, "null"); //定义了一个 vector 容器，里面有10个元素，每个元素都是一个 null 字符串
+```
+
+### ex3.13
+下列的 vector 对象各包含多少个元素？这些元素的值分别是多少？
+```cpp
+vector<int> v1; //初始化了一个模板，容量为0
+vector<int> v2(10); //初始化了一个vector，容量为10，初始值为0
+vector<int> v3(10,42); //初始化了一个 vector，容量为10，初始值为 42
+vector<int> v4{10}; //容量为1，初始值为 10
+vector<int> v5{10, 42}; //容量为2，初始值为 42
+vector<string> v6{10}; //容量为10，初始值为 ""
+vector<string> v7{10, "hi"}; //容量为10，初始值为十个 "hi"
+```
+
+### ex3.14
+编写一段程序，用 cin 读取一组整数，并把他们存入一个 vector 对象
+```cpp
+#include <iostream>
+#include <vector>
+
+// 使用 using 来声明，避免每次都需要写域作用符 std::cout std::cin std::endl
+
+using std::cin;
+using std::cout;
+using std::endl;
+using std::vector;
+int main()
+{
+    vector<int> ivec;
+    int value;
+    while (cin >> value)
+    {
+        ivec.push_back(value);
+    }
+    return 0;
+}
+```
+
+### ex3.15 
+改写 3.14 的程序，不过这次读入的是字符串
+```cpp
+#include <iostream>
+#include <vector>
+#include <string>
+
+// 使用 using 来声明，避免每次都需要写域作用符 std::cout std::cin std::endl
+
+using std::cin;
+using std::cout;
+using std::endl;
+using std::string;
+using std::vector;
+int main()
+{
+    vector<string> ivec;
+    string value;
+    while (cin >> value)
+    {
+        ivec.push_back(value);
+    }
+    return 0;
+}
+```
+
+### ex3.16
+编写一段程序，把练习 3.13 中的 vector对象的容量和具体内容输出出来
+[ch03/ex_3.16.cpp](ch03/ex_3.16.cpp)
