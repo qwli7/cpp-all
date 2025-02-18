@@ -608,3 +608,64 @@ int main()
     return 0;
 }
 ```
+
+### ex3.6
+使用范围 for 循环语句将字符串内所有的字符用 X 替代；
+```cpp
+#include <iostream>
+#include <string>
+
+// 使用 using 来声明，避免每次都需要写域作用符 std::cout std::cin std::endl
+
+using std::cin;
+using std::cout;
+using std::endl;
+using std::string;
+int main()
+{
+    string str = "Hello world";
+    for (auto &c : str)
+    {
+        c = 'X';
+    }
+    cout << str << endl;
+
+    return 0;
+}
+```
+
+### ex3.7
+就上一题完成的程序而言，如果将循环控制变量的类型设置成 char，将发生什么？
+> 无法完成替代，还是会原样输出，要修改字符串的内容，必须要将变量的类型设置成 & （值传递）
+
+### ex3.8
+分别用 while 循环和传统 for 循环重做 ex3.7
+```cpp
+#include <iostream>
+#include <string>
+
+// 使用 using 来声明，避免每次都需要写域作用符 std::cout std::cin std::endl
+
+using std::cin;
+using std::cout;
+using std::endl;
+using std::string;
+int main()
+{
+    string str = "Hello world";
+    for (decltype(str.size()) i = 0; i < str.size(); ++i)
+    {
+        str[i] = 'X';
+    }
+    cout << str << endl;
+    decltype(str.size()) i = 0;
+    while (i < str.size())
+    {
+        str[i] = 'Y';
+        i++;
+    }
+    cout << str << endl;
+
+    return 0;
+}
+```
