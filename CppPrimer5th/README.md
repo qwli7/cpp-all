@@ -525,3 +525,11 @@ struct Sales_data {
   double revenue = 0.0;
 };
 ```
+
+### ex2.41
+使用你自己的 Sales_data 类重写 1.5.1 节和 1.5.2 节和第 1.6 节的练习。
+[ch02/ex_2.41.cpp](ch02/ex_2.41.cpp)
+
+### ex2.42
+根据自己的理解重写一个 `Sales_data.h` 文件；主要解决重复包含的问题
+[ch02/Sales_data.h](ch02/Sales_data.h)
