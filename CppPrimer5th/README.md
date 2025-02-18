@@ -541,13 +541,14 @@ struct Sales_data {
 [ch03/ex_3.1.cpp](ch03/ex_3.1.cpp)
 
 ### string对象的初始化方式
-|----|----|
-| string s1 | 默认初始化，s1 是一个空的字符串|
-| string s2(s1) | s2 是 s1 的副本|
-|string s2 = s1| 等价于 s2(s1) |
-|string s3("value")|  s3 是字面值 "value" 的副本|
-|string s3 = "value"|  等价于 s3("value") |
-|string s4(n, 'c')| 把 s4 初始化由连续的 n 个字符 c 组成的串|
+|定义方式                            |解释                                |
+|------------------------------------|------------------------------------|
+| string s1                          | 默认初始化，s1 是一个空的字符串     |
+| string s2(s1)                      | s2 是 s1 的副本                    |
+| string s2 = s1                     | 等价于 s2(s1)                   |
+| string s3("value")                 | s3 是字面值 "value" 的副本          |
+| string s3 = "value"                | 等价于 s3("value")                 |
+| string s4(n, 'c')                  | 把 s4 初始化由连续的 n 个字符 c 组成的串 |
 
 - **使用 = 初始化，执行的是拷贝初始化**
 - 不使用等号，则执行的是 **直接初始化**
