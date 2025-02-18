@@ -705,7 +705,7 @@ vector<int> v1; //初始化了一个模板，容量为0
 vector<int> v2(10); //初始化了一个vector，容量为10，初始值为0
 vector<int> v3(10,42); //初始化了一个 vector，容量为10，初始值为 42
 vector<int> v4{10}; //容量为1，初始值为 10
-vector<int> v5{10, 42}; //容量为2，初始值为 42
+vector<int> v5{10, 42}; //容量为2，初始值为 10 42
 vector<string> v6{10}; //容量为10，初始值为 ""
 vector<string> v7{10, "hi"}; //容量为10，初始值为十个 "hi"
 ```
@@ -763,3 +763,274 @@ int main()
 ### ex3.16
 编写一段程序，把练习 3.13 中的 vector对象的容量和具体内容输出出来
 [ch03/ex_3.16.cpp](ch03/ex_3.16.cpp)
+
+### ex3.17
+从 cin 中读取一组词，并把他们存入一个 vector 对象，然后设法把所有的词都改成大写形式，输出改变后的结果，每个词占一行
+```cpp
+#include <iostream>
+#include <vector>
+#include <string>
+
+// 使用 using 来声明，避免每次都需要写域作用符 std::cout std::cin std::endl
+
+using std::cin;
+using std::cout;
+using std::endl;
+using std::string;
+using std::vector;
+int main()
+{
+    vector<string> vstr;
+    string str;
+    while (cin >> str)
+    {
+        vstr.push_back(str);
+    }
+    for (auto &s : vstr)
+    {
+        for (auto &c : s)
+        {
+            c = toupper(c);
+        }
+        cout << s << endl;
+    }
+    return 0;
+}
+```
+
+### ex3.18
+下面的程序合法吗？如果不合法，你准备如何修改
+```cpp
+vector<int> ivec;
+ivec[0] = 42;
+```
+> 不合法，将其修改成 ivec.push_back(10);
+
+### ex3.19
+如果想定义一个含有 10 个元素的 vector 对象，所有的元素值都是 42，请列举出三种不同的实现方法？
+```cpp
+vector<int> ivec = {42, 42, 42, .......}; //10个42
+vector<int> ivec {42, 42, 42, 42 .......};// 10个42
+vector<int> ivec(10, 42); //10个42
+```
+
+### ex3.20
+读入一组整数并把他们存储一个 vector 对象中，将每队相邻整数的和输出出来。改写你的程序，这次要求先输出第一个和最后一个元素的和，紧接着输出第二个和倒数第二个元素的和，以此类推；
+```cpp
+#include <iostream>
+#include <vector>
+
+// 使用 using 来声明，避免每次都需要写域作用符 std::cout std::cin std::endl
+
+using std::cin;
+using std::cout;
+using std::endl;
+using std::vector;
+int main()
+{
+    vector<int> ivec;
+    int value;
+    while (cin >> value)
+    {
+        ivec.push_back(value);
+    }
+    //相邻相加
+    for (decltype(ivec.size()) i = 0; i < ivec.size() - 1; ++i)
+    {
+        cout << "ivec[" << i << "] + ivec[" << i + 1 << "] = " << ivec[i] + ivec[i + 1] << endl;
+    }
+
+    cout << endl;
+    // 首尾相加
+    for (decltype(ivec.size()) i = 0; i < ivec.size() / 2; ++i)
+    {
+        cout << "istr[" << i << "] + istr[" << ivec.size() - 1 - i << "] = " << ivec[i] + ivec[ivec.size() - 1 - i] << endl;
+    }
+    return 0;
+}
+```
+
+### ex3.21
+使用迭代器重做 3.3.3 节的第一个练习
+```cpp
+#include <iostream>
+#include <vector>
+#include <string>
+
+// 使用 using 来声明，避免每次都需要写域作用符 std::cout std::cin std::endl
+
+using std::cin;
+using std::cout;
+using std::endl;
+using std::string;
+using std::vector;
+int main()
+{
+    vector<int> ivec(10, 42);
+    for (std::vector<int>::iterator it = ivec.begin(); it != ivec.end(); ++it) //普通迭代器
+    {
+        cout << *it << " ";
+    }
+    cout << endl;
+
+    auto it2 = ivec.cbegin(); //常量迭代器
+    while (it2 != ivec.cend())
+    {
+        cout << *it2++ << " ";
+    }
+    cout << endl;
+
+    return 0;
+}
+```
+
+### ex3.22
+修改之前那个输入 text 第一段的程序，首先把 text 的第一段全部都改成大写形式，然后再输出它
+```cpp
+#include <iostream>
+#include <vector>
+#include <string>
+
+// 使用 using 来声明，避免每次都需要写域作用符 std::cout std::cin std::endl
+
+using std::cin;
+using std::cout;
+using std::endl;
+using std::string;
+using std::vector;
+int main()
+{
+    vector<string> v = {"hello", "world", "c++"};
+    std::vector<string>::iterator p = v.begin();
+    for (; p != v.end() && !p->empty(); ++p)
+    {
+        for (auto &c : *p)
+        {
+            c = toupper(c);
+        }
+        cout << *p << endl;
+    }
+
+    return 0;
+}
+```
+
+### ex3.23
+编写一段程序，创建一个含有10个整数的 vector 对象，然后使用迭代器将所有元素的值都变成原来的两倍，输出 vector 对象的内容，检查程序是否正确
+```cpp
+#include <iostream>
+#include <vector>
+#include <string>
+
+// 使用 using 来声明，避免每次都需要写域作用符 std::cout std::cin std::endl
+
+using std::cin;
+using std::cout;
+using std::endl;
+using std::string;
+using std::vector;
+int main()
+{
+    vector<int> ivec = {1, 2, 3, 4, 5};
+    std::vector<int>::iterator p = ivec.begin();
+    for (; p != ivec.end(); ++p)
+    {
+        *p = *p * 2;
+        cout << *p << " ";
+    }
+
+    return 0;
+}
+```
+
+### ex3.24
+使用迭代器重做 3.20 的练习
+> 读入一组整数并把他们存储一个 vector 对象中，将每队相邻整数的和输出出来。改写你的程序，这次要求先输出第一个和最后一个元素的和，紧接着输出第二个和倒数第二个元素的和，以此类推;
+```cpp
+#include <iostream>
+#include <vector>
+#include <string>
+
+// 使用 using 来声明，避免每次都需要写域作用符 std::cout std::cin std::endl
+
+using std::cin;
+using std::cout;
+using std::endl;
+using std::string;
+using std::vector;
+int main()
+{
+    vector<int> ivec;
+    int value;
+    while (cin >> value)
+    {
+        ivec.push_back(value);
+    }
+    // 迭代器相邻相加
+    std::vector<int>::const_iterator it = ivec.cbegin();
+    while (it != ivec.cend() - 1)
+    {
+        cout << *it + *(it + 1) << " ";
+        it++;
+    }
+    cout << endl;
+
+    // 首尾相加
+    std::vector<int>::const_iterator it1 = ivec.cbegin();
+    std::vector<int>::const_iterator it2 = ivec.cend() - 1;
+    while (it1 <= it2)
+    {
+        if (it1 == it2)
+        {
+            // 中间只有一个元素，直接输出
+            cout << *it1 << " ";
+        }
+        else
+        {
+            cout << *it1 + *it2 << " ";
+        }
+        it1++;
+        it2--;
+    }
+
+    return 0;
+}
+```
+
+### ex3.25 
+3.3.3 节中划分分数段的程序是使用下标运算符实现的，请利用迭代器改写该程序，并实现完全相同的功能；
+```cpp
+#include <iostream>
+#include <vector>
+#include <string>
+
+// 使用 using 来声明，避免每次都需要写域作用符 std::cout std::cin std::endl
+
+using std::cin;
+using std::cout;
+using std::endl;
+using std::string;
+using std::vector;
+int main()
+{
+    vector<int> ivec = {10, 20, 11, 25, 67, 45, 50, 88, 92, 95, 98, 100, 6};
+    vector<int> iScore(11, 0);
+    std::vector<int>::const_iterator iter = ivec.cbegin();
+    for (; iter != ivec.cend(); ++iter)
+    {
+        iScore[(*iter / 10)]++;
+    }
+    for (auto i : iScore)
+    {
+        cout << i << " ";
+    }
+    cout << endl;
+    return 0;
+}
+```
+
+### ex3.26
+在 100 页的二分搜索中，为什么用的是 mid=begin+(end-begin)/2, 而非 mid=(begin+end)/2;
+> begin 指向的是首元素的地址，end 指向的是尾元素的下一个元素的地址，要计算首尾指针之间的元素数量，需要用 begin-end，再除以 2 得到的就是相对 begin 和 end 来说的中间位置，如果要获取到中间对应的指针元素，还需要将 begin 偏移一半的位置；
+
+
