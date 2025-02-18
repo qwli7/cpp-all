@@ -1033,4 +1033,102 @@ int main()
 在 100 页的二分搜索中，为什么用的是 mid=begin+(end-begin)/2, 而非 mid=(begin+end)/2;
 > begin 指向的是首元素的地址，end 指向的是尾元素的下一个元素的地址，要计算首尾指针之间的元素数量，需要用 begin-end，再除以 2 得到的就是相对 begin 和 end 来说的中间位置，如果要获取到中间对应的指针元素，还需要将 begin 偏移一半的位置；
 
+### ex3.27
+假设 txt_size 是一个无参数的函数，他的返回值是 int，请回答下列哪个定义是非法的？为什么
+```cpp
+unsigned buf_size = 1024;
 
+int ia[buf_size]; //合法，常量表达式
+int ia[4*7-14]; //合法，常量表达式
+int ia[txt_size()]; //合法
+char st[11] = "fundamental"; //不合法，存不下结尾的空字符
+```
+
+### ex3.28
+下列数组中元素的值指的是什么？
+```cpp
+string sa[10]; //默认初始化为 10 个空字符串
+int ia[10]; // 默认初始化为 10 个 0
+int main() {
+
+    string sa2[10]; //未初始化
+    int ia2[10];  //未初始化，访问的是随机的数字
+    return 0;
+}
+```
+
+### ex3.29
+相比较 vector 来说，数组有哪些缺点？
+- array 是固定分配的大小，不能动态扩充
+- array 不能被拷贝赋值，只能通过拷贝构造函数进行初始化
+- array 访问越界元素不会引发异常，会导致程序崩溃
+
+### ex3.30
+指出下面代码中的索引错误
+```cpp
+constexpr size_t array_size = 10;
+int ia[array_size]; 
+//访问到 ia[10] 的时候会越界
+//数组的下标是从 0 到 size-1
+for(size_t ix = 1; ix <= array_size; ++ix) { 
+    ia[ix]=ix;
+}
+```
+
+### ex3.31
+编写一段程序，定义一个含有10个元素的数组，令每个元素的值就是其下标值
+[ch03/ex_3.31.cpp](ch03/ex_3.31.cpp)
+
+### ex3.32
+将上一题刚刚创建的数组拷贝给另一个数组。利用 vector 重写程序，实现类似的功能；
+[ch03/ex_3.32.cpp](ch03/ex_3.32.cpp)，vector 版本 [ch03/ex_3.32_vector.cpp](ch03/ex_3.32_vector.cpp)
+
+
+### ex3.33
+对于 104 页的代码来说，如果不初始化 score 数组，会出现什么问题？
+```cpp
+unsigned int score[10] = {0};
+unsigned grade;
+while(cin >> grade) {
+    if(grade <= 100) {
+        ++score[grade/10];
+    }
+}
+```
+> 不初始化会导致 score 数组里面的值是随机的，可能是 0， 也可能是其他的值，导致后续的计算结果不准确。
+
+### ex3.34
+假定 p1 和 p2 指向同一个数组中的元素，则下面程序的功能是什么？什么情况下该程序是非法的？
+```cpp
+p1 += p2 -p1; 
+```
+> 合法，将 p1 往后移动，指向 p2 指向的元素，此时 p1 和 p2 指向同一个元素
+```cpp
+#include <iostream>
+
+using std::cout;
+using std::endl;
+int main()
+{
+
+    int ia2[10] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
+    int *p1 = &ia2[1];
+    int *p2 = &ia2[5];
+    cout << *p1 << endl; // 1
+    cout << *p2 << endl; // 5
+    cout << endl;
+    p1 += p2 - p1;
+    cout << *p1 << endl; // 5
+    cout << *p2 << endl; // 5
+
+    return 0;
+}
+```
+
+### ex3.35
+编写一段程序，利用指针将数组中的元素置为 0；
+[ch03/ex_3.35.cpp](ch03/ex_3.35.cpp)
+
+### ex3.36
+编写一段程序，比较两个数组是否相等。再写一段程序，比较两个 vector 对象是否相等；
+[ch03/ex_3.36.cpp](ch03/ex_3.36.cpp)
