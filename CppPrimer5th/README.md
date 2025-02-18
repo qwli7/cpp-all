@@ -403,6 +403,26 @@ int cnt = 0; //合法，创建一个变量，初始化为0
 const int sz = cnt; //合法，将 cnt 的值赋值到 sz 上，在编译的时候进行处理
 ++cnt; ++sz; // 前者合法，后者不合法，因为 sz 被 const 修饰了，不能再被改变
 ```
+- 默认被 const 修饰的变量只在当前的文件内有效
 - const 类型修饰的必须被初始化
 - const int i = get_size(); //运行时被初始化
 - const int j = 42; //编译时被初始化
+- 多文件共享同一个 const 对象，需要用 extern 关键词修饰，表明当前变量来自于其他文件
+```cpp
+//file1.cpp 中定义并初始化了一个常量，该常量能被其他文件访问
+extern const int buffSize = fcn();
+//other_file.cpp
+extern const int buffSize; //与 file1.cpp 中的 buffSize 是同一个
+```
+
+### ex2.27
+下面的哪些初始化是合法的，请说明原因；
+```cpp
+int i = -1, &r = 0; //前半部分合法，后半部分不合法，不能把一个引用绑定到一个字面值常量上
+int *const p2 = &i2; //合法，p2 是一个指针常量，表示 p2 不能改变指向
+const int i = -1; &r = 0; //前半部分合法，后半部分不合法，不能把一个引用绑定到一个字面值常量上
+const int *const p3 = &i2; // 合法，p3 是一个指针常量，指向一个常量，不能改变指向也不能通过指针改变 i2 的值
+const int *p = &i2; //合法，指向常量的指针，但不能通过 p 去修改值，这样不被允许
+const int &const r2; //不合法，常量引用没有赋初始值
+const int i2 = i, &r = i; //合法，定义常量 i2 赋初始值，定义引用绑定i对象
+```
