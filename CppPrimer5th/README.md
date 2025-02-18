@@ -258,3 +258,14 @@ int main() {
   return 0;
 }
 ```
+
+### ex2.9
+解释下面的定义的含义。对于非法的定义，请说明错在何处，并改正
+- （a） std::cin >> int input_value; // 先定义，在cin    int inputValue; std::cin >> inputValue
+- （b） int i = {3.14}; //编译报错，初始化列表不允许进行类型转换，可以将其调整成 float 类型或者 double 类型  double i = {3.14}
+  - double i = {3.14}; int i(3.14);
+- （c） double salary = wage = 9999.99; // wage 类定义，先定义
+- （d） int i = 3.14; //类型转换，丢失小数部分
+
+**当我们使用内置数据变量，使用列表初始化且初始值存在丢失信息的风险，编译器将报错**
+
