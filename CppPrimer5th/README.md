@@ -196,3 +196,65 @@ int main()
 - 对于 char 类型，无符号表示的范围是 0 到 255，而有符号的范围是 -128 到 127；
 
 float 和 double 分别表示单精度浮点型了双精度浮点型，两者的精确度不一样；
+
+### ex2.2
+计算按揭贷款时，对于利率、本金和付款分别应该选用何种数据类型？
+- 利率选 double
+- 本金通常是一个金额比较大的数值，可以选用 double 或者 long double
+- 付款每月还款金额，可以选用 double 或者 long double
+
+### ex2.3
+读程序，写结果
+```cpp
+#include <iostream>
+
+int main()
+{
+    unsigned u = 10, u2 = 42;         // unsigned int 类型，当前机器4个字节，范围是 0-2^32-1
+    std::cout << u2 - u << std::endl; // 没有溢出 32
+    std::cout << u - u2 << std::endl; // 溢出，2^32-(42-10)  -> 4,294,967,264
+
+    int i = 10, i2 = 42;              // int 类型，当前机器4个字节，范围是 -2^31-1 到 2^31-1
+    std::cout << i2 - i << std::endl; // 没有溢出 32
+    std::cout << i - i2 << std::endl; // 没有溢出 -32
+    std::cout << i - u << std::endl; // 0  
+    std::cout << u - i << std::endl;  // 0
+    return 0;
+}
+```
+
+### ex2.4
+不要混用带符号类型和无符号类型的数据
+
+### ex2.5
+指出下述字面值的数据类型并说明每一组内几种字面值的区别
+**如果不加 F，默认的浮点型就是double**
+- （a） 'a', L'a', "a", L"a"    // 字符  宽字符a， 字符串a，宽字符串a
+- （b） 10, 10u, 10L, 10uL, 012, 0xC  //数字10， 无符号数字10，long类型10， 无符号long类型10，八进制12， 16进制C
+- （c） 3.14, 3.14f, 3.14L             //double 类型3.14， 浮点型 3.14，long double 类型 3.14
+- （d） 10, 10u, 10., 10e-2           // 数字10，无符号int 10，double 类型10.0，double型浮点数
+
+### ex2.6
+下面两组定义是否有区别？
+```cpp
+int month = 9, day = 7; //十进制
+int month = 09, day = 07; //八进制，编译会报错，month 超过了 8 进制的最大范围
+```
+
+### ex2.7
+下述字面值表示何种含义？他们各自的数据类型是什么
+- （a） "Who goes with F\145rgus?\012"; //字符串字面值
+- （b） 3.14eL // long double 类型
+- （c） 1024f  // float 类型
+- （d） 3.14L  // long double 类型
+
+### ex2.8
+利用转义序列编写一段程序，要求先输出 2M，然后转到新一行；修改程序，使其先输出2，然后输出制表符，再输出M，最后转到一行
+```cpp
+#include <iostream>
+int main() {
+  std::cout << "2M \n"; // \n 转移字符，换行；
+  std::cout << "2\tM\n"; //\t制表符 
+  return 0;
+}
+```
