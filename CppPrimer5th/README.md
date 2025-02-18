@@ -450,18 +450,25 @@ ic = *p3; //ic是常量，不允许修改值
 ### ex2.30
 对于下面的这些语句，请说明对象被声明称顶层 const 还是底层 const
 ```cpp
-const int v2 = 0; int v1 = v2;
-int *p1 = &v1, &r1 = v1;
-const int *p2 = &v2, *const p3 = &i, &r2 = v2;
+const int v2 = 0; //顶层 const
+int v1 = v2; // 顶层const
+int *p1 = &v1, &r1 = v1; //底层 const
+const int *p2 = &v2, *const p3 = &i, &r2 = v2; //既是顶层也是底层 
 ```
 
 ### ex2.31
 假设已有上一个练习中所做的哪些声明，则下面的哪些语句是合法的？请说明顶层 const 和底层 const 在每个例子中有何体现。
 ```cpp
-r1 = v2;
-p1 = p2; p2 = p1;
-p1 = p3; p2 = p3;
+r1 = v2; // 不合法，引用不能更改绑定的对象，r1 已经作为了 v1 的引用
+p1 = p2; 
+p2 = p1;
+p1 = p3;
+p2 = p3;
 ```
+
+- 顶层 const：表示指针本身是一个常量
+- 底层 const：表示指针指向的对象是一个常量
+
 
 ### ex2.32
 下面的代码是否合法？如果非法，请设法将其修改正确；
@@ -470,3 +477,51 @@ int null = 0,*p = null; //不合法
 int a = 0, *p = nullptr, *q = NULL, *r = 0;  // 正确写法
 ```
 
+
+### ex2.36
+关于下面的代码，请指出每一个变量的类型以及程序结束时它们各自的值
+```cpp
+int a = 3, b =4;
+decltype(a) c = a; //int c =  a;
+decltype((b)) d = a; // int & d = a
+++c;
+++d;
+
+// a = 4
+// c = 4
+// d = 4
+// b = 4
+```
+- decltype((variable)) 结果是引用，例如 decltype((i)) d, 那么推断出来的 d 的类型是 int& d; 且 d 必须被初始化
+- decltype(variable) 只有当 variable 本身是引用时，才是引用；decltype(i) e // e 是一个未初始化的 int 类型
+
+### ex2.37
+赋值是会产生又难用的一类典型表达式，引用的类型就是左值的类型。也就是说如果 i 是 int，则表达式 i = x 的类型就是 int&。根据这一特点，请指出下面的代码每个变量的类型和值；
+```cpp
+int a = 3, b =4;
+decltype(a) c = a; //int c = a
+decltype(a = b) d = a;  // int& b = a;
+```
+
+### ex2.38
+说明由 decltype 指定的类型和 auto 指定的类型有啥区别？
+
+### ex2.39
+编译下面的程序观察其运行结果。
+```cpp
+struct Foo {}
+int main() {
+  return 0;
+}
+```
+> 以上的代码编译会报错
+
+### ex2.40
+写出自己的 `Sales_data` 类
+```cpp
+struct Sales_data {
+  std::string bookNo;
+  unsigned units_sold = 0;
+  double revenue = 0.0;
+};
+```
