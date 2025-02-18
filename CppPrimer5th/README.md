@@ -541,6 +541,7 @@ struct Sales_data {
 [ch03/ex_3.1.cpp](ch03/ex_3.1.cpp)
 
 ### string对象的初始化方式
+|----|----|
 | string s1 | 默认初始化，s1 是一个空的字符串|
 | string s2(s1) | s2 是 s1 的副本|
 |string s2 = s1| 等价于 s2(s1) |
@@ -551,6 +552,7 @@ struct Sales_data {
 - **使用 = 初始化，执行的是拷贝初始化**
 - 不使用等号，则执行的是 **直接初始化**
 ### string 对象的操作方式
+|----|----|
 |os << s| 将 s写到输出流 os中，返回 os|
 |is >> s| 从is 中读取字符串赋值给s， 字符串以空白符分割，返回 is|
 |getline(is, s)| 从 is 中读取一行赋值给 s，返回 is|
