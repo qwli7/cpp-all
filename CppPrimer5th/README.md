@@ -1697,3 +1697,16 @@ if(ival == 0)
 修改统计元音字母的程序，使其能统计以下含有两个字符的字符序列数量：ff、fl 和 fi；
 [ch05/ex_5.12.cpp](ch05/ex_5.12.cpp)
 
+### ex5.13
+下面显示的每个程序都含有一个常见的编程错误，指出错误在哪里？然后修改他们
+```cpp
+//a
+unsigned aCnt = 0, eCnt = 0, iouCnt = 0;
+char ch = next_text();
+switch(ch) {
+  case 'a': aCnt++; //遗漏了 break 语句
+  case 'e': eCnt++; //遗漏了 break 语句
+  default: iouCnt++; //遗漏了break 语句
+}
+```
+
