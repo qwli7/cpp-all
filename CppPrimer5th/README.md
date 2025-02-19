@@ -1708,5 +1708,107 @@ switch(ch) {
   case 'e': eCnt++; //遗漏了 break 语句
   default: iouCnt++; //遗漏了break 语句
 }
+
+//a fixed
+switch(ch) {
+  case 'a': aCnt++; break; 
+  case 'e': eCnt++; break;
+  default: iouCnt++; break;
+}
+
+
+// b
+unsigned index = some_value();
+switch(index) {
+    case 1:
+        int ix =  get_value();
+        ivec[ix] = index;
+        break;
+    default:
+        ix = ivec.size() -1;  //ix 未定义
+        ivec[ix] = index; // 遗漏了 break 语句
+}
+
+//b fixed
+unsigned index = some_value();
+switch(index) {
+    case 1:
+        int ix =  get_value();
+        ivec[ix] = index;
+        break;
+    default:
+        int ix2 = ivec.size() -1;  //ix 未定义
+        ivec[ix2] = index;
+        break;
+}
+
+// c
+unsigned evenCnt = 0, oddCnt = 0;
+int digit = get_num() % 10;
+switch(digit) {
+    case 1,3,5,7,9: //case 错误
+        oddCnt++;
+        break;
+    case 2,4,6,8,10: // case 错误
+        evenCnt++;
+        break; 
+        // 缺少default语句，不会引起编译错误，但是建议补上
+}
+
+
+//c fixed
+unsigned evenCnt = 0, oddCnt = 0;
+int digit = get_num() % 10;
+switch(digit) {
+    case 1: case 3: case 5: case 7: case 9: 
+        oddCnt++;
+        break;
+    case 2: case 4: case 6: case 8: case 10: 
+        evenCnt++;
+        break; 
+    default: // 补上default语句
+        break;
+}
+
+
+//d 
+unsigned ival = 512, jval = 1024, kval = 4096;
+unsigned bufsize;
+unsigned swt = get_bufCnt();
+switch(swt)  {
+    case ival:  //case 标签的值不能用变量
+        bufsize = ival * sizeof(int);
+        break;
+    case jval: //case 标签的值不能用变量
+        bufsize = jval * sizeof(int);
+        break;
+    case kval: //case 标签的值不能用变量
+        bufsize = kval * sizeof(int);
+        break;
+}
+
+
+// d fixed
+unsigned ival = 512, jval = 1024, kval = 4096;
+unsigned bufsize;
+unsigned swt = get_bufCnt();
+switch(swt)  {
+    case 512:  
+        bufsize = ival * sizeof(int);
+        break;
+    case 1024: 
+        bufsize = jval * sizeof(int);
+        break;
+    case 4096:
+        bufsize = kval * sizeof(int);
+        break;
+    default: // 补上default语句
+        break;
+}
 ```
 
+### ex5.14
+编写一段程序，从标准输入中读取若干 string 对象，并查找连续重复出现的单词。所谓的连续重复出现的意思是：一个单词后面紧跟着这个单词本身。要求记录连续重复出现的最大次数以及对应的单词。如果这个单词存在，输出重复出现的最大次数；如果不存在，输出一条信息说明任何单词都没有连续出现过；
+例如：输入是 how now now now brown cow cow，那么输出应该表明单词 now 连续出现了 3 次；
+
+[ch05/ex_5.14.cpp](ch05/ex_5.14.cpp)
