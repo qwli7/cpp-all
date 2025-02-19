@@ -1157,3 +1157,69 @@ while(*cp) {
 ### ex3.40
 编写一段程序，定义两个字符数组并用字符串字面值初始化它们；接着再定义一个字符数组存放前两个数组连接后的结果。使用 strcpy 何 strcat 把前两个两组的内容拷贝到第三个数组中。
 [ch03/ex_3.40.cpp](ch03/ex_3.40.cpp)
+
+### ex3.41 
+编写一段程序，用整型数组初始化一个 vector 对象
+```cpp
+#include <iostream>
+#include <vector>
+
+using std::cin;
+using std::cout;
+using std::endl;
+using std::vector;
+int main()
+{
+    int arr[5] = {1, 2, 3, 4, 5};
+    vector<int> v(arr, arr + 5); //指针
+    vector<int> v2(std::begin(arr), std::end(arr)); // 迭代器
+    vector<int> v3(arr + 1, arr + 4); //指针
+    return 0;
+}
+```
+
+### ex3.42
+编写一段程序，将含有整数元素的 vector 对象拷贝给一个整型数组
+```cpp
+#include <iostream>
+#include <vector>
+
+using std::cin;
+using std::cout;
+using std::endl;
+using std::vector;
+int main()
+{
+    int arr[5] = {1, 2, 3, 4, 5};
+    vector<int> v(arr, arr + 5); // 指针
+
+    int arr2[5];
+    // for (decltype(v.size()) i = 0; i < v.size(); ++i)
+    for (size_t i = 0; i < v.size(); ++i)
+    {
+        arr2[i] = v[i];
+    }
+
+    for (auto i : arr2)
+    {
+        cout << i << " ";
+    }
+
+    return 0;
+}
+```
+
+### ex3.43
+编写三个不同版本的程序，令其均能输出 ia 的元素。
+- 版本1使用范围 for 管理迭代过程
+- 版本2 和版本3 都是用普通的 for 语句，其中版本2 要求用下标运算符，版本3要求用指针
+- 此外三个版本都要求直接写出数据类型，不能使用类型别名，auto、decltype 关键字
+```cpp
+int ia[3][4] = {
+  {1, 2, 3, 4},
+  {2, 4, 6, 8},
+  {3, 6, 9, 12}
+}
+```
+[ch03/ex_3.43.cpp](ch03/ex_3.43.cpp)
+
