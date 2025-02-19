@@ -1447,3 +1447,183 @@ ul1 || ul2; //两个 true || true，结果仍然为 true
 
 ### ex4.28
 编写一段程序，输出一种内置类型所占用的空间大小；
+[ch04/ex_4.28.cpp](ch04/ex_4.28.cpp)
+
+### ex4.29
+推断下面的代码的输出结果并说明理由。实际运行这段程序，结果和你想象的一样吗？如果不一样，为什么？
+```cpp
+int x[10]; int *p = x;
+cout << sizeof(x)/sizeof(*x) << endl; //计算数组元素的个数
+cout << sizeof(p)/sizeof(*p) << endl; //计算指针p的大小除以一个 int 类型的大小
+```
+
+### ex4.30
+根据 4.12 节中的表，在下述表达式的适当位置加上括号，使得加上括号之后表达式的含义与原来的含义相同；
+```cpp
+sizeof x + y; //sizeof(x+y)
+sizeof p->mem[i]; //sizeof(p -> mem[i]);
+siezeof a < b; // sizeof(a < b);
+sizeof f(); // sizeof(f());
+```
+
+### ex4.31
+本节的程序使用了前置版本的递增运算符和递减运算符，解释为什么要用前置版本而不用后置版本。想要使用后置版本的递增递减运算符需要做哪些改动？使用后置版本重写本节的程序
+```cpp
+vector<int>::size_type cnt = ivec.size();
+for(vector<int>::size_type ix = 0; ix != ivec.size(); ++ix, --cnt) {
+  ivec[ix] = cnt;
+}
+```
+后置版本
+```cpp
+#include <iostream>
+#include <vector>
+
+using std::cin;
+using std::cout;
+using std::endl;
+using std::string;
+using std::vector;
+int main()
+{
+
+    vector<int> ivec(5);
+    vector<int>::size_type cnt = ivec.size();
+    for (vector<int>::size_type ix = 0; ix != ivec.size(); ix++, cnt--)
+    {
+        ivec[ix] = cnt;
+    }
+    for (auto i : ivec)
+    {
+        cout << i << " ";
+    }
+    return 0;
+}
+```
+
+### ex4.32 
+解释下面这个循环的含义
+```cpp
+constexpr int size = 5;
+int ia[size] = {1,2,3,4,5};
+for(int*ptr = ia, ix = 0; ix!=size && ptr != ia+size; ++ix, ++ptr) {
+}
+```
+> 遍历 ia，将 ix 的值从 0 自增到 4
+
+### ex4.33
+根据 4.12 节中的表，说明下面这条表达式的含义。
+```cpp
+someValue ? ++x, ++y: --x, --y; //someValue的值为 true，则对 x 和 y 自增，反之自减
+```
+
+### ex4.34
+根据本节给出的变量定义，说明在下面的表达式中将发生什么样的类型转换？
+```cpp
+if(fval)  //fval 转换成 bool
+dval = fval + ival; //fval 和 ival 都转换成 double
+dval+ ival * cval; // cval 提升成 int类型与 ival 进行计算后，再转换成 double 类型 
+```
+
+### ex4.35
+假设有如下的定义
+```cpp
+char cval;
+int ival;
+unsigned int ui;
+float fval;
+double dval;
+```
+请问再下面的表达式中发生了隐式类型转换吗？如果有，请指出来
+```cpp
+cval = 'a' + 3; //发生了，先把 a 提升成 int 类型，与 3 相加，然后把结果转换成 char 类型
+fval = ui - ival * 1.0; //发生了
+dval = ui * fval; //发生了
+cval = ival + fval + dval; //发生了
+```
+
+
+### ex4.36
+假设 i 是 int 类型，d 是 double 类型，书写表达式 i*=d 使其执行整数类型的乘法而不是浮点型类型的乘法；
+```
+i*=d; // 先乘，再舍弃小数点，假如 i= 9，d = 2.4；这条语句执行后，将得到 21 的结果
+i*=static_cast<int>(d); //先转换成 int，再进行乘法，假如 i= 9，d = 2.4；这条语句执行后，将得到 18 的结果
+```
+
+### ex4.37
+用命名的强制类型转换改写下列旧式的转换语句
+```cpp
+int i; double d; const string *ps; char *pc; void *pv;
+
+pv = (void*)ps;  // pv = const_cast<void *>(static_cast<const void *>(ps));
+i = int(*pc); // i = static_cast<int>(*pc);
+pv = &d; // pv = static_cast<void *>(&d);
+pc = (char*) pv; //pc = static_cast<char*>(pv);
+```
+
+### ex4.38
+说明下面这条表达式的含义
+```cpp
+double slope = static_cast<double>(j/i); 
+```
+> 把 j/i 的值强制转换成 double 类型
+
+
+## ch05
+### ex5.1
+什么是空语句？什么时候会用到空语句？
+> 只有一个 ; 的语句是空语句。当语法上需要，逻辑上不需要的时候，就可以使用空语句。
+
+### ex5.2
+什么是块？什么时候要用到块？
+> {} 就是一个语句块；语法上需要一条语句，但逻辑上需要多条语句，我们就应该使用 {} 将其包裹起来
+
+### ex5.3
+使用逗号运算符重写第十页的 while 循环，使他不再需要块，观察改写之后的代码，可读性是提高了还是降低了。
+```cpp
+#include <iostream>
+
+using std::cin;
+using std::cout;
+using std::endl;
+int main()
+{
+
+    int sum = 0;
+    int val = 1;
+    while (val <= 10)
+    {
+        sum += (val++);
+    }
+    cout << sum << endl;
+
+    return 0;
+}
+```
+
+### ex5.4
+说明下列例子的含义，如果存在问题，试着修改它；
+```cpp
+while(string::iterator iter != s.end()) {/**/}; //死循环
+while(bool status = find(word)) {
+  if(!status) {/**/} // if 语句不会进入
+}
+```
+> 第一个需要将迭代器赋值初始值，并移动
+> 第二个 if 永远不会被执行
+```cpp
+string::iterator iter = s.begin();
+while((iter++) != s.end()) {/**/};
+
+if(!find(word)) {
+/**/
+}
+
+while(!find(word)) {/**/}
+
+```
+### ex5.5 
+写一段自己的程序，使用 if else 语句实现把数字成绩转换成字母成绩的要求；
+[ch05/ex_5.5.cpp](ch05/ex_5.5.cpp)
+
+
