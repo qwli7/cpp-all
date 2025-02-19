@@ -1626,4 +1626,62 @@ while(!find(word)) {/**/}
 写一段自己的程序，使用 if else 语句实现把数字成绩转换成字母成绩的要求；
 [ch05/ex_5.5.cpp](ch05/ex_5.5.cpp)
 
+### ex5.6
+改写上一题的程序，使用条件运算符（?:）代替 if else 语句
+[ch05/ex_5.6.cpp](ch05/ex_5.6.cpp)
+
+### ex5.7
+改正下列代码中的错误
+```cpp
+//a
+if(ival1 != ival2)
+  ival1 = ival2
+else ival1 = ival2 = 0;
+
+//a 修改
+if(ival1 != ival2) {
+  ival1 = ival2;
+} else {
+  ival1 = ival2 = 0;
+}
+
+// b
+if(ival < minval)
+  minval = ival;
+  occurs = 1;
+
+//b 修改
+if(ival < minval) {
+  minval = ival;
+  occurs = 1;
+}
+
+//c
+if(int ival = get_val())
+  cout << "ival = " << ival << endl;
+
+//c 修改
+int ival = get_val();
+if(ival != 0)
+  cout <<"ival = " << ival << endl;
+
+
+//d
+if(ival =0)
+  ival = get_val();
+
+//d 修改
+if(ival == 0)
+  ival = get_val();
+```
+
+### ex5.8
+什么是垂悬 else? C++语言是如何处理 else 子句的？
+> 没有与 else 匹配的 if 叫 垂悬 else
+> else 与最近的一个 if 进行匹配
+
+
+### ex5.9 
+编写一段程序，使用一系列 if 语句统计从 cin 读入的文本中又多少个元音字母；a o e i u
+[ch05/ex_5.9.cpp](ch05/ex_5.9.cpp)
 
