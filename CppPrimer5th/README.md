@@ -1812,3 +1812,143 @@ switch(swt)  {
 例如：输入是 how now now now brown cow cow，那么输出应该表明单词 now 连续出现了 3 次；
 
 [ch05/ex_5.14.cpp](ch05/ex_5.14.cpp)
+
+
+### ex5.15 
+说明下列循环的含义并改正其中的错误
+```cpp
+//a ix 出了 for 循环的作用域，ix 未定义
+for(int ix = 0; ix != sz; ++x) { /**/}
+  if(ix != sz)
+    //
+
+//a fixed
+for(int ix = 0; ix != sz; ++x) {
+  //ix 仅可在这个作用域内使用
+}
+
+
+//b  fox 循环语法错误
+int ix;
+for(ix != sz; ++ix) { /**/ }
+
+//b fixed
+int ix;
+for(; ix != sz; ++ix) { /**/ }
+
+//c 每次执行 ix 和 sz 都自增，可能会导致死循环
+for(int ix = 0; ix != sz; ++ix, ++sz) {
+  /**/
+}
+
+//c fixed
+for(int ix = 0; ix <= sz; ++ix) {
+}
+```
+
+### ex5.16
+while 循环特别适用于那种条件保持不变、反复执行操作的情况，例如，当未达到文件末尾时不断读取下一个值。for 循环则更像时在按步骤迭代，他的索引值在某个范围内依次变化。根据每种循环的习惯用法各自编写一段程序，然后分别用另一个循环改写。如果只能使用一种循环，你倾向于使用哪种呢？为什么？
+```cpp
+//循环读取字符串到 str 中打印出来
+while(std::cin >> str) {
+  cout << str << endl;
+}
+//循环输出 0 - 99 的值
+for(int i = 0; i < 100; ++i) {
+  cout << i << endl;
+}
+```
+
+### ex5.17
+假设又两个包含整数的 vector 对象，编写一段程序，检验其中一个 vector 对象是否时另一个的前缀。为了实现这一目标，对于两个不等长的 vector 对象，只需要挑出长度较短的那个，把它的所有元素和另一个 vector 对象比较即可。例如，如果两个 vector 对象的元素分别是 0、1、1、2 和 0、1、1、2、3、5、8，则程序的返回结果应该为真。
+```cpp
+#include <iostream>
+#include <vector>
+
+using std::cin;
+using std::cout;
+using std::endl;
+using std::string;
+using std::vector;
+int main()
+{
+    vector<int> v = {0, 1, 1, 2};
+    vector<int> v2 = {0, 1, 1, 2, 3, 5, 8};
+    bool flag = true;
+    for (decltype(v.size()) i = 0; i < v.size(); ++i)
+    {
+        if (v[i] != v2[i])
+        {
+            flag = false;
+            break;
+        }
+    }
+
+    cout << "Mismatch: " << std::boolalpha << flag << endl;
+    return 0;
+}
+```
+
+
+### ex5.18
+说明下列循环的含义并改正其中的错误。
+```cpp
+// a do while 缺少花括号
+do
+  int v1, v2;
+  cout << "Please enter two numbers to sum:";
+  if(cin >> v1 >> v2)
+    cout << "Sum is: " << v1 + v2 << endl;
+while(cin);
+
+//a fixed
+do {
+  int v1, v2;
+  cout << "Please enter two numbers to sum:";
+  if(cin >> v1 >> v2)
+    cout << "Sum is: " << v1 + v2 << endl;
+} while(cin);
+
+
+// b  while 循环条件是赋值语句，不正确的循环条件
+do {
+//
+} while(int ival = get_response());
+
+// b fixed
+do {
+  int ival = get_response();
+} while(ival >= 0);
+
+
+// c  如果 ival 不等于0，始终无法跳出循环
+do {
+  int ival = get_response();
+} while(ival);
+```
+
+
+### ex5.19
+编写一段程序，使用 do while 循环重复的执行下述任务：首先提示用户输入两个 string 对象，然后挑出较短的那个并输出它；
+```cpp
+#include <iostream>
+#include <vector>
+
+using std::cin;
+using std::cout;
+using std::endl;
+using std::string;
+using std::vector;
+int main()
+{
+    string s1;
+    string s2;
+    do
+    {
+        cout << "Enter two strings: " << endl;
+        cin >> s1 >> s2;
+        cout << (s1.length() > s2.length() ? s2 : s1) << endl;
+    } while (cin);
+    return 0;
+}
+```
