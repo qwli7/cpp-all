@@ -2166,3 +2166,48 @@ int main()
 ```
 
 
+## ch06
+### ex6.1
+实参和形参的区别是什么？
+> 实参是形参的初始值
+> 实参的类型必须与对应的形参类型匹配
+
+### ex6.2
+请指出下列函数哪个有错误，为什么？应该如何修改这些错误呢？
+```cpp
+// a 错误，实际返回类型和函数返回类型无法对应，其次，s 的作用域就在 f() 函数内，返回局部变量可能会导致 s 被回收而获取到不确定的结果
+int f() {
+  string s;
+  //.....
+  return s;
+}
+
+//a fixed，仅仅只修改返回值类型
+string f() {
+  string s;
+  //
+  return s;
+}
+
+// b 错误，没有显示定义 f2 的返回值类型
+f2(int i) { /**/ }
+
+// b fixed
+void f2(int i) { /**/ }
+
+// c 错误，两个形参变量名一致
+int calc(int v1, int v1) { /**/ }
+
+// c fixed
+int calc(int v1, int v2) { /**/ }
+
+//d 缺少 {}
+double square(double x) return x * x;
+
+//d fixed
+double square(double x) {return x * x};
+```
+
+### ex6.3
+编写你自己的 fact 函数，上机检查是否正确
+[ch06/ex_6.3.cpp](ch06/ex_6.3.cpp)
