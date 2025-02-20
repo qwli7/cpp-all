@@ -2568,5 +2568,26 @@ void print(vector<int>::const_iterator begin, vector<int>::const_iterator end)
 ```
 [ch06/ex_6.33.cpp](ch06/ex_6.33.cpp)
 
+## ex6.34
+如果 factorial 函数停止的条件如下所示，将会发生什么情况？
+```
+if(val != 0) 
+```
+> 会导致无限递归，直到程序崩溃
 
+### ex6.35
+在调用 factorial 函数时，为什么我们传入的值时 val-1 而非 val--？
+```cpp
+long long fact(int n)
+{
+    cout << n << endl;
+    if (n <= 1)
+    {
+        return 1;
+    }
+    return n * fact(n--); //假设调用是 fact(5); —> 5*fact(5) 一直到程序崩溃
+}
+
+```
+> 先使用 n 的值，在对 n 进行 -- ， n 是指传递，会导致无限递归
 
