@@ -2362,10 +2362,211 @@ bool is_empty(const string& s) {
 }
 ```
 
-### 6.17
+### ex6.17
 编写一个函数，判断 string 对象中是否含有大写字母。编写另一个函数，把 string 对象全部都改写成小写形式。在这两个函数中，你使用的形参类型相同吗？为什么？
 > 不相同，第一个是常量引用，第二个是普通引用
+
 [ch06/ex_6.17.cpp](ch06/ex_6.17.cpp)
+
+### ex6.18
+为下面的函数编写声明，从给定的名字中推测函数具备的功能；
+- 名为 compare 的函数，返回布尔值，两个参数都是 matrix 类的引用
+- 名为 change_val 的函数，返回 vector<int> 的迭代器，有两个参数：一个是 int，另一个是 vector<int> 的迭代器
+```cpp
+bool compare(const matrix& m1, const matrix& m2); //避免两个 matrix 对象
+vector<int>::iterator change_val(const int& a, vector<int>::iterator& it1); //改变迭代器中的某些值
+```
+
+### ex6.19
+假定有如下声明，判断哪个调用合法、哪个调用不合法。对于不合法的函数调用，说明原因。
+```cpp
+double calc(double);
+int count(const string&, char);
+int sum(vector<int>::iterator, vector<int>::iterator, int);
+vector<int> vec(10);
+
+//a
+calc(23.4, 55.1); //不合法，calc 的声明只有一个参数
+//b
+count("abcda", 'a'); // 合法，因为 char 是值传递，会把 'a' 拷贝过去
+
+//c
+calc(66); //合法，会把 int 类型提升为 double 类型
+//d
+ sum(vec.begin(), vec.end(), 3.8); //合法，值传递，3.8 会转换成3拷贝过去
+```
+
+### ex6.20
+形参引用什么时候应该是常量引用？如果形参应该是常量引用，而我们将其设置成了普通引用，会发生什么情况？
+> 不对传入的参数做修改的时候，尽量设置成常量引用，避免对传入的参数误修改了
+> 应该是常量引用，但设置成了普通引用，可能会导致传入的参数被修改，导致逻辑错误；
+
+### ex6.21
+编写一个函数，令其接受两个参数；一个是 int 型的数，另一个是 int 指针。函数比较 int 的值和指针所指的值，返回较大的那个。在该函数中，指针的类型应该是什么？
+```cpp
+int compare(int, int*); //函数声明
+
+int compare(int a, int * b){
+  return a > *b ? a : *b;
+}
+```
+
+### ex6.22
+编写一个函数，令其交换两个 int 指针
+```cpp
+void swapp(int*, int*);
+
+void swapp(int* a, int *b) {
+  int temp = *a;
+  *a = *b;
+  *b = temp;
+}
+```
+
+### ex6.23
+参考本节介绍的几个 print 函数，根据理解编写你自己的版本。依次调用每个函数使其输入下面定义的 i 和 j
+```cpp
+int i = 0, j[2] = {0, 1};
+void print(int*)
+void print(int[2]);
+void print(int&); //传递引用
+void print(int(&)[2]); //传递引用
+```
+
+### ex6.24
+描述下面的函数行为，如果代码中存在问题，请指出并改正；
+```cpp
+//没有显示传入数组的长度，如果传入数组的长度小于 10，会导致访问到非法数据
+void print(const int ia[10]){
+  for(size_t i = 0; i != 10; ++i) {
+    cout << ia[i] << endl;
+  }
+}
+
+// fixed
+void print(const int ia[], const int size){
+  for(size_t i = 0; i != size; ++i) {
+    cout << ia[i] << endl;
+  }
+}
+```
+
+### ex6.25
+编写一个 main 函数，令其接受两个实参。把实参的内容连接成一个 string 对象并输出出来
+```cpp
+// g++ main.cpp -o main -std=c++11 && main hello world
+int main(int argc, char**argv) {
+  string str1 = argv[1];  // hello
+  string str2 = argv[2]; // world
+  cout << str1 + str2 << endl; // helloworld
+  return 0;
+}
+```
+
+### ex6.26
+编写一个程序，使其接受本届所示的选项：输出传递给main 函数的实参内容
+```cpp
+// g++ main.cpp -o main -std=c++11 && main hello world olleh dlrow
+int main(int argc, char* argv[]) {
+  cout << argc << endl; //命令行参数个数 5
+  cout << argv[0] << endl; // main 
+  cout << argv[1] << endl; // hello
+  cout << argv[2] << endl; // world
+  cout << argv[3] << endl; //olleh
+  cout << argv[4] << endl; // dlrow
+}
+```
+
+### ex6.27
+编写一个函数，它的参数是 initializer_list<int> 类型的对象，函数的功能是计算列表中所有元素的和；
+```cpp
+int add(std::initializer_list<int> il)
+{
+    std::initializer_list<int>::iterator it = il.begin();
+    int sum = 0;
+    while (it != il.end())
+    {
+        sum += *it;
+        ++it;
+    }
+    return sum;
+}
+```
+
+### ex6.28
+在 error_msg 函数中的第二个版本中包含 ErrCode 类型的参数，其中循环内的 elem 是什么类型？
+```cpp
+void error_msg(ErrCode e, initializer_list<string> il) {
+  cout <<e.msg() << ": ";
+  for(const auto &elem: il) { //const string& 
+    cout << elem << " ";
+  }
+  cout << endl;
+}
+```
+> const string&
+
+### ex6.29
+在范围 for 循环中使用 initializer_list 对象时，应该将循环控制变量类型声明为引用类型吗？为什么？
+
+> 不行，应该将其设置成 const 类型的引用，因为 initializer_list 里面的对象都是常量，无法被修改；
+
+
+### ex6.30
+编译 200 页的 str_subrange 函数，看看你编译器是如何处理编译错误的。
+```cpp
+bool str_subrange(const string &str1, const string &str2) {
+  if(str1.size() == str2.size()) {
+    return str1 == str2;
+  }
+  auto size = (str1.size() < str2.size()) ? str1.size() : str2.size();
+  for(decltype(size) i = 0; i != size; ++i) {
+    if(str1[i] != str2[i]) {
+      return; //  error: return-statement with no value, in function returning 'bool' [-fpermissive]
+    }
+  }
+}
+```
+
+### ex6.31
+什么情况下返回的引用无效？什么情况下返回的常量引用无效？
+> 返回布局变量的引用可能会导致无效（在函数内部定义的局部变量），当方法结束的时候，局部变量会被回收，此时的引用就是一个无效的引用
+>
+> 如果函数参数是按值传递的，此时返回函数参数的引用也是一个临时对象的引用，该对象会在结束的时候被销毁
+>
+> 如果返回值是常量引用，此时返回局部变量的引用，也是无效的
+>
+> 如果返回值是常量引用，此时返回的是动态分配的内存，但在返回之前已经释放了内存，也是无效的；
+
+### ex6.32
+下面的函数合法吗？如果合法，说明其功能；如果不合法，修改其中的错误并解释原因
+```cpp
+
+int &get(int* array, int index) {return array[index];}
+
+int main() {
+  int ia[10];
+  for(int i = 0; i != 10; ++i) {
+    get(ia, i) = i;
+  }
+}
+```
+> 合法，就是给数组进行赋值，赋值分别为 0-9；需要注意，定义 ia[10] 没有赋值初始值，get 函数访问的实际上是一些未定义的值
+
+### ex6.33
+编写一个递归函数，输出 vector 对象的内容
+```cpp
+void print(vector<int>::const_iterator begin, vector<int>::const_iterator end)
+{
+    if (begin == end)
+    {
+        return;
+    }
+    cout << *begin << " ";
+    print(++begin, end);
+}
+```
+[ch06/ex_6.33.cpp](ch06/ex_6.33.cpp)
 
 
 
