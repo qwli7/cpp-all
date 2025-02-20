@@ -2276,6 +2276,15 @@ int add_call_cnt() {
 编写一个名为 Chapter6.h 的头文件，令其包含 6.1 节练习中的函数声明
 [ch06/Chapter6.h](ch06/Chapter6.h)
 
+### 6.9 
+编写你自己的 fact.cc 和 factMain.cc，这两个文件都应该包含上一小节的练习中编写的 Chapter6.h 头文件。通过这些文件，理解你的编译器是如何支持分离式编译的。
+- [ch06/fact.cc](ch06/fact.cc)
+- [ch06/factMain.cc](ch06/factMain.cc)
+
+```shell
+g++ factMain.cc fact.cc -o main -std=c++11 -Wall
+```
+  
 
 
 
