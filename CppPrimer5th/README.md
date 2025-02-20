@@ -2591,3 +2591,22 @@ long long fact(int n)
 ```
 > 先使用 n 的值，在对 n 进行 -- ， n 是指传递，会导致无限递归
 
+### ex6.36
+编写一个函数的声明，使其返回数组的引用并且该数组包含 10 个 string 对象。不要使用尾置返回类型、decltype 或者类型别名
+```cpp
+string(&func(int))[10];
+string(&func())[10]; 
+```
+
+### ex6.37
+为上一题的函数在写三个声明，一个使用类型别名，另一个使用尾置返回类型，最有一个使用 decltype 关键字。
+```cpp
+//尾置返回类型
+auto func() -> string(&)[10];
+
+//类型别名
+using reftype = string[10];
+typedef int reftype[10];
+reftype &func();
+
+```
