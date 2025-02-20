@@ -1952,3 +1952,158 @@ int main()
     return 0;
 }
 ```
+
+### ex5.20
+编写一段程序，从标准输入中读取 string 对象的序列直到连续出现两个相同的单词或者所有的单词都读完为止。使用 while 循环一次读取一个单词，当一个的那次连续出现两次时，使用 break 语句终止循环。输出连续重复出现的单词，或者输出一个消息说明没有任何单词时连续重复出现的。
+```cpp
+#include <iostream>
+#include <vector>
+
+using std::cin;
+using std::cout;
+using std::endl;
+using std::string;
+using std::vector;
+int main()
+{
+    string lastWord;
+    string str;
+    while (cin >> str)
+    {
+        if (lastWord.empty())
+        {
+            lastWord = str;
+        }
+        else
+        {
+            if (lastWord == str)
+            {
+                // 跳出循环
+                cout << "Found continues word: " << lastWord << endl;
+                lastWord = "";
+                break;
+            }
+            else
+            {
+                lastWord = str;
+            }
+        }
+    }
+
+    if (!lastWord.empty())
+    {
+        cout << "Not found continues word" << endl;
+    }
+    return 0;
+}
+```
+
+### ex5.21
+修改 ex5.20 的程序，使其找到的重复单词必须以大写字母开头
+```cpp
+#include <iostream>
+#include <vector>
+#include <cctype>
+
+using std::cin;
+using std::cout;
+using std::endl;
+using std::string;
+using std::vector;
+int main()
+{
+    string lastWord;
+    string str;
+    while (cin >> str)
+    {
+        if (!isupper(str[0]))
+        {
+            // 如果当前字符串首字母不是大写，则跳过
+            continue;
+        }
+        if (lastWord.empty())
+        {
+            lastWord = str;
+        }
+        else
+        {
+            if (lastWord == str)
+            {
+                // 跳出循环
+                cout << "Found continues word: " << lastWord << endl;
+                lastWord = "";
+                break;
+            }
+            else
+            {
+                lastWord = str;
+            }
+        }
+    }
+
+    if (!lastWord.empty())
+    {
+        cout << "Not found continues word" << endl;
+    }
+    return 0;
+}
+```
+
+
+### ex5.22 
+本节的最后一个例子跳回到 begin，其实使用循环能更好的完成该任务。重写这段代码，注意不再使用 goto 语句。
+```cpp
+begin:
+  int sz = get_size();
+  if(sz <= 0 ) {
+    goto begin;
+  }
+
+//使用 while 重写
+
+while(get_size() <= 0) {
+  //执行循环逻辑
+}
+```
+
+### 异常类定义
+- exception 头文件定义了最通用的异常类 exception. 它只报告异常的发生，不提供任何额外信息
+- stdexcept 头文件定义了几种常用的异常类，见下表
+- new 头文件定义了 bad_alloc 异常类型
+- type_info 头文件定义了 bad_cast 异常类型
+  
+| 异常定义 | 异常描述 |
+|----------|----------|
+|exception | 最常见的问题|
+|runtime_error | 只有在运行时才能检测的问题|
+|range_error| 运行时错误：生成的结果超出了有意义的值域范围|
+|overflow_error| 运行时错误：计算上溢|
+|underflow_error| 运行时错误：计算下溢|
+|logic_error| 程序逻辑错误|
+|domain_error|逻辑错误：参数对应的结果值不存在|
+|invalid_argument| 逻辑错误：无效参数|
+|length_error|逻辑错误：试图创建一个超出该类型最大长度的对象|
+|out_of_range|逻辑错误：使用一个超出有效范围的值|
+
+
+### ex5.23
+编写一段程序，从标准输入读取两个整数，输出第一个数除以第二个数的结果。
+```cpp
+#include <iostream>
+
+using std::cin;
+using std::cout;
+using std::endl;
+int main()
+{
+    int a, b;
+    cin >> a >> b;
+    cout << a / b << endl;
+    return 0;
+}
+```
+
+### ex5.24
+修改你的程序，使得当第二个数是 0 时抛出异常。先不要设定 catch 子句，运行程序并真的为除数输入0， 看看会发生什么？
+
+
