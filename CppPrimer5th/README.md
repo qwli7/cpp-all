@@ -2211,3 +2211,71 @@ double square(double x) {return x * x};
 ### ex6.3
 编写你自己的 fact 函数，上机检查是否正确
 [ch06/ex_6.3.cpp](ch06/ex_6.3.cpp)
+
+### ex6.4
+编写一个与用户交互的函数，要求用户输入一个数字，计算生成该数字的阶乘。在 main 函数中调用该函数。
+[ch06/ex_6.4.cpp](ch06/ex_6.4.cpp)
+
+### ex6.5
+编写一个函数，输出其实参的绝对值
+```cpp
+int abs(int n)
+{
+    return n >= 0 ? n : -n;
+}
+```
+
+
+### ex6.6
+说明形参、局部变量以及局部静态变量的区别。编写一个函数，同时用到这三种形式。
+> 形参: 实在函数定义时声明的变量，用于接收调用时传递的参数
+> 局部变量：在函数内部声明的变量，只在函数内部有效
+> 局部静态变量：在函数内部声明，且在变量声明前加上 static 关键字；局部静态变量在函数调用之前保持其值，在函数外部不可见；不管该方法被调用多少次，该变量始终只有一份。
+```cpp
+#include <iostream>
+#include <cctype>
+
+using std::cin;
+using std::cout;
+using std::endl;
+
+// 这里不要用 int 如果超出范围了，可能会溢出
+long long fact(int n) // n 是形参
+{
+    if (n <= 1)
+    {
+        return 1;
+    }
+    static int call_cnt; // call_cnt 是静态局部变量
+    call_cnt++;
+    cout << "call_cnt addr = " << &call_cnt << endl;
+    int result = fact(n - 1) * n; // result 是局部变量
+    cout << "result addr = " << &result << endl;
+    return result;
+}
+
+int main()
+{
+    fact(2); // 调用 fact 函数
+    cout << "-----------" << endl;
+    fact(3); // 调用 fact 函数
+    return 0;
+}
+```
+
+### ex6.7
+编写一个函数，当他第一次被调用时返回 0，以后每次被调用返回值+1；
+```cpp
+int add_call_cnt() {
+  static int call_cnt = 0;
+  return call_cnt ++;
+}
+```
+
+### 6.8
+编写一个名为 Chapter6.h 的头文件，令其包含 6.1 节练习中的函数声明
+[ch06/Chapter6.h](ch06/Chapter6.h)
+
+
+
+
