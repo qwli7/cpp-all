@@ -2672,7 +2672,7 @@ char * init(int ht = 24, int wd, char bckgrnd);
 char * init(int wd, char bckgrnd, int ht = 24);
 ```
 
-### 6.41
+### ex6.41
 下面的哪个调用时非法的？为什么？哪个调用虽然合法但显然于程序员的初衷不符？为什么？
 ```cpp
 char *init(int ht, int wd = 80, char backgrnd = ' ');
@@ -2687,7 +2687,7 @@ init(24, 10);
 init(14, '*');  // fixed init(14, 10, '*');
 ```
 
-### 6.42
+### ex6.42
 给 mark_plural 函数的第二个形参赋予默认实参's'，利用新版本的函数输出单词 success 和 failure 的单数和复数形式；
 ```cpp
 string make_plural(size_t ctr, const string &word, const string &ending) {
