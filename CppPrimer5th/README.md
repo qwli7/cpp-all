@@ -2695,8 +2695,166 @@ string make_plural(size_t ctr, const string &word, const string &ending) {
 }
 
 // fixed
-
 string make_plural(size_t ctr, const string &word, const string &ending="s") {
   return (ctr > 1) ? word + ending : word;
 }
+```
+
+
+### ex6.43
+你会把下面的哪个声明和定义放在头文件中？哪个放在源文件中？为什么？
+```cpp
+//a 头文件中
+inline bool eq(const BigInt&, const BigInt&){}
+
+//b 源文件中
+void putValues(int *arr, int size)
+```
+> 一般把内联函数和 constexpr 放在头文件中。
+
+### ex6.44
+将 6.2.2 节的 isShorter 函数改写成内联函数
+```cpp
+bool isShoter(const string &s1, const string &s2) {
+  return s1.size() < s2.size();
+}
+// fixed
+inline bool isShorter(const string &s1, const string &s2) {
+  return s1.size() < s2.size();
+}
+```
+
+
+### ex6.45
+回顾前面练习中你编写的那些函数，它们应该是内联函数吗？如果是，将他们改写成内联函数；如果不是，说明原因；
+> 对于一些简单的函数，如果它们被频繁调用，可以将它们定义成内联函数，例如比较大小等。
+内联函数一般只是简单的展开，不会产生额外的开销
+
+> 相对普通的函数来说，普通的函数在调用前要先存储寄存器，并在返回的时候恢复；也可能需要拷贝实参，或者程序转向一个新的位置继续执行等
+
+### ex6.46
+能把 isShorter 函数定义成 constexpr 函数吗？如果能，请将它改写。
+```cpp
+bool isShoter(const string &s1, const string &s2) {
+  return s1.size() < s2.size();
+}
+```
+
+> 不能，constexpr 函数要求函数体内只能包含常量表达式，不能包含循环、条件语句、递归等语句。
+> 准确来说，常量表达式需要在编译的时候就能计算出来
+
+### NDBUG 启用调试
+```cpp
+#include <iostream>
+#include <string>
+
+using std::cin;
+using std::cout;
+using std::endl;
+
+int main()
+{
+    for (int i = 0; i < 10; ++i)
+    {
+#ifdef NDEBUG
+        cout << __func__ << endl; //输出当前函数名称
+#endif
+        cout << i << "-- ";
+    }
+
+    return 0;
+}
+```
+执行 `g++ main.cpp -o main -DNDEBUG` 定义了 NDEBUG 宏，使得 NDEBUG 生效
+
+|宏|说明|
+|---|---|
+|__func__|返回当前函数名|
+|__FILE__|返回当前源文件名|
+|__LINE__|返回当前行号|
+|__DATE__|返回编译日期|
+|__TIME__|返回编译时间|
+
+### ex6.47
+改写 6.3.2 节练习中使用递归输出 vector 内容的程序，使其有条件的输出与执行过程有关的程序。例如，每次调用时输出 vector 对象的大小。分别在打开和关闭调试器的模式下编译并运行程序。
+```cpp
+void print(vector<int>::const_iterator begin, vector<int>::const_iterator end)
+{
+    if (begin == end)
+    {
+        return;
+    }
+    cout << *begin << " ";
+    print(++begin, end);
+}
+```
+[ch06/ex_6.47.cpp](ch06/ex_6.47.cpp)
+
+### ex6.48
+说明下面这个循环的含义，它对 assert 的使用合理吗？
+```cpp
+string s;
+while(cin >> s && s != sought) {}
+assert(cin); // 不合理，cin 可能已经处于错误状态
+```
+> 当输入流结束时（例如，用户输入了EOF，或者达到了文件末尾），cin会变为假（即cin.fail()或cin.eof()可能会返回true），这时assert(cin)会触发，并导致程序终止
+
+
+### ex6.49
+什么是候选函数？什么是可行函数？
+> 候选函数是指可以用来匹配函数调用的函数，可行函数是指候选函数中最匹配的函数。
+
+### ex6.50
+已知有第 217 页对函数 f 的声明，对于下面的每一个调用列出可行函数。其中哪个函数是最佳匹配？如果调用不合法，是因为没有可匹配的函数还是因为调用具有二义性？
+```cpp
+void f();
+void f(int);
+void f(int, int);
+void f(double, double = 3.14);
+
+//a
+f(2.56, 42); //可行函数 f(int, int); f(double, double=3.14) 二义性
+//b
+f(42); //可行函数 f(int);  void f(double, double = 3.14);最佳匹配 void f(int)；
+//c
+f(42, 0); //可行函数 f(int, int);  void f(double, double = 3.14); 最佳匹配 void f(int, int)；
+//d
+f(2.56, 3.14); // 可行函数 f(int, int); f(double, double=3.14) 最佳匹配 f(double, double=3.14)
+```
+
+### ex6.51
+ 编写 f 函数的四个版本，令其各输出一条可以区分的消息。验证上一个练习的答案，如果你回答错了，反复研究本节的内容；
+[ch06/ex_6.51.cpp](ch06/ex_6.51.cpp)
+
+
+### ex6.52
+已知有如下声明
+```cpp
+void manip(int, int);
+double dobj;
+```
+请指出下列调用中每个类型转换的等级。
+```cpp
+//a
+manip('a', 'z'); //a z 转换成 int
+
+//b
+manip(55.4, dobj); //55.4 dobj 转换成 int
+
+```
+
+### ex6.53
+说明下列每组声明中的第二条语句会产生什么影响，并指出那些不合法（如果有的话）
+```cpp
+// a
+int calc(int&, int&);
+int calc(const int&, const int&);
+
+// b
+int calc(char*, char*);
+int calc(const char*, const char*);
+
+//c 不合法，两个函数声明相同，都是 char类型的指针
+int calc(char*, char*);
+int calc(char* const, char* const);
 ```
