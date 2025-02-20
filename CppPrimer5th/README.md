@@ -2272,11 +2272,11 @@ int add_call_cnt() {
 }
 ```
 
-### 6.8
+### ex6.8
 编写一个名为 Chapter6.h 的头文件，令其包含 6.1 节练习中的函数声明
 [ch06/Chapter6.h](ch06/Chapter6.h)
 
-### 6.9 
+### ex6.9 
 编写你自己的 fact.cc 和 factMain.cc，这两个文件都应该包含上一小节的练习中编写的 Chapter6.h 头文件。通过这些文件，理解你的编译器是如何支持分离式编译的。
 - [ch06/fact.cc](ch06/fact.cc)
 - [ch06/factMain.cc](ch06/factMain.cc)
@@ -2285,9 +2285,87 @@ int add_call_cnt() {
 g++ factMain.cc fact.cc -o main -std=c++11 -Wall
 ```
   
-### 6.10
+### ex6.10
 编写一个函数，使用指针形参交换两个整数的值。在代码中调用该函数，并输出交换后的结果，以此验证函数的正确性。
 [ch06/ex_6.10.cpp](ch06/ex_6.10.cpp)
+
+### ex6.11
+编写并验证你自己的 reset 函数，使其作用于引用类型的参数
+```cpp
+void reset(int& a) {
+  a++;
+}
+void reset(const int& a) {
+  a++; //不允许，被定义成了常量引用
+  cout << a << endl;
+}
+```
+
+### ex6.12 
+改写  6.2.1 节中练习 6.10 的程序，使用引用而非指针交换两个整数的值。你觉得哪种方法更易于使用呢？为什么？
+```cpp
+void swapr(int &a, int &b)
+{
+    int temp = a;
+    a = b;
+    b = temp;
+}
+
+//调用
+swapr(a1, a2); 
+```
+
+### ex6.13
+假设 T 是某种类型的名字，请说明一下两个函数声明的区别：
+- 一个是 void f(T)
+- 另一个是 void f(&T);
+
+> void f(T) 是值传递，传递参数时会把参数拷贝一份到 T 中
+> void f(&T) 是引用传递
+
+### ex6.14
+举一个形参应该是引用类型的例子，再举一个形参不能是引用类型的例子。
+> 传入参数过大，值传递拷贝成本过高或者根本不能拷贝，那就应该使用引用
+> 当函数比较简单，且不需要修改传入的参数，那就可以直接使用普通类型，避免不必要的引用开销；例如传入两个参数，计算参数相加的和，这种情况下就不需要使用引用；
+
+### ex6.15
+说明 find_char 函数中的三个形参为什么是现在的类型，特别说明为什么 s 是常量引用而 occurs 是普通引用？为什么 s 和 occurs 是引用类型而 c 不是？如果另 s 是普通引用会发生什么情况？如果另 occurs 是常量引用会发生什么情况？
+```cpp
+string::size_type find_char(const string &s, char c, string ::size_type &occurs) {
+  auto ret =  s.size();
+  occurs = 0;
+  for(decltype(ret) i = 0; i != s.size(); ++i) {
+    if(s[i] == c） {
+      if(ret == s.size()) {
+        ret = i;
+      }
+      ++occurs;
+    }
+  }
+  return occurs;
+}
+```
+> 因为不需要修改 s 的值，所以设置成常量引用，避免内部逻辑修改，occurs 是普通引用是因为在函数内部需要对 occurs 的值进行自增处理，声明成常量引用后，occurs 的值无法被修改
+> s 是普通引用的话，如果在 find_char 修改了 s 的值，将会导致整个方法的业务逻辑错误；为了避免不必要的错误，设置成常量引用好些
+> occurs 是常量引用，方法编译会报错，会提示无法对 occurs 的值做修改
+
+
+### ex6.16
+下面的这个函数虽然合法，但是不是特别有用。指出它的局限性并设法改善
+```cpp
+bool is_empty(string& s) {return s.empty();};
+```
+> 不对 s 进行修改，应该将 s 设置成常量引用
+```cpp
+bool is_empty(const string& s) {
+  return s.empty();
+}
+```
+
+### 6.17
+编写一个函数，判断 string 对象中是否含有大写字母。编写另一个函数，把 string 对象全部都改写成小写形式。在这两个函数中，你使用的形参类型相同吗？为什么？
+> 不相同，第一个是常量引用，第二个是普通引用
+[ch06/ex_6.17.cpp](ch06/ex_6.17.cpp)
 
 
 
