@@ -2609,4 +2609,94 @@ using reftype = string[10];
 typedef int reftype[10];
 reftype &func();
 
+//decltype
+string arr[10];
+decltype(arr) &func();
+```
+
+
+### ex6.38
+修改 arrPtr 的函数，使其返回数组的引用。
+```cpp
+int odd[] = {1, 3, 5, 7, 9};
+int even[] = {0, 2, 4, 6, 8};
+int (*attrPtr(int))[]; // 函数声明
+decltype(odd) *attrPtr(int i)
+{
+    return (i % 2) ? &odd : &even;
+}
+
+using arrRef = int[]; 
+int (&attrPtr2(int i))[]; // 函数声明
+affRef& attrPtr2(int); //函数声明
+arrRef &attrPtr2(int i)
+{
+    return (i % 2) ? odd : even;
+}
+
+int main()
+{
+    cout << (*attrPtr(1))[0] << endl;
+    cout << attrPtr2(1)[0] << endl;
+    return 0;
+}
+```
+
+### ex6.39
+说明在下面的每组声明中第二条声明语句是何含义？如果有非法的声明，请指出来。
+```cpp
+//a 是函数重载
+int calc(int, int);
+int calc(const int, const int);
+
+//b 非函数重载，编译器报错
+int get();
+double get();
+
+//c 函数重载
+int* reset(int *);
+double* reset(double *);
+```
+
+> 函数重载：在同一个作用域内，可以有多个函数具有相同的函数名，但它们的参数列表不同（参数的数量，类型或者顺序至少有一个不同）
+
+### ex6.40
+下面哪个声明是错误的？为什么？
+```cpp
+//a
+int ff(int a, int b = 0, int c = 0);
+//b 错误，默认值只能排在最右边
+char * init(int ht = 24, int wd, char bckgrnd);
+
+//b fixed
+char * init(int wd, char bckgrnd, int ht = 24);
+```
+
+### 6.41
+下面的哪个调用时非法的？为什么？哪个调用虽然合法但显然于程序员的初衷不符？为什么？
+```cpp
+char *init(int ht, int wd = 80, char backgrnd = ' ');
+
+//a 错误，必须要给 ht 赋值
+init(); // fixed    init(20);
+
+//b 正确
+init(24, 10);
+
+//c 错误，会把 * 转换成 int 类型赋值给 wd
+init(14, '*');  // fixed init(14, 10, '*');
+```
+
+### 6.42
+给 mark_plural 函数的第二个形参赋予默认实参's'，利用新版本的函数输出单词 success 和 failure 的单数和复数形式；
+```cpp
+string make_plural(size_t ctr, const string &word, const string &ending) {
+  return (ctr > 1) ? word + ending : word;
+}
+
+// fixed
+
+string make_plural(size_t ctr, const string &word, const string &ending="s") {
+  return (ctr > 1) ? word + ending : word;
+}
 ```
