@@ -2105,5 +2105,64 @@ int main()
 
 ### ex5.24
 修改你的程序，使得当第二个数是 0 时抛出异常。先不要设定 catch 子句，运行程序并真的为除数输入0， 看看会发生什么？
+```cpp
+#include <iostream>
+#include <exception>
+#include <stdexcept>
+
+using std::cin;
+using std::cout;
+using std::endl;
+int main()
+{
+    int a, b;
+    cin >> a >> b;
+    if (b == 0)
+    {
+        throw std::runtime_error("division by zero");
+    }
+    int result = a / b;
+    cout << "result= " << result << endl;
+
+    return 0;
+}
+```
+
+### ex5.25
+修改上一题的程序，使用 try 语句去捕获异常。catch 的子句应该为用户输出一条提示信息，询问器是否输入新数并重新执行 try 语句块的内容；
+```cpp
+#include <iostream>
+#include <exception>
+#include <stdexcept>
+
+using std::cin;
+using std::cout;
+using std::endl;
+int main()
+{
+    int a, b;
+
+    while (cin >> a >> b)
+    {
+        try
+        {
+            if (b == 0)
+            {
+                throw std::runtime_error("division by zero");
+            }
+            int result = a / b;
+            cout << "result= " << result << endl;
+            break;
+        }
+        catch (std::runtime_error &e)
+        {
+            cout << "Caught exception: " << e.what() << endl;
+            cout << "Please try again." << endl;
+        }
+    }
+
+    return 0;
+}
+```
 
 
