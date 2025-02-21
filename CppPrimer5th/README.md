@@ -2988,7 +2988,13 @@ ostream& print(ostream& cout, const Sales_data &trans) {
 
 ### ex7.9
 对于 7.1.2节练习中的代码，添加读取和打印 Person 对象的操作
-[ch07/Person.h](ch07/Person.h)
+[ch07/Person2.h](ch07/Person2.h)
 
 [ch07/Person.cpp](ch07/Person.cpp)
+
+### ex7.10 
+在下面这条 if 语句中，条件部分的作用是什么？
+```cpp
+if(read(read(cin, data1), data2); //输入两个 Sale_datas 类型的数据，假设使用的类是 Sales_data
+```
 
