@@ -2896,5 +2896,99 @@ using PF = int (*)(int, int);
 
 ## ch07
 ### ex7.1
-使用 2.6.1 节练习定义的 Sales_data 类未 1.6 节的交易处理程序写一个新的版本。
+使用 2.6.1 节练习定义的 Sales_data 类为 1.6 节的交易处理程序写一个新的版本。
+[ch07/ex_7.1.cpp](ch07/ex_7.1.cpp)
+
+- 成员函数的声明必须在类的内部，如果定义也在类内部实现，它会变成隐式的 inline 函数，例如常见的 set get 方法
+- 作为接口的组成部分的非成员函数，它们的定义和声明都在类的外部
+
+### ex7.2
+曾在 2.6.2 节的练习中编写了一个 Sales_data 类，请向这个类添加 combine 和 isbn 成员。
+```cpp
+struct Sales_data
+{
+    // 新成员
+    std::string isbn() const { return bookNo; }
+    Sales_data &combine(const Sales_data &);
+    double avg_price() const;
+
+    // 成员
+    std::string bookNo;
+    unsigned units_sold = 0;
+    double price = 0.0;
+    double revenue = 0.0;
+};
+```
+
+### ex7.3
+修改 7.1.1 节的交易处理程序，令其使用这些成员
+[ch07/ex_7.1.cpp](ch07/ex_7.1.cpp)
+
+### ex7.4
+编写一个名为 Person 的类，使其表示人员的姓名和住址。使用 string 对象存放这些元素，接下来的练习将不断充实这个类的其他特征
+```cpp
+typedef struct Person
+{
+    std::string name;
+    std::string address;
+} p;
+```
+[ch07/Person.h](ch07/Person.h)
+
+### ex7.5
+在你的 Person 类中提供一些操作使其能够返回姓名和住址。这些函数是否应该是 const 的呢？解释原因。
+```cpp
+typedef struct Person
+{
+    std::string name;
+    std::string address;
+    std::string get_name() const
+    {
+        return name;
+    };
+    std::string get_address() const
+    {
+        return address;
+    }
+} p;
+```
+[ch07/Person.h](ch07/Person.h)
+
+### ex7.6 
+对于函数 add、read、和 print 定义你自己的版本。
+```cpp
+//添加
+Sales_data add(const Sales_data &a, const Sales_data &b) {
+  Sales_data sum;
+  sum.price = a.price + b.price;
+  sum.venue = a.venue + b.venue;
+  return sum;
+}
+
+//从流中读取
+istream& read(istream& cin, Sales_data &trans) {
+  cin >> trans.bookNo >> trans.price;
+  return is;
+}
+
+//打印
+ostream& print(ostream& cout, const Sales_data &trans) {
+  cout << trans.bookNo << ... << endl;
+}
+```
+
+
+### ex7.7
+使用这些新函数重写 7.1.2 节练习中的交易程序
+
+
+### ex7.8 
+为什么 read 函数要将其 Sales_data 参数定义成普通的引用，而 print 将其参数定义成常量引用；
+> read 需要改变传入的 Sales_data 的成员数据，print 只做输出，不做改变
+
+### ex7.9
+对于 7.1.2节练习中的代码，添加读取和打印 Person 对象的操作
+[ch07/Person.h](ch07/Person.h)
+
+[ch07/Person.cpp](ch07/Person.cpp)
 
