@@ -1,5 +1,5 @@
-#ifndef PERSON_H
-#define PERSON_H
+#ifndef PERSON2_H
+#define PERSON2_H
 
 #include <string>
 typedef struct Person
