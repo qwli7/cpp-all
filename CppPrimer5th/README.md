@@ -3322,6 +3322,7 @@ cout << "\n";
 xxxxxxxxxxxxxxxxxxxx#xxxx
 xxxxxxxxxxxxxxxxxxxx#xxxx
 ```
+[ch07/Screen.h](ch07/Screen.h)
 
 ### ex7.28
 如果 move、set 和 display 函数返回的类型不是 Screen& 而是 Screen，则在上一个练习中将会发生什么情况？
@@ -3331,6 +3332,14 @@ xxxxxxxxxxxxxxxxxxxx#xxxx
 xxxxxxxxxxxxxxxxxxxx#xxxx
 xxxxxxxxxxxxxxxxxxxxxxxxx
 ```
+[ch07/Screen2.h](ch07/Screen2.h)
 
 ### ex7.29
 修改你的 Screen 类，令  move、set 和 display 函数返回 Screen 并检查程序的运行结果，在上一个练习中你的推测是正确的吗？
+
+[ch07/Screen2.h](ch07/Screen2.h)
+
+
+### ex7.30
+通过 this 指针使用成员的做法虽然合法，但是有点多余。讨论显示的使用指针访问成员的优缺点。
+> 在类内部，可以省略 this
