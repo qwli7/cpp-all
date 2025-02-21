@@ -2858,3 +2858,37 @@ int calc(const char*, const char*);
 int calc(char*, char*);
 int calc(char* const, char* const);
 ```
+
+### ex6.54
+编写函数的声明，令其接受两个 int 形参，并且返回类型也是 int；然后声明一个 vector 对象，令其与元素是指向该函数的指针；
+```cpp
+int fun(int, int);
+std::vector<int(*)(int, int)> vec;
+
+//或者使用别名
+using PF = int(*)(int, int);
+std::vector<PF> vec;
+```
+
+### ex6.55
+编写 4 个函数，分别对两个 int 类型的值执行加、减、乘、除运算；在上一题创建的 vector 对象中保存指向这些函数的指针；
+
+[ch06/ex_6.55.cpp](ch06/ex_6.55.cpp)
+
+### ex6.55
+调用上述 vector 对象中的每个元素，并输出结果
+```cpp
+
+//方式1
+int (*funPtr)(int, int); 
+for (decltype(funPtr) it : funVec)
+{
+    cout << it(10, 2) << endl;
+}
+//方式二
+using PF = int (*)(int, int);
+// for (PF it : funVec)
+// {
+//     cout << it(10, 2) << endl;
+// }
+```
