@@ -2998,3 +2998,339 @@ ostream& print(ostream& cout, const Sales_data &trans) {
 if(read(read(cin, data1), data2); //输入两个 Sale_datas 类型的数据，假设使用的类是 Sales_data
 ```
 
+### ex7.11
+在你的 Sales_data 类中添加构造函数，然后编写一段程序令其用到每一个构造函数。
+```cpp
+struct Sales_data
+{
+    // 构造函数
+    Sales_data() = default;
+    Sales_data(const std::string &s) : bookNo(s) {}
+    Sales_data(const std::string &s, unsigned n, double p) : bookNo(s), units_sold(n), price(p)
+    {
+    }
+
+    // 新成员
+    std::string isbn() const { return bookNo; }
+    Sales_data &combine(const Sales_data &);
+    double avg_price() const;
+
+    // 成员
+    std::string bookNo;
+    unsigned units_sold = 0;
+    double price = 0.0;
+    double revenue = 0.0;
+};
+
+//
+Sales_data s1(); //默认构造函数
+Sales_data s2("hello"); //Sales_data(const std::string &s) : bookNo(s) {}
+Sales_data s3("hello", 1, 1.0);  // Sales_data(const std::string &s, unsigned n, double p) : bookNo(s), units_sold(n), price(p){}
+
+```
+
+### ex7.12
+把只接受一个 istream 作为参数的构造函数定义到类的内部
+```cpp
+struct Sales_data
+{
+    // 构造函数
+    Sales_data() = default;
+    Sales_data(const std::string &s) : bookNo(s) {}
+    Sales_data(const std::string &s, unsigned n, double p) : bookNo(s), units_sold(n), price(p)
+    {
+    }
+    Sales_data(std::istream &is)
+    {
+        read(is, *this);
+    }
+
+    // 新成员
+    std::string isbn() const { return bookNo; }
+    Sales_data &combine(const Sales_data &);
+    double avg_price() const;
+
+    // 成员
+    std::string bookNo;
+    unsigned units_sold = 0;
+    double price = 0.0;
+    double revenue = 0.0;
+};
+```
+
+### ex7.13
+使用 istream 构造函数重写 229 页的程序
+```cpp
+Sales_data total(cin);
+Sales_data trans(cin);
+if(total.isbn() == trans.isbn(cin)) {
+  total.combine(trans);
+} else {
+  print(cout, total) << endl;
+  total = trans;
+  return 0;
+}
+print(cout, total) << endl;
+```
+
+### ex7.14
+编写一个构造函数，令其用我们提供的类内初始值显示的初始化成员。
+```cpp
+Sales_data() : bookNo(""), units_sold(0), price(0.0), revenue(0.0) {}
+```
+
+### ex7.15
+为你的 Person 类添加正确的构造函数
+```cpp
+typedef struct Person
+{
+    Person()= default;
+    Person(const std::string &nameStr, const std::string &addressStr) : name(nameStr), address(addressStr) {}
+    Person(const std::string &nameStr): name(nameStr), address("") {}
+    std::string name;
+    std::string address;
+    std::string get_name() const
+    {
+        return name;
+    };
+    std::string get_address() const
+    {
+        return address;
+    }
+
+} p;
+```
+
+### ex7.16
+在类的定义中对于访问说明符出现的位置和次数有限定吗？如果有，是什么？什么样的成员应该定义在 public 说明符之后？什么样的成员应该定义在private说明符之后？
+> 没有限定；如果某些成员不希望外界可以直接访问，可以将其设置成 private；希望外界可以直接访问的，可以设置成 public
+
+### ex7.17
+使用 class 和 struct 时有区别吗？如果有，是什么？
+> struct 的默认访问权限是 public， class 的默认访问权限是 private
+
+### ex7.18
+封装是何含义？它有什么用处？
+> 封装将对象的状态（数据成员）和行为（函数成员）绑定在一起，并隐藏对象的内部细节，只暴露必要的接口提供外部访问；
+- 提高安全性
+- 隐藏实现细节
+- 增强可维护性
+- 提高代码的可重用性
+
+### ex7.19
+在你的 Person 类中，你将把哪些成员声成 public 的？哪些成员设置成 private 的?
+> name 和 address 设置成 private 的，对外提供 get 和 set 方法来访问这些对象。
+
+
+### ex7.20
+友元在什么时候有用？请列举出使用友元的利弊。
+> 当一个方法不在类的类的内部进行声明，而又想访问当前类的私有属性，就必须将该方法标记成友元；
+```cpp
+class Person
+{
+    friend std::istream &read(std::istream &is, Person &person);
+    friend std::ostream &print(std::ostream &os, const Person &person);
+
+public:
+    Person() = default;
+    Person(const std::string &nameStr, const std::string &addressStr) : name(nameStr), address(addressStr) {}
+    Person(const std::string &nameStr) : name(nameStr), address("") {}
+
+private:
+    std::string name;
+    std::string address;
+
+public:
+    std::string get_name() const
+    {
+        return name;
+    };
+    std::string get_address() const
+    {
+        return address;
+    }
+};
+
+//不在类的内部定义，但却想访问 Person 类的私有成员，就需要在类的内部将其声明为友元
+std::istream &read(std::istream &is, Person &person);
+std::ostream &print(std::ostream &os, const Person &person);
+```
+
+### ex7.21
+修改你的 Sales_data 类使其隐藏实现的细节。你之前编写的关于 Sales_data 操作的程序应该可以继续使用，借助类的新定义重新编译该程序，确保其工作正常。
+```cpp
+class Sales_data
+{
+  //友元函数
+    friend Sales_data add(const Sales_data &, const Sales_data &);
+    friend std::ostream &print(std::ostream &, const Sales_data &);
+    friend std::istream &read(std::istream &, Sales_data &);
+
+public:
+    // 构造函数
+    Sales_data() = default;
+    Sales_data(const std::string &s) : bookNo(s) {}
+    Sales_data(const std::string &s, unsigned n, double p) : bookNo(s), units_sold(n), price(p)
+    {
+    }
+    Sales_data(std::istream &is)
+    {
+        read(is, *this);
+    }
+
+    // 新成员
+    std::string isbn() const { return bookNo; }
+    Sales_data &combine(const Sales_data &);
+    double avg_price() const;
+
+private:
+    // 成员
+    std::string bookNo;
+    unsigned units_sold = 0;
+    double price = 0.0;
+    double revenue = 0.0;
+};
+
+// 非成员函数
+Sales_data add(const Sales_data &, const Sales_data &);
+std::ostream &print(std::ostream &, const Sales_data &);
+std::istream &read(std::istream &, Sales_data &);
+```
+
+### ex7.22
+修改你的 Person 类，使其隐藏其细节;
+```cpp
+//Person.h
+#include <string>
+class Person
+{
+    // 友元函数
+    friend std::istream &read(std::istream &is, Person &person);
+    friend std::ostream &print(std::ostream &os, const Person &person);
+    friend void getPerson(Person &person);
+
+public:
+    Person() = default;
+    Person(const std::string &nameStr, const std::string &addressStr) : name(nameStr), address(addressStr) {}
+    Person(const std::string &nameStr) : name(nameStr), address("") {}
+
+private:
+    std::string name;
+    std::string address;
+
+public:
+    std::string get_name() const
+    {
+        return name;
+    };
+    std::string get_address() const
+    {
+        return address;
+    }
+};
+
+// 读取
+std::istream &read(std::istream &is, Person &person);
+std::ostream &print(std::ostream &os, const Person &person);
+void getPerson(Person &person);
+
+
+// Person.cpp
+#include "Person.h"
+#include <iostream>
+
+//友元函数的实现，不需要 Person 的域作用符
+std::istream &read(std::istream &is, Person &person)
+{
+  //可以直接通过 对象.私有属性 的方式访问受保护的属性
+    is >> person.name >> person.address;
+    return is;
+}
+
+std::ostream &print(std::ostream &os, const Person &person)
+{
+ //可以直接通过 对象.私有属性 的方式访问受保护的属性
+    os << person.name << " " << person.address;
+    return os;
+}
+
+void getPerson(Person &person)  
+{
+ //可以直接通过 对象.私有属性 的方式访问受保护的属性
+    std::cout << person.name << " " << person.address << std::endl;
+}
+```
+
+### ex7.23
+编写你自己的 Screen 类
+```cpp
+class Screen {
+public:
+  using pos = std::string::size_type;
+private:
+  pos m_width = 0;
+  pos m_height = 0;
+  pos m_cursor = 0;
+  std::string contents;
+};
+```
+### ex7.24
+给你的 Screen 类添加三个构造函数；
+- 一个默认构造函数
+- 另一个构造函数接受宽高的值，然后将 contents 初始化成给定的空白；
+- 第三个构造函数接受宽和高的值以及一个字符，该字符作为初始化之后的屏幕内容；
+```cpp
+class Screen {
+public:
+  Screen() = default;
+  Screen(pos width, pos height): m_width(width), m_height(height), contents(width * height, ' ') {}
+  Screen(pos width, pos height, char c):  m_width(width), m_height(height), contents(width * height, c){} 
+public:
+  using pos = std::string::size_type;
+private:
+  pos m_width = 0;
+  pos m_height = 0;
+  pos m_cursor = 0;
+  std::string contents;
+};
+```
+
+### ex7.25
+Screen 能安全的依赖于拷贝和赋值操作的默认版本吗？如果能，为什么？
+> 能，因为编译器会默认为我们提供默认的拷贝和赋值构造函数
+
+### ex7.26
+将 Sales_data::avg_price 定义成内联函数
+```cpp
+class Sales_data {
+// ***
+public:
+  inline double avg_price() const {return price * count}; 
+}
+```
+
+### ex7.27
+给你自己的 Screen 类添加 move、set 和 display 函数，通过执行下面的代码检查你的类是否正确；
+```cpp
+Screen myscreen(5, 5, 'X');
+myScreen.move(4, 0).set('#').display(cout);
+cout << "\n";
+myScreen.display(cout);
+cout << "\n";
+
+//output
+xxxxxxxxxxxxxxxxxxxx#xxxx
+xxxxxxxxxxxxxxxxxxxx#xxxx
+```
+
+### ex7.28
+如果 move、set 和 display 函数返回的类型不是 Screen& 而是 Screen，则在上一个练习中将会发生什么情况？
+> 第一次使用 myScreen 对象和第二次使用的不是同一个对象，因此第一次会发生修改，第二次无法进行修改
+```cpp
+//output
+xxxxxxxxxxxxxxxxxxxx#xxxx
+xxxxxxxxxxxxxxxxxxxxxxxxx
+```
+
+### ex7.29
+修改你的 Screen 类，令  move、set 和 display 函数返回 Screen 并检查程序的运行结果，在上一个练习中你的推测是正确的吗？
