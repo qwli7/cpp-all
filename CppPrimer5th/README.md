@@ -3343,3 +3343,31 @@ xxxxxxxxxxxxxxxxxxxxxxxxx
 ### ex7.30
 通过 this 指针使用成员的做法虽然合法，但是有点多余。讨论显示的使用指针访问成员的优缺点。
 > 在类内部，可以省略 this
+
+### ex7.31
+定义一对类 X 和 Y，其中 X 包含一个指向 Y 的指针，而 Y 包含一个类型为 X 的对象；
+[ch07/ex_7.31.h](ch07/ex_7.31.h)
+
+### 友元
+```cpp
+class Scrren {
+  friend class Window_mgr; //这个类将可以具有 Screen 里面所有属性的访问权限
+  friend void Window_mgr::clean(ScreenIndex); //只开放某一个方法为友元方法，那么将只有这一个方法可以访问 Screen 里面的所有属性访问权限 
+}
+```
+
+### ex7.32
+定义你自己的 Screen 和 Window_mgr，其中 clear 是 Window_mgr 的成员，是 Screen 的友元
+````cpp
+class Screen {
+  friend void Window_mgr::clear(int);
+};
+
+class Window_mgr{
+private:
+  std::vector<Screen> screens;
+public:
+  void clear(index);
+}
+
+```
