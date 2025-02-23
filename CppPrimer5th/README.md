@@ -3371,3 +3371,11 @@ public:
 }
 
 ```
+
+### ex7.33
+如果我们给 Screen  类添加一个如下所示的 size 成员，将发生什么情况？如果出现了问题，请尝试修改它？
+```cpp
+pos Screen::size() const {
+  return m_width * m_height;
+}
+```
