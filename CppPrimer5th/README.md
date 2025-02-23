@@ -2568,7 +2568,7 @@ void print(vector<int>::const_iterator begin, vector<int>::const_iterator end)
 ```
 [ch06/ex_6.33.cpp](ch06/ex_6.33.cpp)
 
-## ex6.34
+### ex6.34
 如果 factorial 函数停止的条件如下所示，将会发生什么情况？
 ```
 if(val != 0) 
@@ -3373,7 +3373,7 @@ public:
 ```
 
 ### ex7.33
-如果我们给 Screen  类添加一个如下所示的 size 成员，将发生什么情况？如果出现了问题，请尝试修改它？
+如果我们给 Screen 类添加一个如下所示的 size 成员，将发生什么情况？如果出现了问题，请尝试修改它？
 ```cpp
 pos Screen::size() const {
   return m_width * m_height;
