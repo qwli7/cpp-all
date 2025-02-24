@@ -20,6 +20,10 @@ int main()
     std::istringstream record;
 
     std::ifstream infile("data/person.txt");
+    if(!file.is_open()) {
+        cout << "Read file failed." << endl;
+        return -1;
+    }
 
     while (std::getline(infile, line))
     {
