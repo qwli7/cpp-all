@@ -3928,7 +3928,7 @@ std::vector<std::string> readFileToVector(const std::string &filename)
 ```
 
 ### ex8.10
-编写程序，将来自一个文件中的行保存在一个 vector<string> 中，然后使用一个 isringstream 从 vector 中读取元素，每次读取一个单词；
+编写程序，将来自一个文件中的行保存在一个 vector<string> 中，然后使用一个 istringstream 从 vector 中读取元素，每次读取一个单词；
 [ch08/ex_8.10.cpp](ch08/ex_8.10.cpp)
 
 
@@ -3947,3 +3947,111 @@ std::vector<std::string> readFileToVector(const std::string &filename)
 ### ex8.14
 我们为什么将 entry 和 nums 定义为 const auto & ？
 > 仅仅只是打印，不需要修改，所以声明为 const，声明为引用是为了避免值传递
+
+## ch09
+### 顺序容器
+
+|类型|描述|
+|:----:|:----:|
+|vector|可变大小数组，支持快速随机访问。在尾部之外的位置插入或者删除元素可能很慢|
+|deque|双端队列。支持快速随机访问。在头部和尾部插入、删除速度很快|
+|list|双向链表。支持支双向顺序访问。在 list 中任何位置进行插入、删除操作速度都很快|
+|forword_list|单向链表。只支持单向顺序访问。在链表的任何位置进行插入、删除操作速度都很快|
+|array|固定大小数组。支持快速随机访问，不能添加或者删除元素|
+|string|与 vector 相似的容器，但专门用于保存字符。随机访问块、在尾部补插入、删除速度快|
+
+一般来说，使用 `vector` 是最好的选择，除非你有很好的理由选择其他容器；
+
+### ex9.1
+对于下面的程序任务，vector deque 和 list 选择哪种容器更加适合？解释你选择的理由。如果没有哪一种容器优于其他容器，也请解释理由。
+- 读取固定数量的单词，将它们按照字典顺序插入到容器中。我们将在下一章中看到，关联容器更适合这个问题  -> list
+- 读取未知数量的单词，总是将新单词插入到末尾，删除操作在头部进行   -> deque
+- 从一个文件读取位置数量的整数。将这些数排序，然后将它们打印到标准输出。 -> vector
+
+### ex9.2
+定义一个 list 对象，其元素类型是 int 类型的 deque
+```cpp
+#include <list>
+#include <deque>
+
+int main() {
+  list<deque<int>> list;
+  return 0;
+}
+```
+
+### ex9.3
+构成迭代器范围的迭代器有何限制
+- 左闭右开区间 [a, b);
+- end 指向尾部元素的下一个元素
+- end == begin 表示容器为空 end != begin 表示容器不为空
+- end 不能小于 begin
+
+### ex9.4
+编写函数，接收一对指向 vector<int> 的迭代器和一个 int 值。在两个迭代器指定的范围中查找给定的值，返回一个 bool 来指出是否找到；
+```cpp
+bool find_int(std::vector<int>::const_iterator begin, std::vector<int>::const_iterator end, int value)
+{
+    while (begin != end)
+    {
+        if (*begin == value)
+        {
+            return true;
+        }
+        ++begin;
+    }
+    return false;
+}
+
+```
+
+### ex9.5
+重写上一题的函数，返回一个迭代器指向找到的元素。注意，程序必须处理未找到给定值的情况
+```cpp
+int find_int(std::vector<int>::const_iterator begin, std::vector<int>::const_iterator end, int value)
+{
+    while (begin != end)
+    {
+        if (*begin == value)
+        {
+            return *begin;
+        }
+        begin++;
+    }
+    return -1; // -1 表示未找到
+}
+```
+
+### ex9.6
+下面的程序有何错误？你应该如何修改它？
+```cpp
+std::list<int> lst1;
+std::list<int>::iterator iter1 = lst1.begin(), iter2 = lst1.end();
+while (iter1 < iter2)  // list 的迭代器不能比较大小，应该用 !=
+{ /**/
+}
+```
+
+### ex9.7
+为了索引 int 的 vector 中的元素，应该使用什么类型？
+> std::vector<int>::const_iterator
+
+### ex9.8
+为了读取 string 的 list 中的元素，应该使用什么类型？如果写入 list，又该使用什么类型？
+- 读取 std::list<string>::const_iterator
+- 写入 std::list<string>::iterator
+
+const_iterator 支持只读访问，iterator 支持读写访问
+
+### ex9.9
+begin 和 cbegin 两个函数有什么不同？
+> 一个获取读写迭代器，一个获取只读迭代器
+
+### ex9.10
+下面 4 个对象分别是什么类型？
+```cpp
+vector<int> v1;
+const vector<int> v2;
+auto it1 = v1.begin(), it2 = v2.begin();  // it1 iterator, it2 const_iterator
+auto it3 = v1.cbegin(), it3 = v2.cbegin(); //it3 const_iterator, it4 const_iterator
+```
