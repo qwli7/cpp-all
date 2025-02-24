@@ -3782,3 +3782,71 @@ int main()
     return 0;
 }
 ```
+
+## ch08
+### ex8.1
+编写函数，接收一个 istream& 参数，返回类型也是 istream&。此函数须从给定的流中读取数据，直至遇到文件结束标识时停止。它将读取的数据打印在标准输出上。完成这些操作后，在返回流之前对流进行复位。使其处于有效状态
+```cpp
+std::istream &read(std::istream &is)
+{
+    int n;
+    while (is >> n)
+    {
+        cout << n << " ";
+    }
+    if (is.eof()) // 遇到文件结束符
+    {
+        cout << "EOF" << endl;
+    }
+    if (is.fail()) // 输入失败，如果输入的类型不是 int
+    {
+        cout << "Fail" << endl;
+    }
+    if (is.bad())
+    {
+        cout << "Bad" << endl;
+    }
+
+    is.clear();
+    return is;
+}
+```
+
+### ex8.2
+测试函数，调用参数 cin
+```cpp
+int main() {
+  read(std::cin)
+}
+```
+
+### ex8.3
+什么情况下 while 循环会中止
+```cpp
+while(cin >> i) {}; //读取到文件末尾，读取不正确的数，读取到结束符 etc
+```
+
+### ex8.4
+编写函数，以只读模式打开一个文件，将其内容读入到一个 string 的 vector 中，将每一行作为一个独立的元素存于 vector 中
+```cpp
+std::vector<std::string> readFileToVector(const std::string &filename)
+{
+    std::vector<std::string> lines;
+    std::ifstream file(filename); // 以只读模式打开文件
+    if (!file.is_open())
+    {
+        std::cerr << "open file " << filename << " failed!" << std::endl;
+        return lines;
+    }
+    std::string line;
+    while (std::getline(file, line))
+    {
+        // 逐行读取文件内容
+        lines.push_back(line);
+    }
+    file.close();
+    return lines;
+}
+```
+[ch08/ex_8.4.cpp](ch08/ex8.4.cpp)
+
