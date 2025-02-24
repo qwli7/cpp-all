@@ -3540,3 +3540,245 @@ public:
     C() {}  //默认构造函数，编译会报错，提示 NoDefault 没有默认构造函数，改成  C(): m_nd(0) {} 即可
 }
 ```
+
+### ex7.44
+下面这条声明合法吗？如果不，为什么？
+```cpp
+vector<NoDefault> vec(10); // NoDefault 没有默认构造函数，不合法
+```
+
+### ex7.45
+如果在上一个练习中定义的 vector 的元素类型是 C，则声明合法吗？为什么？
+> 不合法，因为 C 依赖了 NoDefault，而 NoDefault 没有默认构造函数，不合法
+
+### ex7.46
+下面哪些论断是不正确的？为什么？
+- a）一个类必须至少提供一个构造函数。 （不正确，如果不提供，编译器会默认帮我们创建构造函数，析构函数以及拷贝构造函数）
+- b）默认构造函数是参数列表为空的构造函数。（正确）
+- c）如果对于类来说不存在有意义的默认值，则类不应该提供默认构造函数（不完全正确，可提供默认构造函数，空实现，也可不提供）
+- d）如果类没有定义默认构造函数，则编译器将为其生成一个并把每个数据成员初始化成相应类型的默认值（正确，如果是自定义的类的话，需要看类的具体定义）
+
+### ex7.47
+说明接受一个 string 参数的 Sales_data 构造函数是否应该是 explicit 的，并解释这样做的优缺点。
+
+优点
+- 防止隐式转换，标记为 explicit 可以防止编译器使用这个构造函数进行隐式转换。如果你没有使用 explicit，可以这样写  Sales_data sd = "12345"；这会隐式调用 Sales_data(const string& s) 这个构造函数，使用 explicit 可以避免这种隐式转换，代码逻辑更清晰
+- 提高代码的安全行和可读性：明确告诉编译器和阅读代码的人，这个构造函数不应该使用隐式转换。有助于保持代码的一致性和可读性
+缺点
+- 限制了隐式转换的规则：如果你的应用场景确实需要允许这种隐式转换，那么 explicit 会阻止这种用法，你需要显式的调用构造函数来创建对象，可能会增加一些代码量
+- 可能会影响某些初始化方式：在某些情况下，你可能希望使用自动类型转换来简化对象的初始化过程，explicit 会限制这种用法
+
+```cpp
+
+class NoDefault
+{
+private:
+    int m_x;
+
+public:
+    explicit NoDefault(int x) : m_x(x)  //explicit 组织隐式转换
+    {
+        std::cout << "NoDefault(int x) called" << std::endl;
+    }
+};
+
+class C
+{
+private:
+    NoDefault m_nd;
+
+public:
+    C() : m_nd(0) {}
+};
+
+int main()
+{
+    // NoDefault nd = 10; // 会隐式调用 NoDefault(int x) 函数
+    NoDefault nd2(20); // 加上 explicit 后，只能通过显式调用的方式来创建
+    return 0;
+}
+```
+
+### ex7.48
+假设 Sales_data 的构造函数不是 explicit 的，则下述定义将执行什么样的操作？
+```cpp
+string null_isbn("9-999-99999-9"); //调用 string 的显式构造函数
+Sales_data item(null_isbn); //调用Sales_data的显式构造函数
+Sales_data item2("9-999-99999-9"); //调用Sales_data的显式构造函数
+
+```
+
+### ex7.49
+对于 combine 函数的三种声明，当我们调用 i.combine(s) 是，分别发生了什么情况？其中 i 是一个 Sales_data，而 s 是一个 string 对象
+```cpp
+Sales_data &combine(Sales_data); //调用 Sales_data 构造函数，发生了隐式转换，s 被转换成了Sales_data 对象传入，临时对象
+Sales_data &combine(Sales_data&); //调用 Sales_data 构造函数，发生了隐式转换，s 被转换成了Sales_data 对象传入，原对象
+Sales_data &combine(const Sales_data& ) const ; //调用 Sales_data 构造函数，发生了隐式转换，s 被转换成了Sales_data 对象传入，常量对象
+```
+
+### ex7.50
+确定在你的 Person 类中是否有一些构造函数应该是 explicit 的。
+```cpp
+#include <string>
+class Person
+{
+    // 友元函数
+    friend std::istream &read(std::istream &is, Person &person);
+    friend std::ostream &print(std::ostream &os, const Person &person);
+    friend void getPerson(Person &person);
+
+public:
+    Person() = default;
+    Person(const std::string &nameStr, const std::string &addressStr) : name(nameStr), address(addressStr) {}
+    Person(const std::string &nameStr) : name(nameStr), address("") {}
+
+private:
+    std::string name;
+    std::string address;
+
+public:
+    std::string get_name() const
+    {
+        return name;
+    };
+    std::string get_address() const
+    {
+        return address;
+    }
+};
+
+// 读取
+std::istream &read(std::istream &is, Person &person);
+std::ostream &print(std::ostream &os, const Person &person);
+void getPerson(Person &person);
+
+```
+看个人习惯和使用场景，如果有大量的 Person p = "name" 这种初始化的方式，那就不能对 Person(const std::string &nameStr) 限制隐式转换，反之则建议限制
+
+### ex7.51
+vector 将其单参数的构造函数定义成 explicit 的，而 string 不是，你觉得原因何在？
+- vector 的设计更强调类型安全和明确性，其单参数构造函数主要是为了初始化一个具有特定大小的容器，如果使用 explicit 可以更好地防止不必要的隐式类型转换，避免程序中的错误。
+- string 类型在很多情况下需要与 C 风格的字符串（即字符数组）进行交互，为了方便这些场景下的使用，string 的构造函数没有使用 explicit。这使得从字符数组到 string 的转换更加自然和简洁。
+
+### ex7.52
+使用 Sales_data 类，解释下面的初始化过程，如果存在问题，请修改它
+```cpp
+Sales_data item = {"978-0590353403", 25, 15.99};
+
+//fixed 属性必须是 public的，顺序必须和定义时候的顺序一致
+struct Sales_data {
+  std::string bookNo;
+  unsigned price;
+  double revenue;
+};
+```
+
+### ex7.53
+定义你自己的 Debug 类
+```cpp
+class Debug
+{
+public:
+    constexpr Debug(bool b = true) : hw(b), io(b), other(b) {}
+    constexpr Debug(bool h, bool i, bool o) : hw(h), io(i), other(o) {}
+    constexpr bool any()
+    {
+        return hw || io || other;
+    }
+    void set_hw(bool b)
+    {
+        hw = b;
+    }
+    void set_io(bool b)
+    {
+        io = b;
+    }
+    void set_other(bool b)
+    {
+        other = b;
+    }
+
+private:
+    bool hw;
+    bool io;
+    bool other;
+};
+```
+
+### ex7.54
+Debug 中以  set_ 开头的成员应该被声明称 constexpr 吗？如果不，为什么？
+> 不应该
+
+### ex7.55
+7.5.5 节的 Data 类是字面值常量类吗？请解释原因。
+```cpp
+struct Data{
+  int ival;
+  string s;
+}
+```
+- 类中的所有成员都必须是字面值常量表达式类型的。
+- 类必须至少有一个 constexpr 构造函数。
+- 类中不能有虚函数。
+- 类中所有非静态成员变量都必须是 public 且是常量表达式类型的。
+
+不是字面值常量类
+- 缺少 constexpr 构造函数
+- 成员 s 是 std::string 类型，在编译时期不能确定大小
+
+### ex7.56
+什么是类的静态成员？它有何有点？静态成员与普通成员有何区别？
+> 定义在类中，所有的类共享同一份数据的成员叫静态成员，用 static 修饰
+优点：
+- 所有的类共享同一份数据
+
+区别：
+- 类的静态成员和类没有关系，不需要通过 . 运算符来获取，定义在类中，可以通过域作用符获取静态成员的数据
+- 类的静态成员不是在类的实例化时创建的。没有 this 指针
+
+### ex7.57
+编写你自己的 Account 类。
+```cpp
+class Account {
+public:
+  static double rate() { return interestRate;}
+  static void rate(double);
+private:
+  static constexpr int period = 30;
+  double daily_tbl[peroid];
+}
+```
+
+### ex7.58
+下面的静态数据成员的声明和定义有错吗？请解释原因。
+```cpp
+//example.h
+class Example {
+public:
+  static double rate = 6.5;  //需要声明为 const 类型， static const double rate = 6.5
+  static const int vecSize = 20;
+  static vector<double> vec(vecSize);
+};
+//example.C
+#include "example.h"
+double Example::rate;
+vector<double> Example::vec;
+```
+fiexd
+```
+class Example
+{
+public:
+    static double rate;
+    static const int vecSize = 20;
+    static vector<double> vec;
+};
+
+//类外部定义，并初始化成员
+double Example::rate = 1.0;
+vector<double> vec(Example::vecSize);
+int main()
+{
+    return 0;
+}
+```
