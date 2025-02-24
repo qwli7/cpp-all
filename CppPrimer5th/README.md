@@ -3938,5 +3938,5 @@ std::vector<std::string> readFileToVector(const std::string &filename)
 
 ### ex8.12
 我们为什么没有在PersonInfo 中使用类内初始化？
->  PersonInfo 不需要使用类内初始化
+>  PersonInfo 的属性由 cin 提供，在该例子中不需要使用类内初始化的能力
 
