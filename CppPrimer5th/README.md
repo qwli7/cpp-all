@@ -4055,3 +4055,121 @@ const vector<int> v2;
 auto it1 = v1.begin(), it2 = v2.begin();  // it1 iterator, it2 const_iterator
 auto it3 = v1.cbegin(), it3 = v2.cbegin(); //it3 const_iterator, it4 const_iterator
 ```
+
+### ex9.11
+对 6 中创建和初始化的 vector 对象的方法，每一种都给出一个示例。解释每个 vector 包含什么值
+```cpp
+  std::vector<int> v;  //创建一个 vector
+  std::vector<int> v1 = {1, 2, 3, 4, 5}; //创建一个 v，里面的值是 1 2 3 4 5 
+  // std::vector<int> v2 = {10};
+  // std::vector<int> v2{0};
+  std::vector<int> v3(10, 1); //创建一个vector, 里面是 10 个 1
+  std::vector<int> v4(v3.begin(), v3.end()); //利用 v3 创建 v4，内容和 v3 一样
+  std::vector<int> v5(v4); //拷贝 v4 的内容到 v5
+```
+
+### ex9.12
+对于一个接收容器创建其拷贝的构造函数，和接受两个迭代器创建拷贝的构造函数，解释它们的不同。
+```cpp
+std::vector<int> v4(v3); //全量拷贝
+std::vector<int> v5(v4.begin(), v4.end()); //可指定范围
+```
+
+### ex9.13
+如何从一个 list<int> 初始化一个 vector<double>？从一个 vector<int> 又该如何创建。
+```cpp
+std::list<int> list = {1, 2, 3, 4, 5};
+std::vector<double> vec;
+for (auto i : list)
+{
+    vec.push_back(i);
+}
+
+// 从 vector int 创建 
+std::vector<int> list = {1, 2, 3, 4, 5};
+std::vector<double> vec(list.begin(), list.end()); //或者使用迭代器 
+```
+
+### ex9.14
+编写程序，将一个 list 中的 char* 元素赋值给一个 vector 的中的 string
+```cpp
+int main()
+{
+
+    //如果使用字面值常量，记得不要遗漏 const，编译会有警告 
+    //ISO C++ forbids converting a string constant to 'char*'
+    std::list<const char *> list = {"hello", "world", "c++", "stl"}; 
+    std::vector<std::string> vec;
+
+    for (auto i : list)
+    {
+        vec.push_back(i);
+    }
+    for (auto i : vec)
+    {
+        cout << i << endl;
+    }
+    return 0;
+}
+```
+
+### ex9.15
+编写程序，判断两个 vector<int> 是否相等
+```cpp
+int main()
+{
+    std::vector<int> vec = {1, 2, 3, 4, 5};
+    std::vector<int> vec2 = {6, 7, 8, 9, 10};
+    std::vector<int> vec3 = {1, 2, 3, 4, 5};
+    std::cout << std::boolalpha << (vec2 != vec) << endl;
+    std::cout << std::boolalpha << (vec == vec3) << endl;
+    return 0;
+}
+
+```
+
+### ex9.16
+重写上一题的程序，比较一个 list<int>中的元素和一个 vector<int>中的元素
+```cpp
+int main()
+{
+    std::vector<int> vec = {1, 2, 3, 4, 5};
+    // std::list<int> list = {6, 7, 8, 9, 10};
+    // std::list<int> list = {1, 2, 3, 4, 5};
+    std::list<int> list = {1, 2, 3, 4};
+    if (vec.size() != list.size())
+    {
+        cout << "Not equal" << endl;
+        return 0;
+    }
+    bool equal = true;
+    decltype(vec.size()) i = 0;
+    std::list<int>::const_iterator it = list.cbegin();
+    while (it != list.cend())
+    {
+        if (*it != vec[i])
+        {
+            equal = false;
+            break;
+        }
+        ++it;
+        ++i;
+    }
+    if (equal)
+    {
+        cout << "Equal" << endl;
+    }
+    else
+    {
+        cout << "Not equal" << endl;
+    }
+    return 0;
+}
+
+```
+
+### ex9.17
+假定c1 和 c2 是两个容器，下面的额比较操作有何限制
+```cpp
+if(c1 < c2)  // < 只有 vector 支持
+```
