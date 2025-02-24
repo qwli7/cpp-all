@@ -3501,3 +3501,42 @@ class Book {
 ### ex7.41
 使用委托构造函数重写编写你的 Sales_data 类，给每个构造函数添加一条语句，令其一旦执行就打印一条信息。用各种可能的方式分别创建 Sales_data 对象，认真研究每次输出的信息直到你确实理解了委托构造函数的执行顺序；
 [ch07/ex_7.40.cpp](ch07/ex_7.40.cpp)
+
+**委托构造函数，就是使用其他的构造函数来帮助自己完成初始化功能**
+
+### ex7.42
+对于你正在练习 7.40 中编写的类，确定哪些构造函数可以使用委托。如果可以的话，编写委托构造函数。如果不可以，从抽象概念列表中重新选择一个你认为可以使用委托构造函数的，为挑选出的这个概念编写类定义。
+```cpp
+class Book {
+  std::string name;
+  std::string no;
+  double price;
+  std::string author;
+  std::string pubDate;
+public:
+  Book(): Book(""){} //委托Book(const std::string &na)构造函数实现
+  Book(const std::string &na): name(na) {} 
+};
+```
+
+### ex7.43
+假定有一个名为 NoDefault 的类，它有一个接受 int 的构造函数，但是没有默认构造函数。定义类 C，C 有一个 NoDefault 的类型成员，定义 C 的默认构造函数
+```cpp
+class NoDefault
+{
+private:
+    int m_x;
+
+public:
+    NoDefault(int x) : m_x(x) {}
+};
+
+class C
+{
+private:
+    NoDefault m_nd;
+
+public:
+    C() {}  //默认构造函数，编译会报错，提示 NoDefault 没有默认构造函数，改成  C(): m_nd(0) {} 即可
+}
+```
