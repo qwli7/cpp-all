@@ -3940,3 +3940,10 @@ std::vector<std::string> readFileToVector(const std::string &filename)
 我们为什么没有在PersonInfo 中使用类内初始化？
 >  PersonInfo 的属性由 cin 提供，在该例子中不需要使用类内初始化的能力
 
+### ex8.13
+重写本节的电话号码程序，从一个命名文件而非 cin 读取数据。
+[ch08/ex_8.13.cpp](ch08/ex_8.13.cpp)
+
+### ex8.14
+我们为什么将 entry 和 nums 定义为 const auto & ？
+> 仅仅只是打印，不需要修改，所以声明为 const，声明为引用是为了避免值传递
