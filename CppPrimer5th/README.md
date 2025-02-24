@@ -3850,3 +3850,46 @@ std::vector<std::string> readFileToVector(const std::string &filename)
 ```
 [ch08/ex_8.4.cpp](ch08/ex8.4.cpp)
 
+### ex8.5.cpp
+重写上面的程序，将每个单词作为一个独立的元素存储。
+```cpp
+std::vector<std::string> readFileToVector(const std::string &filename)
+{
+    std::vector<std::string> lines;
+    std::ifstream file(filename); // 以只读模式打开文件
+    if (!file.is_open())
+    {
+        std::cerr << "open file " << filename << " failed!" << std::endl;
+        return lines;
+    }
+    std::string line;
+    while (std::getline(file, line))
+    {
+        std::istringstream iss(line); // 字符串流
+        std::string word;
+        while (iss >> word)
+        {
+            lines.push_back(word);
+        }
+    }
+    file.close();
+    return lines;
+}
+```
+[ch08/ex_8.5.cpp](ch08/ex8.5.cpp)
+
+### ex8.6
+重写 7.1.1 节的书店程序，从一个文件中读取交易记录，将文件名作为一个参数传递给 main
+[ch08/ex_8.6.cpp](ch08/ex8.6.cpp)
+
+
+### ex8.7
+修改上一节的书店程序，将结果保存到一个文件中。将输出文件名作为第二个参数传递给 main 函数
+
+
+### ex8.8
+修改上一题的程序，将结果追加到指定的文件末尾。对同一个输出文件，运行程序至少两次，检验数据是否得以保留。
+
+
+
+
