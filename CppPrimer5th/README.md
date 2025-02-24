@@ -3932,4 +3932,11 @@ std::vector<std::string> readFileToVector(const std::string &filename)
 [ch08/ex_8.10.cpp](ch08/ex_8.10.cpp)
 
 
+### ex8.11
+本节的程序在外层 while 循环中定义了 istringstream 对象。如果 record 对象定义在循环之外，你需要对程序进行怎样的修改？重写程序，将 record 的定义转移到 while 循环之外，验证你设想的修改方法是否正确
+[ch08/ex8.11.cpp](ch08/ex_8.11.cpp)
+
+### ex8.12
+我们为什么没有在PersonInfo 中使用类内初始化？
+>  PersonInfo 不需要使用类内初始化
 
