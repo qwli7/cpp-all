@@ -3358,7 +3358,7 @@ class Scrren {
 
 ### ex7.32
 定义你自己的 Screen 和 Window_mgr，其中 clear 是 Window_mgr 的成员，是 Screen 的友元
-````cpp
+```cpp
 class Screen {
   friend void Window_mgr::clear(int);
 };
@@ -3885,11 +3885,30 @@ std::vector<std::string> readFileToVector(const std::string &filename)
 
 ### ex8.7
 修改上一节的书店程序，将结果保存到一个文件中。将输出文件名作为第二个参数传递给 main 函数
-
+[ch08/ex_8.7.cpp](ch08/ex8.7.cpp)
 
 ### ex8.8
 修改上一题的程序，将结果追加到指定的文件末尾。对同一个输出文件，运行程序至少两次，检验数据是否得以保留。
+[ch08/ex_8.8.cpp](ch08/ex8.8.cpp)
 
+ios::in：读取（ifstream默认）。
+
+ios::out：写入（ofstream默认，覆盖文件）。
+
+ios::app：追加模式，写入内容到文件末尾。
+
+ios::binary：二进制模式，避免文本转换。
+
+ios::ate：打开后定位到文件末尾。
+
+模式可通过位或（|）组合，如ios::out | ios::binary。
+|模式|解释|
+|----|----|
+|ios::in| 读取 `ifstream` 默认|
+|ios::out| 写入 `ofstream` 默认|
+|ios::app| 追加，写入文件到末尾|
+|ios::binary| 二进制模式，避免文本转换|
+|ios::ate| 打开后定位到文件末尾(at end)|
 
 
 
