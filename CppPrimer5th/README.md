@@ -4169,7 +4169,87 @@ int main()
 ```
 
 ### ex9.17
-假定c1 和 c2 是两个容器，下面的额比较操作有何限制
+假定c1 和 c2 是两个容器，下面的比较操作有何限制
 ```cpp
 if(c1 < c2)  // < 只有 vector 支持
 ```
+
+### ex9.18
+编写程序，从标准输入中读取 string 序列，存入到一个 deque 中。编写一个循环，用迭代器来打印 deque 中的元素。
+[ch09/ex_9.18.cpp](ch09/ex_9.18.cpp)
+
+### ex9.19
+重写上一题程序，用 list 替代 deque。列出程序需要做出哪些改变？
+[ch09/ex_9.19.cpp](ch09/ex_9.19.cpp)
+
+### ex9.20
+编写程序，从一个 list<int> 拷贝元素到两个 deque 中。值为偶数的所有元素都拷贝到一个 deque 中，值为奇数值元素都拷贝到另一个 deque 中。
+[ch09/ex_9.20.cpp](ch09/ex_9.20.cpp)
+
+
+### ex9.21
+如果将我们第 308 页中使用 insert 返回值将元素添加到 list 中的循环程序改写为将元素插入到 vector 中，分析循环将如何工作？
+```cpp
+list<string> lst;
+auto iter = lst.begin();
+while(cin>>word) {
+  iter = lst.insert(iter, word);
+}
+//改为 vector，也是往 vector 头部开始插入元素
+vector<string> vec;
+auto iter = vec.begin();
+while(cin >> word) {
+  iter = vec.insert(iter, word);
+}
+```
+> 也是往 vector 头部开始插入元素
+
+### ex9.22
+假定 iv 是一个 int 类型的 vector，下面的程序存在什么错误？你将如何修改？
+```cpp
+vector<int>::iterator iter = iv.begin(), mid = iv.begin() + iv.size() / 2;
+while (iter != mid)
+{
+    if (*iter == some_val)
+    {
+
+        iv.insert(iter, 2 * some_val);
+    }
+    cout << *mid << endl;
+}
+```
+> 可能会导致死循环，因为 insert 会改变容器的大小和元素的位置，导致迭代器失效。
+```cpp
+//fixed
+std::vector<int> iv = {1, 2, 10, 4, 5};
+int some_val = 3;
+vector<int>::iterator iter = iv.begin(), mid = iv.begin() + iv.size() / 2;
+while (iter != mid)
+{
+    if (*iter == some_val)
+    {
+
+        iter = iv.insert(iter, 2 * some_val) + 1; // 插入后 iter 指向新的元素
+    }
+    else
+    {
+        ++iter;
+    }
+    cout << *mid << endl;
+}
+```
+
+### ex9.23
+在本节中第一个程序，若 c.size() 为 1，则 val、val2、val3 和 val4 的值是什么？
+```cpp
+if(!c.empty()) {
+  auto val = *c.begin(), val2 = c.front();
+  auto last = c.end();
+  auto val3 = *(--last);
+  auto val4 = c.back();
+}
+```
+> 都指向第一个元素
+
+### ex9.24
+编写程序，分别使用 at、下标运算符、front 和 begin 提取一个 vector 中的第一个元素。在一个空的 vector 上测试你的程序。
