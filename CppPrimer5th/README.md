@@ -3476,4 +3476,28 @@ int main() {
 
 ### ex7.39
 如果接受 string 的构造和接受 istream& 的构造函数都是用默认实参，这种行为合法吗？如果不，为什么？
-> 不合法，编译器不知道该选定哪个构造函数
+> 不合法，在使用默认构造函数创建对象的时候，编译器不知道该选定哪个构造函数，出现二义性
+
+### ex7.40
+从下面的抽象概念中选择一个（或者你自己指定一个），思考这样的类需要哪些数据成员，提供一组合理的构造函数，并阐明这样做的原因
+- Book
+- Date
+- Employee
+- Vehicle
+- Object
+- Tree
+
+```cpp
+
+class Book {
+  std::string name;
+  std::string no;
+  double price;
+  std::string author;
+  std::string pubDate; 
+};
+```
+
+### ex7.41
+使用委托构造函数重写编写你的 Sales_data 类，给每个构造函数添加一条语句，令其一旦执行就打印一条信息。用各种可能的方式分别创建 Sales_data 对象，认真研究每次输出的信息直到你确实理解了委托构造函数的执行顺序；
+[ch07/ex_7.40.cpp](ch07/ex_7.40.cpp)
