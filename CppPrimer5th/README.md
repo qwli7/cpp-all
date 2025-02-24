@@ -3891,16 +3891,6 @@ std::vector<std::string> readFileToVector(const std::string &filename)
 修改上一题的程序，将结果追加到指定的文件末尾。对同一个输出文件，运行程序至少两次，检验数据是否得以保留。
 [ch08/ex_8.8.cpp](ch08/ex8.8.cpp)
 
-ios::in：读取（ifstream默认）。
-
-ios::out：写入（ofstream默认，覆盖文件）。
-
-ios::app：追加模式，写入内容到文件末尾。
-
-ios::binary：二进制模式，避免文本转换。
-
-ios::ate：打开后定位到文件末尾。
-
 模式可通过位或（|）组合，如ios::out | ios::binary。
 |模式|解释|
 |----|----|
@@ -3909,6 +3899,37 @@ ios::ate：打开后定位到文件末尾。
 |ios::app| 追加，写入文件到末尾|
 |ios::binary| 二进制模式，避免文本转换|
 |ios::ate| 打开后定位到文件末尾(at end)|
+
+### ex8.9
+使用 ex8.5.cpp 节的练习，打印 istringstream 对象的内容
+```cpp
+std::vector<std::string> readFileToVector(const std::string &filename)
+{
+    std::vector<std::string> lines;
+    std::ifstream file(filename); // 以只读模式打开文件
+    if (!file.is_open())
+    {
+        std::cerr << "open file " << filename << " failed!" << std::endl;
+        return lines;
+    }
+    std::string line;
+    while (std::getline(file, line))
+    {
+        std::istringstream iss(line); // 字符串流
+        std::string word;
+        while (iss >> word) //读取单词
+        {
+            lines.push_back(word);
+        }
+    }
+    file.close();
+    return lines;
+}
+```
+
+### ex8.10
+编写程序，将来自一个文件中的行保存在一个 vector<string> 中，然后使用一个 isringstream 从 vector 中读取元素，每次读取一个单词；
+[ch08/ex_8.10.cpp](ch08/ex_8.10.cpp)
 
 
 
