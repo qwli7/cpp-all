@@ -3379,3 +3379,101 @@ pos Screen::size() const {
   return m_width * m_height;
 }
 ```
+> 需要在 typedef std::string::size_type pos 之后定义，否则会提示 pos 未定义
+
+### ex7.34
+如果我们把 256 页 Screen 类的 pos 的 typedef 放到类的最后一行，会发生什么情况？
+> 在 typedef 之前用 pos 声明的变量会报错，提示找不到 pos 的定义
+
+### ex7.35
+解释下面代码的含义，说明其中的 Type 和 initVal 分别使用了哪个定义。如果存在错误，请修改它
+```cpp
+typedef string Type;
+Type initVal();
+
+class Exercise {
+public:
+  typedef double Type;
+  Type setVal(Type); // typedef double Type;
+  Type initVal();  // typedef double Type;
+private:
+  int val;
+};
+
+Type Exercise::setVal(Type pram) { //typedef string Type;
+  val = pram + initVal();
+  return val;
+}
+```
+- 类型定义冲突：（这种冲突会导致在类内部和内外部使用 Type 时，类型不一致引发编译错误）
+  - 在文件的全局作用域中使用了 typedef string Type; 这意味着在全局作用域中 Type 是 string类型
+  - 在 Exercise 类中，使用了 typedef double Type; 这意味着在 Exercise 类作用域中 Type 是 double 类型
+- 函数重定义问题：
+  - 在全局作用域中定义了 Type initVal();  在 Exercise 类中页定义了 Type initVal()
+  - 虽然这两个函数的调用方式不同（一个通过对象调用，一个直接调用），但在同一个文件中定义相同签名的全局函数和类成员函数可能会导致混淆，尤其是在类外部调用时
+  - 如果 initVal() 函数在类外部被实现，那么它与类内部的 initVal() 函数会产生冲突。如果类内部的 initVal 没有被实现，编译会报错
+- 未定义行为：
+  - Exercise::setVal(Type pram) 方法中调用了 initVal() 函数，但并没有提供这个类成员的具体实现，导致链接错误。因为编译器在链接阶段找不到 Exercise::initVal() 定义
+  - 如果 initVal() 作为类成员函数被调用，但其实现位于类外部，应该使用 Exercise::initVal() 来确保正确链接；
+```cpp
+#include <string>
+using std::string;
+typedef string GlobalType;
+// Type initVal();
+
+class Exercise
+{
+public:
+    typedef double ClassType;
+    ClassType setVal(ClassType);
+    ClassType initVal();
+
+private:
+    int val;
+};
+
+Exercise::ClassType Exercise::setVal(Exercise::ClassType pram)
+{
+    val = static_cast<int>(pram) + static_cast<int>(initVal());
+    val = pram + initVal();
+    return val;
+}
+
+```
+
+### ex7.36
+下面的初始值时错误的，请找出问题所在并尝试修改它；
+```cpp
+struct X {
+  // 初始化 rem 时会提示 base 未定义
+  X(int i, int j): base(i), rem(base%j) {}
+  int rem, base;
+};
+
+//fixed
+struct X {
+  X(int i, int j): base(i), rem(i%j) {}
+  int rem, base;
+};
+
+```
+
+### ex7.37
+使用本机提供的 Sales_data 类。确定初始化下面的变量时分别使用了哪个构造函数，然后罗列出每个对象所有的数据成员的值
+```cpp
+Sales_data first_item(cin);  // Sales_data(std::istream &is)
+int main() { 
+  Sales_data next; // Sales_data(std::string s = "");
+  Sales_data last("9-999-99999-9"); //  Sales_data(std::string s = "");
+}
+```
+
+### ex7.38
+有些情况下，我们希望提供 cin 作为接受 istream&  参数的构造函数的默认实参，请声明这样的构造函数
+```cpp
+ Sales_data(std::istream &is = std::cin) {}
+```
+
+### ex7.39
+如果接受 string 的构造和接受 istream& 的构造函数都是用默认实参，这种行为合法吗？如果不，为什么？
+> 不合法，编译器不知道该选定哪个构造函数
