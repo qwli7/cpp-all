@@ -4270,4 +4270,9 @@ elem1 指向要删除的第一个元素，elem2 指向要删除的最后一个�
 ```cpp
 int ia[] = {0, 1,1,2,3,5,8,13,21,55,89};
 ```
-[ch09/ex_9.25.cpp](ch09/ex_9.25.cpp)
+[ch09/ex_9.26.cpp](ch09/ex_9.26.cpp)
+
+### ex9.27
+编写程序，查找并删除 forward_list<int> 中的元素；
+> forward_list 是一个单向链表，需要注意 begin() 和 before_begin() 这两个迭代器
+[ch09/ex_9.27.cpp](ch09/ex_9.27.cpp)
