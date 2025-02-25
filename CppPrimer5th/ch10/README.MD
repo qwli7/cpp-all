@@ -142,3 +142,28 @@ int main()
 
 ### ex10.8
 本节提到过，标准库算法不会改变它们所操作的容器的大小，为什么使用 back_inserter 不会使这一断言失效？
+> `back_inserter` 接受一个指向容器的引用，返回一个与该容器绑定的插入迭代器，当我们通过此迭代器赋值时，赋值运算符会调用 `push_back` 将一个具有给定值的元素添加到容器中。
+```cpp
+vector<int> ivec; //空容器
+auto it = back_inserter(vec); //创建一个插入迭代器
+*it = 42;  //现在容器内有一个元素
+```
+在算法上通常使用这种。
+```cpp
+vector<int> vec;
+fill_n(back_inserter(vec), 10, 0); //添加10个0
+```
+
+### ex10.9 
+实现你自己的 `elimDups`。测试你的程序，分别在读取输入后、调用 unique 后以及调用 erase 后打印 vector 的内容；
+
+输入 `the` `quick` `red` `fox` `jumps` `over` `the` `slow` `red` `turtle`。排序去重后输出
+
+[ex10.9.cpp](ex_10.9.cpp)
+
+
+### ex10.10
+你认为算法不改变容器大小的原因是什么？
+> 算法基本上都是基于迭代器来进行处理的，改变容器大小会导致原有的迭代器失效。
+
+
