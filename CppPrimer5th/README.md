@@ -4546,3 +4546,46 @@ cout << str2.size() << endl;
 ### ex9.43
 编写一个函数，接受三个 string 参数 s、oldVal 和 newVal。使用迭代器及 insert 和 erase 函数将 s 中所有 oldVal 替换威 newVal。测试你的程序，用他替换通用的简写形式。如，将 `tho` 替换为 `though`, 将 `thru` 替换称 `through`;
 [ch09/ex_9.43.cpp](ch09/ex_9.43.cpp)
+
+### ex9.44
+重写上一题的函数，这次使用下标和一个 replace
+[ch09/ex_9.44.cpp](ch09/ex_9.44.cpp)
+
+### ex9.45
+编写一个函数，接受一个表示名字的 string 参数和两个分别表示前缀（如 "Mr." 或者 "Ms."）和后缀（如 "Jr." 或者 "III"）的字符串。使用迭代器及 insert 和 append 函数将前缀和后缀添加到给定的名字中。将生成的新 string 返回
+```cpp
+std::string &func(std::string &s, const std::string &prefix, const std::string &suffix)
+{
+    s.insert(0, prefix);
+    s.append(suffix);
+    return s;
+}
+```
+
+### ex9.46
+重写上一题的函数，这次使用位置和长度来管理 string，并只使用 insert
+```cpp
+std::string &func(std::string &s, const std::string &prefix, const std::string &suffix)
+{
+    s.insert(0, prefix);
+    s.insert(s.size(), suffix);
+    return s;
+}
+```
+
+### ex9.47
+编写程序，首先查找 string “ab2c3d7R4E” 中的每个数字字符，然后查找其中每个字母字符。编写两个版本的程序，第一个要使用 find_first_of，第二个要使用 find_first_not_of;
+[ch09/ex_9.47.cpp](ch09/ex_9.47.cpp)
+
+### ex9.48
+假定 name 和 numbers 的定义如 325 页所示，numbers.find(name)返回什么？
+```cpp
+std::string numbers("012345689"), name("r2d2");
+std::string::size_type pos = numbers.find(name);
+cout << (pos == std::string::npos ? "not found" : "found");
+```
+
+### ex9.49
+如果一个字母延申到中线之上，如 d 和 f，则称其有上出头部分。如果一个字母延申到中线之下，如 p 或者 g。编写程序，读入一个单词文件，输出最长的及不包含上出头部分也不包含下出头部分的单词
+
+[ch09/ex_9.49.cpp](ch09/ex_9.49.cpp)
