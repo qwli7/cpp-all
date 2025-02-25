@@ -4276,3 +4276,273 @@ int ia[] = {0, 1,1,2,3,5,8,13,21,55,89};
 编写程序，查找并删除 forward_list<int> 中的元素；
 > forward_list 是一个单向链表，需要注意 begin() 和 before_begin() 这两个迭代器
 [ch09/ex_9.27.cpp](ch09/ex_9.27.cpp)
+
+### ex9.28
+编写函数，接受一个 forward_list<string> 和两个 string，共三个参数。函数应在链表中查找第一个 string，并将第二个 string 插入到紧接着第一个 string 之后的位置。若第一个 string 未在链表中，则将第二个 string 插入到链表末尾；
+
+### ex9.29
+假定 vec 包含 25 个元素，那么 vec.resize(100) 会做什么？如果接下来调用 vec.resize(10) 会做什么？
+- vec.resize(100) 后部补 0
+- vec.resize(10) 超过 10 个元素的部分会删除
+
+### ex9.30
+接受单个参数的 resize 版本对元素类型有什么限制？（如果有的话）
+> 元素类型必须是默认可构造的，如果不能构造，将报错
+
+### ex9.31
+第 316 页中删除偶数值元素并复制奇数值元素的程序不能用于 list 或者 forward_list。为什么？修改程序，使之也能用于这些类型；
+```cpp
+int main()
+{
+    std::vector<int> v = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
+    auto iter = v.begin();
+    while (iter != v.end())
+    {
+        if (*iter % 2 == 0)
+        {
+            iter = v.insert(iter, *iter); // 复制当前元素
+            iter += 2;                    // 跳过插入的当前元素和插入的元素
+        }
+        else
+        {
+            iter = v.erase(iter); // 删除当前元素
+        }
+    }
+    for (auto i : v)
+    {
+        cout << i << " ";  // 0 0 2 2 4 4 6 6 8 8 
+    }
+
+    return 0;
+}
+```
+适配 list
+```cpp
+int main()
+{
+    std::list<int> v = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
+    auto iter = v.begin();
+    while (iter != v.end())
+    {
+        if (*iter % 2 == 0)
+        {
+            iter = v.insert(iter, *iter); // 复制当前元素
+            iter++;                       // 跳过当前的元素
+            iter++;                       // 跳过插入的元素
+        }
+        else
+        {
+            iter = v.erase(iter); // 删除当前元素
+        }
+    }
+    for (auto i : v)
+    {
+        cout << i << " ";
+    }
+    return 0;
+}
+```
+适配forward_list
+```cpp
+int main()
+{
+    std::forward_list<int> v = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
+    auto prev = v.before_begin(); // 前驱节点
+    auto curr = v.begin();        // 当前节点
+
+    while (curr != v.end())
+    {
+        if (*curr % 2 == 0)
+        {
+            // 插入到当前节点后，返回新节点的迭代器
+            curr = v.insert_after(curr, *curr);
+            ++curr; // 跳过新节点，指向原节点的下一位置
+            ++prev; // 前驱节点同步跟进（原节点）
+            ++prev; // 需要跳过两个节点
+        }
+        else
+        {
+            // 删除当前节点（prev的下一个节点）
+            curr = v.erase_after(prev);
+            // prev 不需要移动，curr 已指向下一节点
+        }
+    }
+
+    // 验证结果（输出应为：0 0 2 2 4 4 6 6 8 8）
+    for (auto n : v)
+        cout << n << " ";
+    return 0;
+}
+
+```
+
+### ex9.32
+在 9.31 的程序中，向下面的语句这样调用 insert 是否合法？如果不合法，为什么？
+> 
+```cpp
+iter = v1.insert(iter, *iter++); //不合法，插入的是下一个元素的值
+```
+
+### ex9.33
+在本节的最后一个例子中，如果不讲 insert 的结果赋予给 begin，将会发生什么？编写程序，去掉此赋值语句，验证你的答案。
+```cpp
+while(begin != v.end()) {
+  ++begin;
+  begin = v.insert(begin, 42); //插入新值
+  ++begin;
+}
+```
+> 会导致无限循环
+
+### ex9.34
+假定 v1 是一个保存 int 的容器，其中有偶数值也有奇数值，分析下面循环的行为，然后编写程序验证你的分析是否正确？
+```cpp
+iter = vi.begin();
+while(iter != v1.end()) {
+  if(*iter % 2) {
+    iter = v1.insert(iter, *iter);
+  }
+  ++iter;
+}
+```
+> 会陷入无限循环
+
+### ex9.35
+解释一个 vector 的 capacity 和 size 有何区别。
+- size 存放元素实际的个数
+- capacity 存放元素的容量
+```cpp
+int main()
+{
+    std::vector<int> v(10); // 初始化一个容量为10的vector
+
+    v.push_back(1);               // 超过初始化的容器大小，容器自动扩容
+    cout << v.capacity() << endl; // 20
+    cout << v.size() << endl;     // 11
+    for (auto n : v)
+        cout << n << " ";
+    return 0;
+}
+```
+
+### ex9.36
+一个容器的 capacity 可能小于它的 size 吗？
+> 不可能，关系是 capacity >= size
+
+### ex9.37
+为什么 list 或者 array 没有 capacity 成员函数。
+> array 初始化是固定的，不支持扩容操作
+> list 是双端队列，不强制要求是连续的存储空间，保存的是前后节点的指针，不需要获取容量
+
+### ex9.38
+编写程序，探究在你的标准库实现中，vector 是如何增长的。
+```cpp
+
+int main()
+{
+    std::vector<int> v(10); // 初始化一个容量为10的vector
+
+    for (int i = 0; i < 100; i++)
+    {
+        v.push_back(i);
+        if (i % 10 == 0)
+        {
+            cout << "v.size() = " << v.size() << endl;
+            cout << "v.capacity() = " << v.capacity() << endl;
+        }
+    }
+    return 0;
+}
+//output
+v.size() = 11
+v.capacity() = 20
+v.size() = 21
+v.capacity() = 40
+v.size() = 31
+v.capacity() = 40
+v.size() = 41
+v.capacity() = 80
+v.size() = 51
+v.size() = 51
+v.capacity() = 80
+v.size() = 61
+v.capacity() = 80
+v.size() = 71
+v.capacity() = 80
+v.size() = 81
+v.capacity() = 160
+v.size() = 91
+v.capacity() = 160
+v.capacity() = 80
+v.size() = 61
+v.capacity() = 80
+v.size() = 71
+v.capacity() = 80
+v.size() = 81
+v.capacity() = 160
+v.size() = 91
+v.capacity() = 160
+v.size() = 61
+v.capacity() = 80
+v.size() = 71
+v.capacity() = 80
+v.size() = 81
+v.capacity() = 160
+v.size() = 91
+v.capacity() = 160
+v.size() = 71
+v.capacity() = 80
+v.size() = 81
+v.capacity() = 160
+v.size() = 91
+v.capacity() = 160
+v.size() = 81
+v.capacity() = 160
+v.size() = 91
+v.capacity() = 160
+v.capacity() = 160
+v.size() = 91
+v.capacity() = 160
+v.capacity() = 160
+v.size() = 101
+v.capacity() = 160
+```
+根据输出的结果来看，大概是 2n 倍的关系增长
+
+### ex9.40
+如果上一题中的程序读入了 256 个词，在 resize 之后容器的 capacity 可能是多少，读取了 512 个、1000、或者 1048 个词呢？
+> 上一题我们得出增长关系大概是 2n 倍
+
+- 如果是 256 个词，capcity = 320
+- 如果是 512 个词，capcity = 640
+- 如果是 1000 个词，capacity = 1280
+- 如果是 1048 个词， capacity = 1280
+
+### ex9.41
+编写程序，从一个 vector<char> 初始化一个 string
+```cpp
+int main()
+{
+    std::vector<char> v2(10, 'a');
+    std::vector<char> v1 = {'a', 'b', 'c', 'd', 'e', 'f', 'g'};
+    std::string str1(v1.begin(), v1.end());
+    std::string str2(v2.begin(), v2.end());
+    cout << str1 << endl;
+    cout << str2 << endl;
+    return 0;
+}
+```
+
+### ex9.42
+假定你希望每次读取一个字符存入一个 string 中，而且直到最少需要读取 100 个字符，应该如何提高程序性能；
+```cpp
+//通过构造函数 + 指针的方式构造
+std::vector<char> v2(200, 'a');
+std::string str2(&v2[0], &v2[0] + 100);
+cout << str2 << endl;
+cout << str2.size() << endl;
+```
+
+### ex9.43
+编写一个函数，接受三个 string 参数 s、oldVal 和 newVal。使用迭代器及 insert 和 erase 函数将 s 中所有 oldVal 替换威 newVal。测试你的程序，用他替换通用的简写形式。如，将 `tho` 替换为 `though`, 将 `thru` 替换称 `through`;
+[ch09/ex_9.43.cpp](ch09/ex_9.43.cpp)
