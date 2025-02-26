@@ -378,4 +378,24 @@ int main() {
 ### ex10.25
 在 `10.3.2` 节的练习中，编写了一个使用 `partition` 的 `biggies` 版本。使用 `check_size` 和 `bind` 重写此函数；
 ```cpp
+bool check_size(const std::string & s, std::string::size_type sz) {
+    return s.size() < sz;
+}
+
+void biggies(std::vector<string> &words, std::vector<string>::size_type sz)
+{
+    elimDups(words); // 按照字典排序
+
+    std::stable_sort(words.begin(), words.end(), [](const string &s1, const string &s2)
+                     { return s1.size() < s2.size(); });
+    //参数绑定 _1 是占位符
+    auto check = std::bind(check_size, std::placeholders::_1, sz);
+    auto wc = std::partition(words.begin(), words.end(), check); //满足条件的放在前面，不满足条件的放在后面，返回的 wc 指向的是最后满足条件的下一个位置
+    auto count = wc - words.begin();
+    cout << count << " words are longer than or equal to " << sz << endl;
+
+    std::for_each(words.begin(), wc, [](const string &s)
+                  { cout << s << " "; });
+    cout << endl;
+}
 ```
