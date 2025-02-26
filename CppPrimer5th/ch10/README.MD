@@ -221,5 +221,70 @@ int main()
 ### ex10.16
 使用 `lambda` 表达式编写你自己版本的 `biggies`
 ```cpp
+void biggies(std::vector<string> &words, std::vector<string>::size_type sz)
+{
+    elimDups(words); // 按照字典排序
 
+    std::stable_sort(words.begin(), words.end(), [](const string &s1, const string &s2)
+                     { return s1.size() < s2.size(); });
+
+    auto wc = std::find_if(words.begin(), words.end(), [sz](const string &s)
+                           { return s.size() >= sz; });
+    auto count = words.end() - wc;
+    cout << count << " words are longer than or equal to " << sz << endl;
+
+    std::for_each(wc, words.end(), [](const string &s)
+                  { cout << s << " "; });
+    cout << endl;
+}
 ```
+
+### ex10.17
+重写 `ex10.12`的程序，在对 `sort` 的调用中使用 `lambda` 表达式来替代函数 `compareIsbn`。
+```cpp
+std::sort(data.begin(), data.end(), [](const Sales_data &sd1, const Sales_data &sd2){return sd1.isbn() < sd2.isbn();});
+```
+
+### ex10.18
+重写 `biggies`，用 `partition` 代替 `find_if`。
+```cpp
+void biggies(std::vector<string> &words, std::vector<string>::size_type sz)
+{
+    elimDups(words); // 按照字典排序
+
+    std::stable_sort(words.begin(), words.end(), [](const string &s1, const string &s2)
+                     { return s1.size() < s2.size(); });
+
+    auto wc = std::partition(words.begin(), words.end(), [sz](const string &s)
+                             { return s.size() >= sz; }); //满足条件的放在前面，不满足条件的放在后面，返回的 wc 指向的是最后满足条件的下一个位置
+    auto count = wc - words.begin();
+    cout << count << " words are longer than or equal to " << sz << endl;
+
+    std::for_each(words.begin(), wc, [](const string &s)
+                  { cout << s << " "; });
+    cout << endl;
+}
+```
+
+
+### ex10.19
+用 `stable_partition` 重写前一题的程序，与 `stable_sort` 类似，在划分后的序列中维持原有元素的顺序。
+```cpp
+void biggies(std::vector<string> &words, std::vector<string>::size_type sz)
+{
+    elimDups(words); // 按照字典排序
+
+    auto wc = std::stable_partition(words.begin(), words.end(), [sz](const string &s1)
+                                    { return s1.size() >= sz; });
+
+    // auto wc = std::partition(words.begin(), words.end(), [sz](const string &s)
+    //                          { return s.size() >= sz; });
+    auto count = wc - words.begin();
+    cout << count << " words are longer than or equal to " << sz << endl;
+
+    std::for_each(words.begin(), wc, [](const string &s)
+                  { cout << s << " "; });
+    cout << endl;
+}
+```
+
