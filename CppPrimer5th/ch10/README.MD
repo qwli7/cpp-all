@@ -28,6 +28,12 @@ cout << fun("hello", "world2") << endl;
 |`[&, identifier_list]`|`identifier_list` 是一个逗号分隔的列表，包含 `0` 个或者多个来自所在函数的变量。这些变量采用值捕获的方式，而任何隐式捕获的变量都采用引用方式捕获。`identifier_list` 中的名字前面不能使用 `&`|
 |`[=, identifier_list]`|`identifier_list`中的变量都采用引用方式捕获，而任何隐式捕获的变量都采用值方式捕获。`identifier_list` 中的名字不能包括 `this`，且这些名字之前必须使用 `&`|
 
+### 几种迭代器
+- `back_inserter` 创建一个 `push_back` 的迭代器
+- `front_inserter` 创建一个 `push_front` 的迭代器
+- `inserter` 创建一个 `insert` 的迭代器 
+
+
 ## ch10 练习题
 ### ex10.1
 头文件 algorithm 中定义了一个名为 count 的函数，它类似于 find，接受一对迭代器和一个值作为参数，count 返回给定值在序列中出现的次数。编写程序，读取 int 序列存入 vector 中，打印有多少个元素等于给定值。
@@ -398,4 +404,124 @@ void biggies(std::vector<string> &words, std::vector<string>::size_type sz)
                   { cout << s << " "; });
     cout << endl;
 }
+```
+
+### ex10.26
+解释三种插入迭代器的不同之处
+- `back_inserter` 创建一个 `push_back` 的迭代器，向容器尾部插入
+- `front_inserter` 创建一个 `push_front` 的迭代器，向容器头部插入
+- `inserter` 创建一个 `insert` 的迭代器，指定位置插入
+
+### ex10.27
+除了 `unique` 之外，标准库还定义了名为 `unique_copy` 的函数，他接受三个迭代器，表示拷贝不重复元素的目的位置。编写一个程序，使用 `unique_copy` 将一个 `vector` 中不重复的元素拷贝到一个初始为空的 `list` 中。
+```cpp
+int main()
+{
+
+    std::vector<string> words = {"hello", "hello", "world"};
+
+    std::list<string> words2 = {};
+    std::unique_copy(words.begin(), words.end(), std::back_inserter(words2)); //这里需要使用 back_inserter
+    for (auto it : words2)
+    {
+        cout << it << " ";  // hello world
+    }
+    cout << endl;
+    return 0;
+}
+```
+
+### ex10.28
+一个 `vector` 中保存 `1` 到 `9`，将其拷贝到三个其他容器中。分别使用 `inserter`、`back_inserter`、`front_inserter` 将元素添加到三个容器中。对每种 `inserter`，估计输出顺序是怎样的，运行程序验证你的估计是否正确。
+```cpp
+int main()
+{
+
+    std::vector<int> v = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+    std::list<int> l;
+    std::unique_copy(v.begin(), v.end(), std::back_inserter(l)); // 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
+    for (auto t : l)
+    {
+        cout << t << " ";
+    }
+    cout << endl;
+    std::list<int> l2;
+    std::unique_copy(v.begin(), v.end(), std::front_inserter(l2)); // 10, 9, 8, 7, 6, 5, 4, 3, 2, 1
+    for (auto t : l2)
+    {
+        cout << t << " ";
+    }
+    cout << endl;
+
+    std::list<int> l3;
+    std::unique_copy(v.begin(), v.end(), std::inserter(l3, l3.begin())); // 1 2 3 4 5 6 7 8 9 10
+    for (auto t : l3)
+    {
+        cout << t << " ";
+    }
+    cout << endl;
+    return 0;
+}
+```
+
+### ex10.29
+
+
+### ex10.30
+
+
+### ex10.31
+
+
+### ex10.32
+
+
+### ex10.33
+
+
+### ex10.34
+使用 `reverse_iterator` 逆序打印一个 `vector`；
+```cpp
+int main()
+{
+
+    std::vector<int> ivec{1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+    std::vector<int>::reverse_iterator it = ivec.rbegin(); // 获取反向迭代器  
+    while (it != ivec.rend())
+    {
+        cout << *it << " "; //10 9 8 7 6 5 4 3 2 1
+        ++it;
+    }
+
+    return 0;
+}
+```
+
+### ex10.35
+使用普通迭代器逆序打印一个 `vector`
+```cpp
+int main()
+{
+
+    std::vector<int> ivec{1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+    std::vector<int>::const_iterator iter = ivec.cend();
+    while (iter != ivec.cbegin())
+    {
+        --iter;
+        cout << *iter << " ";
+    }
+    cout << endl;
+
+    return 0;
+}
+```
+
+### ex10.36
+使用 `find` 在一个 `int` 的 `list` 中查找最后一个值为 `0` 的元素。
+
+
+### ex10.37
+给定一个包含 `10` 个元素的 `vector`，将位置 `3` 到 `7` 之间的元素按逆序拷贝到一个 `list` 中；
+```cpp
+
 ```
