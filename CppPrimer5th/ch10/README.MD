@@ -9,7 +9,7 @@
 
 auto fun = [](const string & s1, const string & s2) {return s1.size() > s2.size();};
 //调用 
-fun();
+cout << fun("hello", "world2") << endl;
 ```
 
 ## ch10 练习题
@@ -192,3 +192,34 @@ fill_n(back_inserter(vec), 10, 0); //添加10个0
 标准库定义了名为 `partition` 的算法，他接受一个谓词，对容器内容进行划分，使得谓词为 `true` 的值会排在容器的前半部分，而使谓词为 `false` 的值会排在后半部分。算法返回一个迭代器，指向最后一个使谓词为 `true` 的元素之后的位置。编写函数，接受一个 `string`，返回一个 `bool` 值，指出 `string` 是否有 `5` 个或更多字符。使用此函数划分 `words`。打印出长度大于等于 `5` 的元素。
 
 [ex10.13.cpp](ex_10.13.cpp)
+
+### ex10.14
+编写一个 `lambda`，接受两个 `int `，返回它们的和；
+```cpp
+auto fun = [](const int& a, const int& b) {return a+b;}
+fun(1, 2);
+```
+
+### ex10.15
+编写一个 `lambda`，捕获它所在函数的 `int`, 并接受一个 `int` 参数。`lambda` 应该返回捕获的 `int` 和 `int` 参数的和。
+```cpp
+int func(const int &a)
+{
+    auto fun = [a](const int &b)
+    { return a + b; };
+    return fun(1);
+}
+
+int main()
+{
+    cout << func(10) << endl;  //11
+
+    return 0;
+}
+
+```
+### ex10.16
+使用 `lambda` 表达式编写你自己版本的 `biggies`
+```cpp
+
+```
