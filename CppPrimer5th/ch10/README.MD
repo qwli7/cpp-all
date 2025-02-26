@@ -350,3 +350,32 @@ int main()
 }
 ```
 
+### ex10.22
+重写统计长度小于等于 `6` 的单词数量的程序，使用函数代替 `lambda`
+```cpp
+#include <functional>
+bool check_size(const std::string & s, std::string::size_type sz) {
+    return s.size() >= sz;
+}
+//_1 _2 占位符在 placeholders 命名空间下
+
+int main() {
+    auto check = std::bind(check_size, std::placeholders::_1, 6); // sz 默认固定为 6， _1 为占位符，表示传递过来的参数
+    check("hello"); //调用了 check_size()
+    return 0;
+}
+```
+
+### ex10.23
+`bind` 接受几个参数；
+> 两个，第一个是函数名，第二个是可变参数列表，用逗号分隔。
+
+### ex10.24
+给定一个 `string`, 使用  `bind` 和 `check_size` 在一个 `int` 的 `vector` 中查找第一个大于 `string` 长度的值；
+
+[ex_10.24.cpp](ex_10.24.cpp)
+
+### ex10.25
+在 `10.3.2` 节的练习中，编写了一个使用 `partition` 的 `biggies` 版本。使用 `check_size` 和 `bind` 重写此函数；
+```cpp
+```
