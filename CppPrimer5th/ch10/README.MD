@@ -12,6 +12,22 @@ auto fun = [](const string & s1, const string & s2) {return s1.size() > s2.size(
 cout << fun("hello", "world2") << endl;
 ```
 
+#### 定义 `lambda` 返回类型
+需要定义 `lambda` 返回类型，需要使用尾置表达式
+```cpp
+[](int a) -> int {return a < 0 ? -a : a;}  //说明这个 lambda 表达式的返回值是一个 int，如果能推到出来，可以不写；否则需要手动指定 lambda 返回值类型
+```
+
+### lambda 表达式捕获列表
+|表达式|介绍|
+|----|----|
+|`[]`|空捕获列表，`lambda` 不能使用所在函数中的变量。一个 `lambda` 只有捕获变量后才能使用它们|
+|`[names]`|`names` 是一个逗号分隔的名字列表，这些名字都是 `lambda` 所在的函数的局部变量。默认情况下捕获列表中的变量都被拷贝。名字前如果使用了 `&`，则采用引用捕获的方式|
+|`[&]`|隐式捕获列表，采用引用捕获的方式。`lambda` 体中所使用的来自所在函数的实体都采用引用方式使用|
+|`[=]`|隐式捕获列表，采用值捕获的方式。`lambda` 体中所使用的来自所在函数的实体的值|
+|`[&, identifier_list]`|`identifier_list` 是一个逗号分隔的列表，包含 `0` 个或者多个来自所在函数的变量。这些变量采用值捕获的方式，而任何隐式捕获的变量都采用引用方式捕获。`identifier_list` 中的名字前面不能使用 `&`|
+|`[=, identifier_list]`|`identifier_list`中的变量都采用引用方式捕获，而任何隐式捕获的变量都采用值方式捕获。`identifier_list` 中的名字不能包括 `this`，且这些名字之前必须使用 `&`|
+
 ## ch10 练习题
 ### ex10.1
 头文件 algorithm 中定义了一个名为 count 的函数，它类似于 find，接受一对迭代器和一个值作为参数，count 返回给定值在序列中出现的次数。编写程序，读取 int 序列存入 vector 中，打印有多少个元素等于给定值。
@@ -285,6 +301,52 @@ void biggies(std::vector<string> &words, std::vector<string>::size_type sz)
     std::for_each(words.begin(), wc, [](const string &s)
                   { cout << s << " "; });
     cout << endl;
+}
+```
+
+### ex10.20
+标准库定义了一个名为 `count_if` 的算法。类似于 `find_if`，此函数接受一对迭代器，表示一个输入范围，还接受一个谓词，会对输入范围中的每个元素执行。`count_if` 返回一个计数值，表示谓词有多少次为真。使用`count_if` 重写我们辰戌中统计有多少个单词长度超过 `6` 的部分；
+```cpp
+int main()
+{
+    std::vector<string> words = {"the", "quick", "red", "fox", "jumps", "over", "the", "slow", "red", "turtle"};
+
+    std::ptrdiff_t count = std::count_if(words.begin(), words.end(), [](const string &s) -> bool
+                                         { return s.size() >= 6; });
+    cout << count << endl;  // 1
+    return 0;
+}
+```
+
+### ex10.21
+编写一个 `lambda`，捕获一个局部 `int` 变量，并递减变量值，直到它变为 `0`。一旦变量变为 `0`，再调用 `lambda` 应该不再递减变量。`lambda` 应该返回一个 `bool` 值，指出捕获的变量是否为 `0`;
+```cpp
+
+void func(int &a)
+{
+    for (int i = 0; i < 20; i++)
+    {
+        auto fun = [&a]() -> bool
+        {
+            if (a <= 0)
+            {
+                return true;
+            }
+            cout << "a = " << a << endl;
+            a--;
+            return false;
+        };
+        bool flag = fun();
+        cout << "fun() return " << std::boolalpha << flag << endl;
+    }
+}
+
+int main()
+{
+    int num = 10;
+    func(num);
+
+    return 0;
 }
 ```
 
