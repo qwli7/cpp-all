@@ -1,5 +1,16 @@
 ## ch10 泛型算法
+### lambda 表达式
+```cpp
+[capture_list](parameter list) -> return type {function body}
+```
+改写 `is_shorter` 方法成 `lambda` 表达式
+```cpp
+[](const string & s1, const string & s2) {return s1.size() > s2.size();}
 
+auto fun = [](const string & s1, const string & s2) {return s1.size() > s2.size();};
+//调用 
+fun();
+```
 
 ## ch10 练习题
 ### ex10.1
