@@ -16,7 +16,7 @@
 |类型别名|解释|
 |----|----|
 |`key_type`|此容器类型的关键字类型|
-|`mapped_type`|每个挂念子关联的类型：只适用于 `map`|
+|`mapped_type`|每个关键字关联的类型：只适用于 `map`|
 |`value_type`|对于 `set`，与 `ket_type` 相同，对于 `map`，为 `pair<const key_type, mapped_type>`|
 ---
 
@@ -236,4 +236,23 @@ int main()
 
 ### ex11.15
 对一个 `int` 到 `vector<int>` 的 `map`，其 `mapped_type`、`key_type` 和 `value_type` 分别是什么？
+- `key_type` 为 `int`
+- `mapped_type` 为 `vector<int>`
+- `value_type` 为 `pair<const int, vector<int>>`
+
+### ex11.16
+使用一个 `map` 迭代器编写一个表达式，将一个值赋予一个元素
+```cpp
+int main()
+{
+    std::map<std::string, int> word_count;
+    std::map<std::string, int>::iterator it = word_count.find("hello");
+    if (it != word_count.end())
+    {
+        it->second = 5;
+    }
+    //word_count["hello"] = 5;
+    return 0;
+}
+```
 
