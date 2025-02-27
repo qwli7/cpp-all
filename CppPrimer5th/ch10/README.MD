@@ -46,7 +46,7 @@ cout << fun("hello", "world2") << endl;
 
 ## ch10 练习题
 ### ex10.1
-头文件 algorithm 中定义了一个名为 count 的函数，它类似于 find，接受一对迭代器和一个值作为参数，count 返回给定值在序列中出现的次数。编写程序，读取 int 序列存入 vector 中，打印有多少个元素等于给定值。
+头文件 `algorithm` 中定义了一个名为 `count` 的函数，它类似于 `find`，接受一对迭代器和一个值作为参数，`count` 返回给定值在序列中出现的次数。编写程序，读取 `int` 序列存入 `vector` 中，打印有多少个元素等于给定值。
 ```cpp
 #include <algorithm>
 int main()
@@ -64,7 +64,7 @@ int main()
 ```
 
 ### ex10.2
-重做上一题，但读取 string 序列存入 list 中
+重做上一题，但读取 `string` 序列存入 `list` 中
 ```cpp
 #include <algorithm>
 int main()
@@ -82,7 +82,7 @@ int main()
 ```
 
 ### ex10.3
-用 accumulate 求一个 vector<int> 中的元素之和
+用 `accumulate` 求一个 `vector<int>` 中的元素之和
 ```cpp
 #include <numeric>
 int main()
@@ -95,7 +95,7 @@ int main()
 ```
 
 ### ex10.4
-假定 v 是一个 vector<double>, 那么调用 accmulate(v.cbegin(), v.cend(), 0) 有何错误（如果存在的话）？
+假定 `v` 是一个 `vector<double>`， 那么调用 `accmulate(v.cbegin(), v.cend(), 0)` 有何错误（如果存在的话）？
 > 会丢失精度
 ```cpp
 //fixed
@@ -110,7 +110,7 @@ int main()
 ```
 
 ### ex10.5
-在本节对名册（roster）调用 equal的例子中，如果两个名册中保存的都是 C 风格字符串而不是 string，会发生什么？
+在本节对名册（`roster`）调用 `equal` 的例子中，如果两个名册中保存的都是 `C` 风格字符串而不是 `string`，会发生什么？
 ```cpp
 equal(roster1.cbegin(), roster1.cend(), roster2.cbegin());
 ```
@@ -129,7 +129,7 @@ int main()
 ```
 
 ### ex10.6
-编写程序，使用 fill_n 将一个序列中的 int 值都设置为 0
+编写程序，使用 `fill_n` 将一个序列中的 `int` 值都设置为 `0`
 ```cpp
 int main()
 {
@@ -184,7 +184,7 @@ int main()
 ```
 
 ### ex10.8
-本节提到过，标准库算法不会改变它们所操作的容器的大小，为什么使用 back_inserter 不会使这一断言失效？
+本节提到过，标准库算法不会改变它们所操作的容器的大小，为什么使用 `back_inserter` 不会使这一断言失效？
 > `back_inserter` 接受一个指向容器的引用，返回一个与该容器绑定的插入迭代器，当我们通过此迭代器赋值时，赋值运算符会调用 `push_back` 将一个具有给定值的元素添加到容器中。
 ```cpp
 vector<int> ivec; //空容器
@@ -198,7 +198,7 @@ fill_n(back_inserter(vec), 10, 0); //添加10个0
 ```
 
 ### ex10.9 
-实现你自己的 `elimDups`。测试你的程序，分别在读取输入后、调用 unique 后以及调用 erase 后打印 vector 的内容；
+实现你自己的 `elimDups`。测试你的程序，分别在读取输入后、调用 `unique` 后以及调用 `erase` 后打印 `vector` 的内容；
 
 输入 `the` `quick` `red` `fox` `jumps` `over` `the` `slow` `red` `turtle`。排序去重后输出
 
