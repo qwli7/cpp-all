@@ -12,7 +12,12 @@
 |`unordered_multiset`|哈希组织的 `set`；关键字可以重复出现|
 
 
-
+### 关联容器额外的类型别名
+|类型别名|解释|
+|----|----|
+|`key_type`|此容器类型的关键字类型|
+|`mapped_type`|每个挂念子关联的类型：只适用于 `map`|
+|`value_type`|对于 `set`，与 `ket_type` 相同，对于 `map`，为 `pair<const key_type, mapped_type>`|
 ---
 
 
@@ -228,3 +233,7 @@ int main()
     return 0;
 }
 ```
+
+### ex11.15
+对一个 `int` 到 `vector<int>` 的 `map`，其 `mapped_type`、`key_type` 和 `value_type` 分别是什么？
+
