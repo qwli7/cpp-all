@@ -256,3 +256,102 @@ int main()
 }
 ```
 
+### ex11.17
+假定 `c` 是一个 `string` 的 `multiset`， `v` 是一个 `string` 的 `vector`，解释下面的调用。指出每个调用是否合法？
+```cpp
+copy(v.begin(), v.end(), inserter(c, c.end())); //把 v 里面的元素拷贝到 c 中
+copy(v.begin(), v.end(), back_inserter(c));  //编译报错
+copy(c.begin(), c.end(), inserter(v, v.end())); //把 c 里面的元素拷贝到 v 中
+copy(c.begin(), c.end(), back_inserter(v)); //把 c 里面的元素拷贝到 v 中
+```
+
+### ex11.18
+写出 `382` 页循环中 `map_it` 的类型，不要使用 `auto` 或者 `decltype`。
+```cpp
+std::map<std::string, int>::iterator it = word_count.begin();
+```
+
+### ex11.19
+定义一个变量，通过对 `11.22` 节中的名为 `bookstore` 的 `multiset` 调用 `begin()` 来初始化这个变量。写出变量的类型，不要使用 `auto` 或者 `decltype`。
+
+
+### ex11.20
+重写 `11.1` 节练习的单词计数程序，使用 `insert` 代替下标操作。你认为哪个程序更容易编写和阅读？解释原因。
+```cpp
+int main()
+{
+    std::map<string, size_t> word_count;
+    std::string word;
+    while (cin >> word)
+    {
+        auto ret = word_count.insert(std::make_pair(word, 1));
+        cout << "insert " << word << " " << ret.second << endl;
+        if (!ret.second) // word 已经在 word_count 中，insert 什么也不做
+        {
+            ++ret.first->second;
+        }
+    }
+
+    for (auto it : word_count)
+    {
+        cout << it.first << " occurs " << it.second << " times" << endl;
+    }
+
+    return 0;
+}
+```
+
+### ex11.21
+假定 `word_count` 是一个 `string` 到 `size_t` 的 `map`，`word` 是一个 `string`，解释下面循环的作用；
+```cpp
+while(cin >> word) {
+    ++word_count.insert({word, 0}).first->second;  //和 ex11.20 作用一样
+}
+```
+
+### ex11.22
+给定一个 `map<string, vector<int>>`，对此容器的插入一个元素的 `insert` 版本，写出其参数类型和返回类型。
+```cpp
+int main()
+{
+    std::map<std::string, std::vector<int>> m;
+    std::vector<int> v = {1, 2, 3};
+    std::pair<std::map<std::string, std::vector<int>>::iterator, bool> ret = m.insert(std::make_pair("apple", v));
+    return 0;
+}
+```
+
+### ex11.23
+`11.2.1` 节练习中的 `map` 以孩子的姓为关键字，保存他们的名的 `vector`， 用 `multimap` 重写此 `map`;
+```cpp
+int main()
+{
+    std::multimap<std::string, std::vector<std::string>> m_name;
+
+    std::vector<std::string> v_name = {"Alice", "Bob", "Charlie"};
+    m_name.insert(std::make_pair("Alice", v_name));
+    m_name.insert(std::make_pair("Bob", v_name));
+    m_name.insert(std::make_pair("Charlie", v_name));
+
+    return 0;
+}
+```
+### ex11.24
+下面的程序完成什么功能？
+```cpp
+map<int, int> m;
+m[0] = 1; //初始化一个元素
+```
+
+### ex11.25
+对比下面程序与上一题程序
+```cpp
+vector<int> v;
+v[0] = 1; // 越界 v 是一个空容器
+```
+
+### ex11.26
+可以用什么类型来对一个 `map` 进行下标操作？下标运算符返回的类型是什么？请给出一个具体的例子--即，定义一个 `map`，然后写出一个可以用来对 `map` 进行下标操作的类型以及下标运算符会返回的类型。
+
+
+
