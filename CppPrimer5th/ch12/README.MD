@@ -117,7 +117,8 @@ int main()
 我们未编写接受一个 `initializer_list explicit` 参数的构造函数。讨论这个设计的优缺点。
 
 > 使用了 `explicit` 则声明了拒绝编译器的隐式转换，`StrBlob sb = {"hello", "world"};` 这样的定义会报错，必须使用 `StrBlob sb = StrBlob({"hello", "world"});` 这样的形式，降低了灵活性；缺点是增加了代码量。
-
+----
+## 12.1.2 节练习
 ### ex12.6
 编写函数，返回一个动态分配的 `int` 的 `vector`。将此 `vector` 传递给另一个函数，这个函数读取标准输入，将读入的值保存在 `vector` 元素中。再将 `vector` 传递给另一个函数，打印读入的值。记得在恰当的时刻`delete vector`。
 
@@ -147,4 +148,52 @@ int *q = new int(42), *r = new int(100); //初始化两个指针
 r = q; // r 指向 q 指向的对象，没有释放 q 指向的对象，q指向的内存 不会被释放
 auto q2 = make_shared<int>(42), r2 = make_shared<int>(100); //初始化两个智能指针
 r2 = q2; // r2 指向 q2 指向的对象，q2 将会被自动释放，不需要手动调用 delete
+```
+
+## 12.1.3 节练习
+### ex12.10
+下面的代码调用了第 `413` 页中定义的 `process` 函数，解释此调用是否正确。如果不正确，应如何修改？
+```cpp
+//在函数被调用时，ptr 被创建并初始化
+void process(shared_ptr<int> ptr) {
+    //do something
+} // ptr 离开作用域，被销毁
+
+shared_ptr<int> p(new int(42)); 
+process(shared_ptr<int>(p));
+```
+
+
+### ex12.11
+如果我们像下面这样调用 `process`，会发生什么？
+```cpp
+process(std::shared_ptr<int>(p));
+```
+
+
+### ex12.12
+`p` 和 `q` 的定义如下，对于接下来的对 `process` 的每个调用，如果合法，解释它做了什么，如果不合法，解释错误原因。
+```cpp
+auto p = new int();
+auto sp = make_shared<int>();
+
+//a
+process(sp);
+
+//b
+process(new int());
+
+//c
+process(p);
+
+//d
+process(shared_ptr<int>(p));
+```
+
+### ex12.13
+如果执行下面的代码，会发生什么？
+```cpp
+auto sp = make_shared<int>();
+auto p = sp.get();
+delete p;
 ```
