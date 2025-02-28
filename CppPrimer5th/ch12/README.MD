@@ -197,3 +197,17 @@ auto sp = make_shared<int>();
 auto p = sp.get();
 delete p;
 ```
+
+----
+## 12.1.4 节练习
+### ex12.14
+编写你自己版本的用 `shared_ptr` 管理 `connection` 的函数。
+
+
+### ex12.15
+重写第一题的程序，用 `lambda` 代替 `end_connection` 函数。
+
+
+----
+## 12.1.5 节练习
+
