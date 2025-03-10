@@ -1,0 +1,10 @@
+all: build run
+
+build:
+	g++ -o main main.cpp -Wall -ISDL/include -LSDL/lib -lSDL2 -lSDL2main -lSDL2_mixer -std=c++11
+
+run:
+	./main.exe
+
+clean:
+	-rm main.exe	
